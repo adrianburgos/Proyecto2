@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Inicio</title>
+	<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.css">
+	<script type="text/javascript" src="../jquery-3.2.0.min.js"></script>
+	<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="../js/gramatica.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("#bEjecutar").click(function () {
+        try {
+          //alert($("#taCodigo").val());
+          var raiz = gramatica.parse($("#taCodigo").val());
+          
+          alert(raiz);
+          console.log(raiz);
+        } catch (e) {
+          //$("#taEstructuras").html(String(e));
+          console.log(e);
+        }
+      });
+    });
+
+    // function recorrerArbol(argument) {
+    //   var s = argument.nombre;
+    //   for(var dato in argument)
+    //   {
+    //     if(dato.valor)
+    //     {
+    //       s += dato.valor;
+    //       s += recorrerArbol(dato.h1);
+    //       s += recorrerArbol(dato.h2);
+    //     }
+    //   }
+    //   return s;
+    // }
+  </script>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="avanzado.html">Basic 3D</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="basico.html">Nivel basico</a></li>
+          <li><a href="#">Nivel intermedio</a></li>
+          <li class="active"><a href="avanzado.html">Nivel avanzado</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li role="separator" class="divider"></li>
+              <li class="dropdown-header">Nav header</li>
+              <li><a href="#">Separated link</a></li>
+              <li><a href="#">One more separated link</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-7">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Programa en Basic 3D</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="btn-group" role="toolbar" aria-label="First group">
+                  <button id="bEjecutar" class="btn btn-primary btn-lg">
+                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <textarea style="height: 545px; width: 100%;" id = "taCodigo"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-5">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Estructuras</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-6">
+                <button id="bCargar" class="btn btn-primary btn-block btn-lg">
+                  <span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span>
+                </button>
+              </div>
+              <div class="col-md-6">
+                <button id="bGuardar" class="btn btn-primary btn-block btn-lg">
+                  <span class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <textarea style="height: 545px; width: 100%;" id = "taEstructuras"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
