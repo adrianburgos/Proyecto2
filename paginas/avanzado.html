@@ -1,40 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Inicio</title>
+	<title>Avanzado</title>
 	<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.css">
 	<script type="text/javascript" src="../jquery-3.2.0.min.js"></script>
 	<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="../js/gramatica.js"></script>
+  <script type="text/javascript" src="../js/jscodigo3d.js"></script>
+  <script type="text/javascript" src="../js/ejecutar.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
       $("#bEjecutar").click(function () {
         try {
           //alert($("#taCodigo").val());
           var raiz = gramatica.parse($("#taCodigo").val());
-          
+          reiniciar3d();
+          //crear la tabla de simbolos
+          //buscar el nodo del metodo Principal
+          var principal = buscarPrincipal(raiz);
+          console.log(principal);
+          if(principal !== null)
+            ejecutarArbol(principal);
+          else
+            alert("No existe un metodo principal");
           alert(raiz);
           console.log(raiz);
+          console.log(codigo3d);
         } catch (e) {
           //$("#taEstructuras").html(String(e));
           console.log(e);
         }
       });
     });
-
-    // function recorrerArbol(argument) {
-    //   var s = argument.nombre;
-    //   for(var dato in argument)
-    //   {
-    //     if(dato.valor)
-    //     {
-    //       s += dato.valor;
-    //       s += recorrerArbol(dato.h1);
-    //       s += recorrerArbol(dato.h2);
-    //     }
-    //   }
-    //   return s;
-    // }
   </script>
 </head>
 <body>
