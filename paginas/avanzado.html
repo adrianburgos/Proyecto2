@@ -7,6 +7,8 @@
 	<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="../js/gramatica.js"></script>
   <script type="text/javascript" src="../js/jscodigo3d.js"></script>
+  <script type="text/javascript" src="../js/errores.js"></script>
+  <script type="text/javascript" src="../js/tablaDeSimbolos.js"></script>
   <script type="text/javascript" src="../js/ejecutar.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
@@ -16,6 +18,7 @@
           var raiz = gramatica.parse($("#taCodigo").val());
           reiniciar3d();
           //crear la tabla de simbolos
+          crearTabla(raiz)
           //buscar el nodo del metodo Principal
           var principal = buscarPrincipal(raiz);
           console.log(principal);

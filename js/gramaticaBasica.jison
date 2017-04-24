@@ -231,13 +231,13 @@ ASIGNACION      :   LID '=' VALOR {
                         };
                     };
 
-SI              :   'if' '(' VALOR ')' 'then' '{' LCUERPO '}' ELSE {
+SI              :   'if' '(' VALOR ')' '{' LCUERPO '}' ELSE {
                         $$ = {
                             nombre : "IF",
-                            hijos : [$3, $7]
+                            hijos : [$3, $6]
                         };
-                        if($9 !== null)
-                            $$.hijos.push($9);
+                        if($8 !== null)
+                            $$.hijos.push($8);
                     };
 ELSE            :   'else' '{' LCUERPO '}' { $$ = $3; }
                 |   { $$ = null; };

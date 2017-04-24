@@ -9,33 +9,10 @@
   <script src="../blockly/blocks_compressed.js"></script>
   <script src="../blockly/javascript_compressed.js"></script>
   <script src="../blockly/msg/js/es.js"></script>
+  <script type="text/javascript" src="../js/gramaticaBasica.js"></script>
   <script type="text/javascript" src="../js/jscodigo3d.js"></script>
+  <script type="text/javascript" src="../js/errores.js"></script>
   <script type="text/javascript" src="../js/ejecutar.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      $("#bEjecutar").click(function () {
-        try {
-          //alert($("#taCodigo").val());
-          var raiz = gramatica.parse($("#taCodigo").val());
-          reiniciar3d();
-          //crear la tabla de simbolos
-          //buscar el nodo del metodo Principal
-          var principal = buscarPrincipal(raiz);
-          console.log(principal);
-          if(principal !== null)
-            ejecutarArbol(principal);
-          else
-            alert("No existe un metodo principal");
-          alert(raiz);
-          console.log(raiz);
-          console.log(codigo3d);
-        } catch (e) {
-          //$("#taEstructuras").html(String(e));
-          console.log(e);
-        }
-      });
-    });
-  </script>
 </head>
 <body>
   <nav class="navbar navbar-inverse">
@@ -141,6 +118,24 @@
             function runJS() {
               Blockly.JavaScript.addReservedWords('code');
               var code = Blockly.JavaScript.workspaceToCode();
+              code = "Principal() {\n" + code + "\n}";
+              try {
+                var raiz = gramaticaBasica.parse(code);
+                reiniciar3d();
+                //crear la tabla de simbolos
+                //buscar el nodo del metodo Principal
+                var principal = buscarPrincipal(raiz);
+                console.log(principal);
+                if(principal !== null)
+                  ejecutarArbol(principal);
+                else
+                  alert("No existe un metodo principal");
+                console.log(raiz);
+                console.log(codigo3d);
+              } catch (e) {
+                //$("#taEstructuras").html(String(e));
+                console.log(e);
+              }
               $('#taSalida').text(code);
             }
 

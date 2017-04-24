@@ -38,7 +38,7 @@ Blockly.PHP['controls_if'] = function(block) {
       Blockly.PHP.ORDER_NONE) || 'false';
     branchCode = Blockly.PHP.statementToCode(block, 'DO' + n);
     code += (n > 0 ? ' else ' : '') +
-        'if (' + conditionCode + ') {\n' + branchCode + '}';
+        'if (' + conditionCode + ') then {\n' + branchCode + '}';
 
     ++n;
   } while (block.getInput('IF' + n));
