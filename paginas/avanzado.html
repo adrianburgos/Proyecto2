@@ -18,7 +18,10 @@
           var raiz = gramatica.parse($("#taCodigo").val());
           reiniciar3d();
           //crear la tabla de simbolos
-          crearTabla(raiz)
+					tabla = [];
+					tabla.push(crearAmbito("global", 99));
+          tabla[0].tam = crearTabla(raiz, 0);
+					console.log(tabla);
           //buscar el nodo del metodo Principal
           var principal = buscarPrincipal(raiz);
           console.log(principal);

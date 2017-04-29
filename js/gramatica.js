@@ -86,8 +86,8 @@ switch (yystate) {
 case 1:
 return $$[$0-1];
 break;
-case 2: case 33:
- 
+case 2: case 33: case 58:
+
                         $$[$0-1].hijos.push($$[$0]);
                         this.$ = $$[$0-1];
                     
@@ -119,7 +119,7 @@ case 11: case 24: case 56: case 62:
  this.$ = null; 
 break;
 case 12: case 106:
- 
+
                         $$[$0-2].hijos.push($$[$0]);
                         this.$ = $$[$0-2];
                     
@@ -132,7 +132,7 @@ case 14:
                         this.$ = {
                             nombre : "ARRAY",
                             tipo : $$[$0],
-                            valor : $$[$0-3],
+                            id : $$[$0-3],
                             hijos : [$$[$0-2]]
                         };
                     
@@ -147,7 +147,7 @@ case 16:
  this.$ = {nombre : "LCORCHETES", hijos : [$$[$0-1]]}; 
 break;
 case 17:
- this.$ = {nombre : "RANGO", hijos : [0, $$[$0]]}; 
+ this.$ = {nombre : "RANGO", hijos : ["0", $$[$0]]}; 
 break;
 case 18:
  this.$ = {nombre : "RANGO", hijos : [$$[$0-2], $$[$0]]}; 
@@ -222,7 +222,7 @@ break;
 case 54:
 
                         this.$ = {
-                            nombre : "IF",
+                            nombre : "SI",
                             hijos : [$$[$0-6], $$[$0-2]]
                         };
                         if($$[$0] !== null)
@@ -237,12 +237,6 @@ case 57:
                         };
                         if($$[$0-1] !== null)
                             this.$.hijos.push($$[$0-1]);
-                    
-break;
-case 58:
-
-                        $$[$0-1].hijos.push($$[$0]);
-                        this.$ = $$[$0-1];
                     
 break;
 case 59:
@@ -337,7 +331,7 @@ break;
 case 73:
 
                         $$[$0-2].hijos.push($$[$0-1]);
-                        this.$ = $$[$0-2];    
+                        this.$ = $$[$0-2];
                     
 break;
 case 74:

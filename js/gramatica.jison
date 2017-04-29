@@ -114,7 +114,7 @@
 
 INICIO          :   LCUERPOGEN EOF {return $1;};
 
-LCUERPOGEN      :   LCUERPOGEN CUERPOGEN { 
+LCUERPOGEN      :   LCUERPOGEN CUERPOGEN {
                         $1.hijos.push($2);
                         $$ = $1;
                     }
@@ -134,10 +134,10 @@ DECVAR          :   TIPO LVARIABLES ASIG {
                         if($3 !== null)
                             $$.hijos.push($3);
                     };
-ASIG            :   ':' VALOR { $$ = $1; } 
+ASIG            :   ':' VALOR { $$ = $1; }
                 |   ':' 'create' '(' id ')' { $$ = {nombre : "NUEVO", valor : $3}; }
                 |   { $$ = null; };
-LVARIABLES      :   LVARIABLES ',' id { 
+LVARIABLES      :   LVARIABLES ',' id {
                         $1.hijos.push($3);
                         $$ = $1;
                     }
@@ -147,7 +147,7 @@ DECARR          :   'array' ':' id LCORCHETES 'of' TIPO{
                         $$ = {
                             nombre : "ARRAY",
                             tipo : $6,
-                            valor : $3,
+                            id : $3,
                             hijos : [$4]
                         };
                     };
@@ -156,7 +156,7 @@ LCORCHETES      :   LCORCHETES '[' RANGO ']' {
                         $$ = $1;
                     }
                 |   '[' RANGO ']' { $$ = {nombre : "LCORCHETES", hijos : [$2]}; };
-RANGO           :   numero { $$ = {nombre : "RANGO", hijos : [0, $1]}; }
+RANGO           :   numero { $$ = {nombre : "RANGO", hijos : ["0", $1]}; }
                 |   numero '..' numero { $$ = {nombre : "RANGO", hijos : [$1, $3]}; }
                 |   { $$ = {nombre : "RANGO", hijos : []}; };
 
@@ -199,7 +199,7 @@ TIPO            :   'num' { $$ = $1; }
 
 PRINCIPAL       :   'principal' '(' ')' '{' LCUERPO '}' { $$ = {nombre : "PRINCIPAL", hijos : [$5]}; };
 
-LCUERPO         :   LCUERPO CUERPO { 
+LCUERPO         :   LCUERPO CUERPO {
                         $1.hijos.push($2);
                         $$ = $1;
                     }
@@ -233,7 +233,7 @@ ASIGNACION      :   LID '=' VALOR {
 
 SI              :   'if' '(' VALOR ')' 'then' '{' LCUERPO '}' ELSE {
                         $$ = {
-                            nombre : "IF",
+                            nombre : "SI",
                             hijos : [$3, $7]
                         };
                         if($9 !== null)
@@ -331,7 +331,7 @@ LLAMADO         :   id '(' LVALOR ')' {
 
 LVALOR          :   LVALOR ',' VALOR {
                         $1.hijos.push($2);
-                        $$ = $1;    
+                        $$ = $1;
                     }
                 |   VALOR { $$ = { nombre : "LVALOR", hijos : [$1] }; }
                 |   { $$ = { nombre : "LVALOR", hijos : []}; };
@@ -369,7 +369,7 @@ E               :   E '+' E { $$ = {nombre :$2, hijos:[$1, $3]}; }
                 |   LLAMADO { $$ = $1; }
                 |   '(' VALOR ')' { $$ = $2; };
 
-LID             :   LID '.' id { 
+LID             :   LID '.' id {
                         $1.hijos.push($3);
                         $$ = $1;
                     }

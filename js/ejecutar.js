@@ -43,8 +43,8 @@ function evaluarValor(valor) {
       return ejecutarAritmetica(op1, op2, valor.nombre);
       break;
     case "-":
-      var op1 = evaluarValor(valor.hijos[0]);
-      var op2 = ""
+      op1 = evaluarValor(valor.hijos[0]);
+      op2 = "";
       var codigo = "";
       var t = getTemp();
       var res = {temp : "tx", tipo : -1};
@@ -64,7 +64,9 @@ function evaluarValor(valor) {
             //error estos valores no se pueden operar
             var er = {
               tipo: "Error Semantico",
-              descripcion: "No se pudo operar -[" + getTipo(op1.tipo) + "]"
+              descripcion: "No se pudo operar -[" + getTipo(op1.tipo) + "]",
+  						fila: 0,
+  						columna: 0
             };
             agregarError(er);
             break;
@@ -90,7 +92,9 @@ function evaluarValor(valor) {
             //error estos valores no se pueden operar
             var er = {
               tipo: "Error Semantico",
-              descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] - [" + op2.tipo + "]"
+              descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] - [" + op2.tipo + "]",
+  						fila: 0,
+  						columna: 0
             };
             agregarError(er);
             res.temp = "tx";
@@ -99,17 +103,15 @@ function evaluarValor(valor) {
         }
       }
       return res;
-      break;
     case "==":
     case "!=":
     case ">":
     case "<":
     case ">=":
     case "<=":
-      var op1 = evaluarValor(valor.hijos[0]);
-      var op2 = evaluarValor(valor.hijos[1]);
+      op1 = evaluarValor(valor.hijos[0]);
+      op2 = evaluarValor(valor.hijos[1]);
       return ejecutarRelacional(op1, op2, valor.nombre);
-      break;
     case "&&":
     case "&?":
     case "||":
@@ -117,13 +119,11 @@ function evaluarValor(valor) {
     case "|&":
     case "!":
       return ejecutarLogica(valor);
-      break;
     case "numero":
         return {
           temp : valor.valor,
           tipo : 1
         };
-      break;
     case "bool":
         if (valor.valor == "true")
           return {
@@ -168,7 +168,7 @@ function ejecutarAritmetica(op1, op2, operador) {
         case 2://numero * numero
         case 8://numero * bool
         case 14://bool * bool
-          var codigo = t + " = " + op1.temp + " " + operador + " " + op2.temp + ";";
+          codigo = t + " = " + op1.temp + " " + operador + " " + op2.temp + ";";
           agregar3d(codigo);
           res.temp = t;
           res.tipo = 1;
@@ -180,7 +180,9 @@ function ejecutarAritmetica(op1, op2, operador) {
           //error estos valores no se pueden operar
           var er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]"
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]",
+						fila: 0,
+						columna: 0
           };
           agregarError(er);
           break;
@@ -193,7 +195,7 @@ function ejecutarAritmetica(op1, op2, operador) {
       {
         case 2://numero /(%)(^) numero
         case 8://numero /(%)(^) bool
-          var codigo = t + " = " + op1.temp + " " + operador + " " + op2.temp + ";";
+          codigo = t + " = " + op1.temp + " " + operador + " " + op2.temp + ";";
           agregar3d(codigo);
           res.temp = t;
           res.tipo = 1;
@@ -204,9 +206,11 @@ function ejecutarAritmetica(op1, op2, operador) {
         case 10://cadena /(%)(^) bool
         default:
           //error estos valores no se pueden operar
-          var er = {
+          er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]"
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]",
+						fila: 0,
+						columna: 0
           };
           agregarError(er);
           break;
@@ -228,8 +232,8 @@ function ejecutarRelacional(op1, op2, operador) {
           var lv = getEtq();
           var lf = getEtq();
           var codigo =
-            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n"
-            + "goto " + lf + ";";
+            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n" +
+            "goto " + lf + ";";
           agregar3d(codigo);
           res.tipo = 7;
           res.lv.push(lv);
@@ -244,7 +248,9 @@ function ejecutarRelacional(op1, op2, operador) {
           //error estos valores no se pueden operar
           var er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]"
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]",
+						fila: 0,
+						columna: 0
           };
           agregarError(er);
           break;
@@ -255,11 +261,11 @@ function ejecutarRelacional(op1, op2, operador) {
       {
         case 2://numero != numero
         case 14://bool != bool
-          var lv = getEtq();
-          var lf = getEtq();
-          var codigo =
-            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n"
-            + "goto " + lf + ";";
+          lv = getEtq();
+          lf = getEtq();
+          codigo =
+            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n" +
+            "goto " + lf + ";";
           agregar3d(codigo);
           res.tipo = 7;
           res.lv.push(lv);
@@ -272,9 +278,11 @@ function ejecutarRelacional(op1, op2, operador) {
         case 10://cadena != bool
         default:
           //error estos valores no se pueden operar
-          var er = {
+          er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]"
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]",
+						fila: 0,
+						columna: 0
           };
           agregarError(er);
           break;
@@ -284,11 +292,11 @@ function ejecutarRelacional(op1, op2, operador) {
       switch(op1.tipo + op2.tipo)
       {
         case 2://numero > numero
-          var lv = getEtq();
-          var lf = getEtq();
-          var codigo =
-            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n"
-            + "goto " + lf + ";";
+          lv = getEtq();
+          lf = getEtq();
+          codigo =
+            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n" +
+            "goto " + lf + ";";
           agregar3d(codigo);
           res.tipo = 7;
           res.lv.push(lv);
@@ -302,9 +310,11 @@ function ejecutarRelacional(op1, op2, operador) {
         case 14://bool > bool
         default:
           //error estos valores no se pueden operar
-          var er = {
+          er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]"
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]",
+						fila: 0,
+						columna: 0
           };
           agregarError(er);
           break;
@@ -314,11 +324,11 @@ function ejecutarRelacional(op1, op2, operador) {
       switch(op1.tipo + op2.tipo)
       {
         case 2://numero < numero
-          var lv = getEtq();
-          var lf = getEtq();
-          var codigo =
-            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n"
-            + "goto " + lf + ";";
+          lv = getEtq();
+          lf = getEtq();
+          codigo =
+            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n" +
+            "goto " + lf + ";";
           agregar3d(codigo);
           res.tipo = 7;
           res.lv.push(lv);
@@ -332,9 +342,11 @@ function ejecutarRelacional(op1, op2, operador) {
         case 14://bool < bool
         default:
           //error estos valores no se pueden operar
-          var er = {
+          er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]"
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]",
+						fila: 0,
+						columna: 0
           };
           agregarError(er);
           res.temp = "tx";
@@ -347,11 +359,11 @@ function ejecutarRelacional(op1, op2, operador) {
       switch(op1.tipo + op2.tipo)
       {
         case 2://numero >= (<=) numero
-          var lv = getEtq();
-          var lf = getEtq();
-          var codigo =
-            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n"
-            + "goto " + lf + ";";
+          lv = getEtq();
+          lf = getEtq();
+          codigo =
+            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n" +
+            "goto " + lf + ";";
           agregar3d(codigo);
           res.tipo = 7;
           res.lv.push(lv);
@@ -364,9 +376,11 @@ function ejecutarRelacional(op1, op2, operador) {
         case 14://bool >= (<=) bool
         default:
           //error estos valores no se pueden operar
-          var er = {
+          er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]"
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]",
+						fila: 0,
+						columna: 0
           };
           agregarError(er);
           res.temp = "tx";
@@ -410,7 +424,9 @@ function ejecutarLogica(valor) {
       {//error estos valores no se pueden operar
         var er = {
           tipo: "Error Semantico",
-          descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]"
+          descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]",
+          fila: 0,
+          columna: 0
         };
         agregarError(er);
       }
@@ -419,7 +435,7 @@ function ejecutarLogica(valor) {
     case "|?":
       if(op1.tipo == 7)
         agregar3d(op1.lf.join() + ":");
-      var op2 = evaluarValor(valor.hijos[1]);
+      op2 = evaluarValor(valor.hijos[1]);
       if(valor.hijos[1].nombre == "bool")
         op2 = codigoBoolean(valor.hijos[1]);
       if(op2.tipo == 7)
@@ -439,7 +455,9 @@ function ejecutarLogica(valor) {
       {//error estos valores no se pueden operar
         var er = {
           tipo: "Error Semantico",
-          descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]"
+          descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]",
+          fila: 0,
+          columna: 0
         };
         agregarError(er);
       }
@@ -450,7 +468,7 @@ function ejecutarLogica(valor) {
       res.tipo = 7;
       break;
     case "|&":
-      var txor = getTemp()
+      var txor = getTemp();
       if(op1.tipo == 7)
       {
         var lcond = getEtq();
@@ -461,7 +479,7 @@ function ejecutarLogica(valor) {
         agregar3d(txor + " = 0;");
         agregar3d(lcond + ":");
       }
-      var op2 = evaluarValor(valor.hijos[1]);
+      op2 = evaluarValor(valor.hijos[1]);
       if(valor.hijos[1].nombre == "bool")
         op2 = codigoBoolean(valor.hijos[1]);
       if(op2.tipo == 7)
@@ -482,7 +500,9 @@ function ejecutarLogica(valor) {
       {//error estos valores no se pueden operar
         var er = {
           tipo: "Error Semantico",
-          descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]"
+          descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + op2.tipo + "]",
+          fila: 0,
+          columna: 0
         };
         agregarError(er);
       }
@@ -509,12 +529,14 @@ function getTipo(tipo) {
     case 1: return "num";
     case 3: return "str";
     case 7: return "bool";
+    case 99: return "void";
   }
   switch(tipo)
   {
     case "num": return 1;
     case "str": return 3;
     case "bool": return 7;
+    case "void": return 99;
   }
   return tipo;
 }
