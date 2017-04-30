@@ -93,7 +93,7 @@ function crearTabla(raiz, pos) {
 					var dim2 = null;
 					if (lpar.hijos[j].hijos.length > 0)
 						dim2 = lpar.hijos[j].hijos[0];
-					declararVariable(lpar.hijos[j].valor, getAmbito(), j+1, lpar.hijos[j].tipo, 1, "variable", dim2);
+						declararVariable(lpar.hijos[j].valor, getAmbito(), j+1, getTipo(lpar.hijos[j].tipo), 1, "variable", dim2);
 					posFun++;
 				}
 				var tam = crearTabla(lcuerpo, posFun);
@@ -131,14 +131,32 @@ function crearTabla(raiz, pos) {
 				ambActual.ambitos.push(ambSent);
 				ambito.push(sent.nombre + contAmb);
 				contAmb++;
-				ambSent.tam = crearTabla(lcuerpo, 0);
+				var posSent = 0;
+				if(sent.nombre === Const.PARA && sent.hijos[0].nombre === "DECVAR")
+				{
+					declararVariable(sent.hijos[0].hijos[0].hijos[0], getAmbito(), 0, getTipo(Const.num), 1, "variable", null);
+					posSent++;
+				}
+				ambSent.tam = crearTabla(lcuerpo, posSent);
 				ambito.pop();
-				if(sent.nombre === "SI" && sent.hijos.length === 3)
+				if(sent.nombre === Const.SI && sent.hijos.length === 3)
 				{//El SI tiene instruccion ELSE
-
+					//cuerpo del else
+					lcuerpo = sent.hijos[2];
+					ambActual = buscarAmbito(tabla[0], getAmbito());
+					tipo = -1;// tipo para las sentencia
+					//se crea el ambito correspondiente a la sentencia
+					nombreAmbSent = ambito.join("#") + "#ELSE" + contAmb;
+					ambSent = crearAmbito(nombreAmbSent, tipo);
+					ambActual.ambitos.push(ambSent);
+					ambito.push("ELSE" + contAmb);
+					contAmb++;
+					ambSent.tam = crearTabla(lcuerpo, 0);
+					ambito.pop();
 				}
 				break;
 			case "SELECCION":
+				//TODO: creacion de la tabla de simbolos para la sentencia SELECCION
 				break;
 		}
 	}

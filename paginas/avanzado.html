@@ -7,6 +7,7 @@
 	<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="../js/gramatica.js"></script>
   <script type="text/javascript" src="../js/jscodigo3d.js"></script>
+	<script type="text/javascript" src="../js/Const.js"></script>
   <script type="text/javascript" src="../js/errores.js"></script>
   <script type="text/javascript" src="../js/tablaDeSimbolos.js"></script>
   <script type="text/javascript" src="../js/ejecutar.js"></script>
@@ -19,6 +20,8 @@
           reiniciar3d();
           //crear la tabla de simbolos
 					tabla = [];
+					ambito = ["global"];
+					contAmb = 0;
 					tabla.push(crearAmbito("global", 99));
           tabla[0].tam = crearTabla(raiz, 0);
 					console.log(tabla);
@@ -26,7 +29,7 @@
           var principal = buscarPrincipal(raiz);
           console.log(principal);
           if(principal !== null)
-            ejecutarArbol(principal);
+            ejecutarArbol(principal.hijos[0]);
           else
             alert("No existe un metodo principal");
           alert(raiz);
@@ -60,8 +63,8 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
+							<li><a href="#">Tabla de simbolos</a></li>
+              <li><a href="#">Reporte de errores</a></li>
               <li><a href="#">Something else here</a></li>
               <li role="separator" class="divider"></li>
               <li class="dropdown-header">Nav header</li>
