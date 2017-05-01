@@ -220,3 +220,21 @@ function buscarCuerpo(sentencia) {
 		if (sentencia.hijos[i].nombre === "LCUERPO")
 			return sentencia.hijos[i];
 }
+
+var htmlTabla = "";
+function generarTabla(ambito) {
+	for (var i = 0; i < ambito.variables.length; i++) {
+		htmlTabla += "<tr>" +
+			"<td>" + ambito.variables[i].nombre + "</td>" +
+			"<td>" + ambito.variables[i].ambito + "</td>" +
+			"<td>" + ambito.variables[i].pos + "</td>" +
+			"<td>" + ambito.variables[i].tipo + "</td>" +
+			"<td>" + ambito.variables[i].tam + "</td>" +
+			"<td>" + ambito.variables[i].rol + "</td>" +
+			//TODO: si existen dimensiones hay que agregarlas
+			"</tr>";
+	}
+	for (var j = 0; j < ambito.ambitos.length; j++) {
+		generarTabla(ambito.ambitos[j]);
+	}
+}

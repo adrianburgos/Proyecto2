@@ -315,10 +315,10 @@ CONTAR          :   'count' '(' VALOR ')' '{' LCUERPO '}' {
                         };
                     };
 
-HACERX          :   'do' '{' LCUERPO '}' 'whilex' '(' VALOR ')' {
+HACERX          :   'do' '{' LCUERPO '}' 'whilex' '(' VALOR ',' VALOR ')' {
                         $$ = {
                             nombre : "HACERX",
-                            hijos : [$3, $6]
+                            hijos : [$3, $7, $9]
                         };
                     };
 
