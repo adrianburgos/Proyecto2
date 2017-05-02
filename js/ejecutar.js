@@ -325,6 +325,9 @@ function evaluarValor(valor) {
             tipo : 7
           };
       break;
+    case Const.LID:
+      //buscar la variable
+      break;
   }
 }
 
@@ -741,6 +744,7 @@ function getTipo(tipo) {
     case 3: return Const.str;
     case 7: return Const.bool;
     case 99: return Const.void;
+    case -1: return "";
   }
   switch(tipo)
   {

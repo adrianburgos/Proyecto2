@@ -22,8 +22,10 @@
 					tabla = [];
 					ambito = ["global"];
 					contAmb = 0;
-					tabla.push(crearAmbito("global", 99));
+					tabla.push(crearAmbito("global", -1, "global"));
           tabla[0].tam = crearTabla(raiz, 0);
+					generarTabla();
+					localStorage["tabla"] = htmlTabla;
 					console.log(tabla);
           //buscar el nodo del metodo Principal
           var principal = buscarPrincipal(raiz);
@@ -53,7 +55,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="avanzado.html">Basic 3D</a>
+        <a class="navbar-brand" href="../index.html">Basic 3D</a>
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
@@ -63,7 +65,7 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones <span class="caret"></span></a>
             <ul class="dropdown-menu">
-							<li><a href="#">Tabla de simbolos</a></li>
+							<li><a href="../paginas/reportes/tablaDeSimbolos.html">Tabla de simbolos</a></li>
               <li><a href="#">Reporte de errores</a></li>
               <li><a href="#">Something else here</a></li>
               <li role="separator" class="divider"></li>

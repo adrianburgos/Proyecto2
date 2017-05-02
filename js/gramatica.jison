@@ -327,6 +327,13 @@ LLAMADO         :   id '(' LVALOR ')' {
                             nombre : "LLAMADO",
                             hijos : [$1, $3]
                         };
+                    }
+                |   id '(' LVALOR ')' '.' LID{
+                        $6.hijos.unshift({
+                            nombre : "LLAMADO",
+                            hijos : [$1, $3]
+                        });
+                        $$ = $6;
                     };
 
 LVALOR          :   LVALOR ',' VALOR {

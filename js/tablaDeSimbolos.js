@@ -93,7 +93,7 @@ function crearTabla(raiz, pos) {
 					var dim2 = null;
 					if (lpar.hijos[j].hijos.length > 0)
 						dim2 = lpar.hijos[j].hijos[0];
-						declararVariable(lpar.hijos[j].valor, getAmbito(), j+1, getTipo(lpar.hijos[j].tipo), 1, "variable", dim2);
+						declararVariable(lpar.hijos[j].valor, getAmbito(), j+1, getTipo(lpar.hijos[j].tipo), 1, "parametro", dim2);
 					posFun++;
 				}
 				var tam = crearTabla(lcuerpo, posFun);
@@ -222,19 +222,44 @@ function buscarCuerpo(sentencia) {
 }
 
 var htmlTabla = "";
-function generarTabla(ambito) {
+function generarTabla(){
+	htmlTabla = "";
+	getTabla(tabla[0]);
+}
+function getTabla(ambito) {
+	var amb = ambito.nombre.split("#");
+	var ambCompleto = "global";
+	for (var x = 1; x < amb.length - 1; x++) {
+		ambCompleto += "=>" + amb[x];
+	}
+	htmlTabla += "<tr>" +
+		"<td class = 'success'> Ambito </td>" +
+		"<td>" + ambito.nombre + "</td>" +
+		"<td>" + ambCompleto + "</td>" +
+		"<td> --- </td>" +
+		"<td>" + getTipo(ambito.tipo) + "</td>" +
+		"<td>" + ambito.tam + "</td>" +
+		"<td> --- </td>" +
+		//TODO: si existen dimensiones hay que agregarlas
+		"</tr>\n";
 	for (var i = 0; i < ambito.variables.length; i++) {
-		htmlTabla += "<tr>" +
-			"<td>" + ambito.variables[i].nombre + "</td>" +
-			"<td>" + ambito.variables[i].ambito + "</td>" +
+		htmlTabla += "<tr>";
+		if(ambito.variables[i].rol === "retorno")
+			htmlTabla +=	"<td class = 'danger'>" + ambito.variables[i].rol + "</td>";
+		else if(ambito.variables[i].rol === "parametro")
+			htmlTabla +=	"<td class = 'warning'>" + ambito.variables[i].rol + "</td>";
+		else
+			htmlTabla +=	"<td class = 'info'>" + ambito.variables[i].rol + "</td>";
+		htmlTabla += "<td>" + ambito.variables[i].nombre + "</td>" +
+			"<td>" + ambito.variables[i].ambito.replace(/#/g, "=>") + "</td>" +
 			"<td>" + ambito.variables[i].pos + "</td>" +
-			"<td>" + ambito.variables[i].tipo + "</td>" +
+			"<td>" + getTipo(ambito.variables[i].tipo) + "</td>" +
 			"<td>" + ambito.variables[i].tam + "</td>" +
-			"<td>" + ambito.variables[i].rol + "</td>" +
+			"<td> --- </td>" +
 			//TODO: si existen dimensiones hay que agregarlas
-			"</tr>";
+			"</tr>\n";
 	}
 	for (var j = 0; j < ambito.ambitos.length; j++) {
-		generarTabla(ambito.ambitos[j]);
+		getTabla(ambito.ambitos[j]);
 	}
 }

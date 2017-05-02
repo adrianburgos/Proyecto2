@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Avanzado</title>
+	<link rel="stylesheet" type="text/css" href="../../bootstrap/css/bootstrap.css">
+	<script type="text/javascript" src="../../jquery-3.2.0.min.js"></script>
+	<script type="text/javascript" src="../../bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var htmlTabla = localStorage["tabla"];
+      $("#tablaDeSimbolos").append(htmlTabla);
+      //alert(htmlTabla);
+    });
+  </script>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">Basic 3D</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="../paginas/reportes/tablaDeSimbolos.html">Tabla de simbolos</a></li>
+              <li><a href="#">Reporte de errores</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li role="separator" class="divider"></li>
+              <li class="dropdown-header">Nav header</li>
+              <li><a href="#">Separated link</a></li>
+              <li><a href="#">One more separated link</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Tabla de simbolos</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-hover table-striped" id="tablaDeSimbolos">
+                  <tr>
+                    <th>Rol</th>
+                    <th>Nombre</th>
+                    <th>Ambito</th>
+                    <th>Posicion</th>
+                    <th>Tipo</th>
+                    <th>Tamaño</th>
+                    <th>Dimensiones</th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

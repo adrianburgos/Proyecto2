@@ -29,4 +29,5 @@ var Const = {
   HACERX: "HACERX",
   LLAMADO: "LLAMADO",
   LVALOR: "LVALOR",
+  LID: "LID"
 };
