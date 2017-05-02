@@ -121,6 +121,7 @@ function crearTabla(raiz, pos) {
 			case "LOOP":
 			case "CONTAR":
 			case "HACERX":
+
 				var sent = raiz.hijos[i];
 				lcuerpo = buscarCuerpo(sent);
 				var ambActual = buscarAmbito(tabla[0], getAmbito());
@@ -194,7 +195,11 @@ function buscarAmbito(amb, nombre) {
 	if(amb.nombre === nombre)
 		return amb;
 	for (var i = 0; i < amb.ambitos.length; i++)
+	{
 		ret = buscarAmbito(amb.ambitos[i], nombre);
+		if(ret !== null)
+			return ret;
+	}
 	return ret;
 }
 
@@ -228,13 +233,20 @@ function generarTabla(){
 }
 function getTabla(ambito) {
 	var amb = ambito.nombre.split("#");
-	var ambCompleto = "global";
-	for (var x = 1; x < amb.length - 1; x++) {
-		ambCompleto += "=>" + amb[x];
+	var ambCompleto = "<ol class='breadcrumb'> <li> global </li>";
+	for (var x = 1; x < amb.length - 1; x++){
+		ambCompleto += "<li>" + amb[x] + "</li>";
 	}
+	ambCompleto += "</ol>";
+	var amb2 = ambito.nombre.split("#");
+	var ambCompleto2 = "<ol class='breadcrumb'> <li> global </li>";
+	for (x = 1; x < amb2.length; x++){
+		ambCompleto2 += "<li>" + amb2[x] + "</li>";
+	}
+	ambCompleto2 += "</ol>";
 	htmlTabla += "<tr>" +
 		"<td class = 'success'> Ambito </td>" +
-		"<td>" + ambito.nombre + "</td>" +
+		"<td>" + ambCompleto2 + "</td>" +
 		"<td>" + ambCompleto + "</td>" +
 		"<td> --- </td>" +
 		"<td>" + getTipo(ambito.tipo) + "</td>" +
@@ -250,8 +262,14 @@ function getTabla(ambito) {
 			htmlTabla +=	"<td class = 'warning'>" + ambito.variables[i].rol + "</td>";
 		else
 			htmlTabla +=	"<td class = 'info'>" + ambito.variables[i].rol + "</td>";
+		amb = ambito.variables[i].ambito.split("#");
+		ambCompleto = "<ol class='breadcrumb'> <li> global </li>";
+		for (x = 1; x < amb.length; x++){
+			ambCompleto += "<li>" + amb[x] + "</li>";
+		}
+		ambCompleto += "</ol>";
 		htmlTabla += "<td>" + ambito.variables[i].nombre + "</td>" +
-			"<td>" + ambito.variables[i].ambito.replace(/#/g, "=>") + "</td>" +
+			"<td>" + ambCompleto + "</td>" +
 			"<td>" + ambito.variables[i].pos + "</td>" +
 			"<td>" + getTipo(ambito.variables[i].tipo) + "</td>" +
 			"<td>" + ambito.variables[i].tam + "</td>" +
