@@ -2,6 +2,7 @@ var Const = {
   tnum: 1,
   tstr: 3,
   tbool: 7,
+  tid: 21,
   tvoid: 99,
   terror: -1,
   NULL : -50178863,
@@ -29,5 +30,10 @@ var Const = {
   HACERX: "HACERX",
   LLAMADO: "LLAMADO",
   LVALOR: "LVALOR",
-  LID: "LID"
+  LID: "LID",
+  PRINCIPAL: "PRINCIPAL",
+  ELEMENT: "ELEMENT",
+  DECVAR: "DECVAR",
+  ARRAY: "ARRAY",
+  FUNCION: "FUNCION"
 };

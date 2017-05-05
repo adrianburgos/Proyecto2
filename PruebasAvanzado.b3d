@@ -1,6 +1,7 @@
 Principal(){
   num a : 40 * 8;
-  a = 3 * 8 ^ 6 +3 -7 / (-3 + 6);
+  nodo n;
+  array : x [1..6][9..7][21..35] of num;
   for(num i : 0; i<5; i = i + 3){
     str x:"hola";
     if(4>0 && 8 < 99*8) then {
@@ -15,6 +16,7 @@ str : funcion(num par1, num par3){
   a = 3 * 8 ^ 6 +3 -7 / (-3 + 6);
   for(num i : 0; 3<5; i = 4 + 3){
     str x:"hola";
+    array : x [1..6][9..7][21..35] of bool;
     if(4>0 && 8 < 99*8) then {
       a = 3 * 8 ^ 6 +3 -7 / (-3 + 6);
     }else{
@@ -93,4 +95,32 @@ Principal(){
   loop a {
       a = 3 * 8 ^ 6 +3 -7 / (-3 + 6);
   }
+}
+----------------------------------ELEMENTOS-----------------------------------
+element : Nodo {
+	num valor : 15*4;
+	str cadena : "hola";
+	Nodo izq : NULL;
+	Nodo der :NULL;
+        element : Nodo12 {
+	num valor : 15*4;
+	str cadena : "hola";
+	Nodo izq : NULL;
+	Nodo der :NULL;
+}
+}
+
+element : Nodo2 {
+	num valor : 15*4;
+	str cadena : "hola";
+	Nodo izq : NULL;
+	Nodo der :NULL;
+element : Nodo22 {
+	num valor : 15*4;
+	str cadena : "hola";
+	Nodo izq : NULL;
+	Nodo der :NULL;
+}
+}
+
 }

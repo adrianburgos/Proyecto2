@@ -28,19 +28,27 @@ function crearTabla(raiz, pos) {
 			case "DECVAR":
 				var decvar = raiz.hijos[i];
 				var tipo = getTipo(decvar.tipo);
+				var tipoElemento = "";
+				if (tipo === Const.tid) {
+					tipoElemento = decvar.tipo;
+				}
 				var lvariables = decvar.hijos[0];
 				for (var j = 0; j < lvariables.hijos.length; j++) {
-					declararVariable(lvariables.hijos[j], getAmbito(), pos, tipo, 1, "variable", null);
+					declararVariable(lvariables.hijos[j], getAmbito(), pos, tipo, 1, "variable", null, tipoElemento);
 					pos++;
 				}
 				break;
 			case "ARRAY":
 				var arr = raiz.hijos[i];
 				tipo = getTipo(arr.tipo);
+				tipoElemento = "";
+				if (tipo === Const.tid) {
+					tipoElemento = decvar.tipo;
+				}
 				var lcorchetes = arr.hijos[0];
 				var tamArr = calcularTamArr(lcorchetes);
 				if (tamArr !== 0) {
-					declararVariable(arr.id, getAmbito(), pos, tipo, 1, "arreglo", lcorchetes);
+					declararVariable(arr.id, getAmbito(), pos, tipo, 1, "arreglo", lcorchetes, tipoElemento);
 					pos++;
 				}
 				else {
@@ -59,8 +67,12 @@ function crearTabla(raiz, pos) {
 				var lpar = decfun.hijos[0];
 				var lcuerpo = decfun.hijos[1];
 				tipo = getTipo(decfun.tipo);
+				tipoElemento = "";
+				if (tipo === Const.tid) {
+					tipoElemento = decfun.tipo;
+				}
 				//se crea el ambito correspondiente a la funcion
-				var ambFun = crearAmbito("global#" + decfun.id, tipo);
+				var ambFun = crearAmbito("global#" + decfun.id, tipo, tipoElemento);
 				ambGlobal.ambitos.push(ambFun);
 				ambito.push(decfun.id);
 				//se agrega el retorno como primera posicion de la funcion
@@ -85,15 +97,24 @@ function crearTabla(raiz, pos) {
 						agregarError(err2);
 					}
 				}
-				declararVariable("return", getAmbito(), 0, tipo, 1, "retorno", dim);
+				tipoElemento = "";
+				if (tipo === Const.tid) {
+					tipoElemento = decfun.tipo;
+				}
+				declararVariable("return", getAmbito(), 0, tipo, 1, "retorno", dim, tipoElemento);
 				//se agregan los parametros como variables de la funcion
 				var posFun = 1;
 				for(j = 0; j < lpar.hijos.length; j++)
 				{
 					var dim2 = null;
+					tipo = getTipo(lpar.hijos[j].tipo);
+					tipoElemento = "";
+					if (tipo === Const.tid) {
+						tipoElemento = decvar.tipo;
+					}
 					if (lpar.hijos[j].hijos.length > 0)
 						dim2 = lpar.hijos[j].hijos[0];
-						declararVariable(lpar.hijos[j].valor, getAmbito(), j+1, getTipo(lpar.hijos[j].tipo), 1, "parametro", dim2);
+						declararVariable(lpar.hijos[j].valor, getAmbito(), j+1, tipo, 1, "parametro", dim2, tipoElemento);
 					posFun++;
 				}
 				var tam = crearTabla(lcuerpo, posFun);
@@ -121,7 +142,6 @@ function crearTabla(raiz, pos) {
 			case "LOOP":
 			case "CONTAR":
 			case "HACERX":
-
 				var sent = raiz.hijos[i];
 				lcuerpo = buscarCuerpo(sent);
 				var ambActual = buscarAmbito(tabla[0], getAmbito());
@@ -159,27 +179,37 @@ function crearTabla(raiz, pos) {
 			case "SELECCION":
 				//TODO: creacion de la tabla de simbolos para la sentencia SELECCION
 				break;
+			case "ELEMENT":
+				var ele = raiz.hijos[i];
+				ambitoPadre  = buscarAmbito(tabla[0],getAmbito());
+				ambFun = crearAmbito(getAmbito() + "#" + ele.id, Const.id, ele.id);
+				ambitoPadre.ambitos.push(ambFun);
+				ambito.push(ele.id);
+				ambFun.tam = crearTabla(ele.hijos[0],0);
+				ambito.pop();
+				break;
 		}
 	}
 	return pos;
 }
 
-function declararVariable(id, ambito, pos, tipo, tam, rol, dim) {
-		var dec = {
-			nombre : id,
-			ambito : ambito,
-			pos : pos,
-			tam : tam,
-			tipo : tipo,
-			rol : rol,
-			dim: dim
-		};
-		var amb = buscarAmbito(tabla[0], getAmbito());
-		if(amb !== null)
-		{
-			//TODO: verificar que la variable no este declarada
-			amb.variables.push(dec);
-		}
+function declararVariable(id, ambito, pos, tipo, tam, rol, dim, tipoElemento) {
+	var dec = {
+		nombre : id,
+		ambito : ambito,
+		pos : pos,
+		tam : tam,
+		tipo : tipo,
+		tipoElemento : tipoElemento,
+		rol : rol,
+		dim: dim
+	};
+	var amb = buscarAmbito(tabla[0], getAmbito());
+	if(amb !== null)
+	{
+		//TODO: verificar si la variable ya fue declarada
+		amb.variables.push(dec);
+	}
 }
 
 function getAmbito() {
@@ -188,6 +218,10 @@ function getAmbito() {
 
 function crearAmbito(nombre, tipo) {
 	return {nombre: nombre, variables: [], ambitos: [], tipo: tipo, tam: 0};
+}
+
+function crearAmbito(nombre, tipo, tipoElemento) {
+	return {nombre: nombre, variables: [], ambitos: [], tipo: tipo, tam: 0, tipoElemento : tipoElemento};
 }
 
 function buscarAmbito(amb, nombre) {
@@ -248,12 +282,24 @@ function getTabla(ambito) {
 		"<td class = 'success'> Ambito </td>" +
 		"<td>" + ambCompleto2 + "</td>" +
 		"<td>" + ambCompleto + "</td>" +
-		"<td> --- </td>" +
-		"<td>" + getTipo(ambito.tipo) + "</td>" +
-		"<td>" + ambito.tam + "</td>" +
-		"<td> --- </td>" +
-		//TODO: si existen dimensiones hay que agregarlas
-		"</tr>\n";
+		"<td> --- </td>";
+	if (ambito.tipo === Const.tid)
+		htmlTabla += "<td>" + ambito.tipoElemento + "</td>";
+	else
+		htmlTabla += "<td>" + getTipo(ambito.tipo) + "</td>";
+	htmlTabla += "<td>" + ambito.tam + "</td>";
+	//TODO: agregar las dimensiones de una funcion dentro de la tabla de simbolos
+	// if(ambito.dim === null)
+	htmlTabla += "<td> --- </td>";
+	// else {
+	// 	var dim = ambito.dim;
+	// 	htmlTabla += "<td>";
+	// 	for (var k = 0; k < dim.hijos.length; k++) {
+	// 		htmlTabla += "[ ]";
+	// 	}
+	// 	htmlTabla += "</td>";
+	// }
+	htmlTabla += "</tr>\n";
 	for (var i = 0; i < ambito.variables.length; i++) {
 		htmlTabla += "<tr>";
 		if(ambito.variables[i].rol === "retorno")
@@ -270,12 +316,29 @@ function getTabla(ambito) {
 		ambCompleto += "</ol>";
 		htmlTabla += "<td>" + ambito.variables[i].nombre + "</td>" +
 			"<td>" + ambCompleto + "</td>" +
-			"<td>" + ambito.variables[i].pos + "</td>" +
-			"<td>" + getTipo(ambito.variables[i].tipo) + "</td>" +
-			"<td>" + ambito.variables[i].tam + "</td>" +
-			"<td> --- </td>" +
-			//TODO: si existen dimensiones hay que agregarlas
-			"</tr>\n";
+			"<td>" + ambito.variables[i].pos + "</td>";
+		//si la variable es de tipo Element se coloca el tipo respectivo
+		if (ambito.variables[i].tipo === Const.tid)
+			htmlTabla += "<td>" + ambito.variables[i].tipoElemento + "</td>";
+		else
+			htmlTabla += "<td>" + getTipo(ambito.variables[i].tipo) + "</td>";
+		//tamaño de la variable
+		htmlTabla += "<td>" + ambito.variables[i].tam + "</td>";
+		//se verifica que dimensiones tiene la variable
+		if(ambito.variables[i].dim === null)
+			htmlTabla += "<td> --- </td>";
+		else {
+			var dim2 = ambito.variables[i].dim;
+			htmlTabla += "<td>";
+			for (var k2 = 0; k2 < dim2.hijos.length; k2++) {
+				if(ambito.variables[i].rol === "retorno")
+					htmlTabla += "[ ]";
+				else
+					htmlTabla += "[" + dim2.hijos[k2].hijos[0] + " .. " + dim2.hijos[k2].hijos[1] +"]";
+			}
+			htmlTabla += "</td>";
+		}
+		htmlTabla += "</tr>\n";
 	}
 	for (var j = 0; j < ambito.ambitos.length; j++) {
 		getTabla(ambito.ambitos[j]);

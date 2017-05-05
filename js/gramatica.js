@@ -98,7 +98,7 @@ break;
 case 4: case 6: case 9: case 35: case 36: case 37: case 47: case 55: case 106:
  this.$ = $$[$0-1]; 
 break;
-case 5: case 7: case 21: case 22: case 23: case 28: case 29: case 30: case 31: case 38: case 39: case 40: case 41: case 42: case 43: case 44: case 45: case 46: case 67: case 83: case 85: case 104: case 105:
+case 5: case 7: case 21: case 22: case 23: case 28: case 29: case 30: case 38: case 39: case 40: case 41: case 42: case 43: case 44: case 45: case 46: case 67: case 83: case 85: case 104: case 105:
  this.$ = $$[$0]; 
 break;
 case 8:
@@ -189,6 +189,22 @@ case 26:
 break;
 case 27:
  this.$ = {nombre : "LPAR", hijos : []}; 
+break;
+case 31:
+
+                      if($$[$0].hijos.length >= 2)
+                      {//existe un error la variable no fue declarada correctamente
+                        var er = {
+                          tipo: "Error Semantico",
+                          descripcion: "No se puede declarar una variable de tipo [" + $$[$0].hijos.join(".") + "]",
+                          fila: 0,
+                          columna: 0
+                        };
+                        agregarError(er);
+                      }
+                      this.$ = $$[$0].hijos[0];
+
+                    
 break;
 case 32:
  this.$ = {nombre : "PRINCIPAL", hijos : [$$[$0-1]]}; 

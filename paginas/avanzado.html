@@ -6,10 +6,13 @@
 	<script type="text/javascript" src="../jquery-3.2.0.min.js"></script>
 	<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="../js/gramatica.js"></script>
+  <script type="text/javascript" src="../js/gramaticaElement.js"></script>
   <script type="text/javascript" src="../js/jscodigo3d.js"></script>
 	<script type="text/javascript" src="../js/Const.js"></script>
   <script type="text/javascript" src="../js/errores.js"></script>
   <script type="text/javascript" src="../js/tablaDeSimbolos.js"></script>
+  <script type="text/javascript" src="../js/funcionesAuxiliares.js"></script>
+  <script type="text/javascript" src="../js/ejecutarGeneral.js"></script>
   <script type="text/javascript" src="../js/ejecutar.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
@@ -17,7 +20,23 @@
         try {
           //alert($("#taCodigo").val());
           var raiz = gramatica.parse($("#taCodigo").val());
-          reiniciar3d();
+					//analizar elementos
+					if ($("#taElementos").val() !== "") {
+						var raizElementos = gramaticaElement.parse($("#taElementos").val());
+						for (var i = raizElementos.hijos.length - 1; i >= 0 ; i--) {
+							raiz.hijos.unshift(raizElementos.hijos[i])
+						}
+					}
+          alert(raiz);
+          console.log(raiz);
+        } catch (e) {
+          //$("#taEstructuras").html(String(e));
+          console.log(e);
+					//TODO : recoleccion de errores lexicos y sintacticos
+        }
+
+				try {
+					reiniciar3d();
           //crear la tabla de simbolos
 					tabla = [];
 					ambito = ["global"];
@@ -27,23 +46,19 @@
 					generarTabla();
 					localStorage["tabla"] = htmlTabla;
 					console.log(tabla);
-          //buscar el nodo del metodo Principal
-          var principal = buscarPrincipal(raiz);
-          console.log(principal);
-					ambEjecucion = ["global"];
+					amb3D = ["global"];
 					contAmbActual = 0;
-          if(principal !== null){
-						ambEjecucion.push("PRINCIPAL");
-            ejecutarArbol(principal.hijos[0]);
-          } else
-            alert("No existe un metodo principal");
-          alert(raiz);
-          console.log(raiz);
-          console.log(codigo3d);
-        } catch (e) {
-          //$("#taEstructuras").html(String(e));
-          console.log(e);
-        }
+					//var principal = buscarPrincipal(raiz);
+					// if(principal !== null){
+					// 	amb3D.push("PRINCIPAL");
+					//   ejecutarArbol(principal.hijos[0]);
+					// } else
+					//   alert("No existe un metodo principal");
+					ejecutarArbolGeneral(raiz);
+					console.log(codigo3d);
+				} catch (e) {
+					console.log(e);
+				}
       });
     });
   </script>
@@ -68,8 +83,8 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones <span class="caret"></span></a>
             <ul class="dropdown-menu">
-							<li><a href="../paginas/reportes/tablaDeSimbolos.html"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Tabla de simbolos</a></li>
-              <li><a href="#"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Reporte de errores</a></li>
+							<li><a href="../paginas/reportes/tablaDeSimbolos.html" target="_blank"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Tabla de simbolos</a></li>
+              <li><a href="#" target="_blank"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Reporte de errores</a></li>
               <li><a href="#">Something else here</a></li>
               <li role="separator" class="divider"></li>
               <li class="dropdown-header">Nav header</li>
@@ -126,7 +141,32 @@
             </div>
             <div class="row">
               <div class="col-md-12">
-                <textarea style="height: 545px; width: 100%;" id = "taEstructuras"></textarea>
+                <textarea style="height: 545px; width: 100%;" id = "taElementos">
+element : Nodo {
+	num valor : 15*4;
+	str cadena : "hola";
+	Nodo izq : NULL;
+	Nodo der :NULL;
+  element : Nodo12 {
+		num valor : 15*4;
+		str cadena : "hola";
+		Nodo izq : NULL;
+		Nodo der :NULL;
+	}
+}
+
+element : Nodo2 {
+	num valor : 15*4;
+	str cadena : "hola";
+	Nodo izq : NULL;
+	Nodo der :NULL;
+	element : Nodo22 {
+		num valor : 15*4;
+		str cadena : "hola";
+		Nodo izq : NULL;
+		Nodo der :NULL;
+	}
+}</textarea>
               </div>
             </div>
           </div>
