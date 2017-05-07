@@ -34,7 +34,7 @@ function crearTabla(raiz, pos) {
 				}
 				var lvariables = decvar.hijos[0];
 				for (var j = 0; j < lvariables.hijos.length; j++) {
-					declararVariable(lvariables.hijos[j], getAmbito(), pos, tipo, 1, "variable", null, tipoElemento);
+					declararVariable(lvariables.hijos[j].hijos[0], getAmbito(), pos, tipo, 1, "variable", null, tipoElemento);
 					pos++;
 				}
 				break;
@@ -155,7 +155,7 @@ function crearTabla(raiz, pos) {
 				var posSent = 0;
 				if(sent.nombre === Const.PARA && sent.hijos[0].nombre === "DECVAR")
 				{
-					declararVariable(sent.hijos[0].hijos[0].hijos[0], getAmbito(), 0, getTipo(Const.num), 1, "variable", null);
+					declararVariable(sent.hijos[0].hijos[0].hijos[0].hijos[0], getAmbito(), 0, getTipo(Const.num), 1, "variable", null);
 					posSent++;
 				}
 				ambSent.tam = crearTabla(lcuerpo, posSent);
@@ -179,7 +179,7 @@ function crearTabla(raiz, pos) {
 			case "SELECCION":
 				//TODO: creacion de la tabla de simbolos para la sentencia SELECCION
 				break;
-			case "ELEMENT":
+			case Const.ELEMENT:
 				var ele = raiz.hijos[i];
 				ambitoPadre  = buscarAmbito(tabla[0],getAmbito());
 				ambFun = crearAmbito(getAmbito() + "#" + ele.id, Const.id, ele.id);
@@ -224,19 +224,6 @@ function crearAmbito(nombre, tipo, tipoElemento) {
 	return {nombre: nombre, variables: [], ambitos: [], tipo: tipo, tam: 0, tipoElemento : tipoElemento};
 }
 
-function buscarAmbito(amb, nombre) {
-	var ret = null;
-	if(amb.nombre === nombre)
-		return amb;
-	for (var i = 0; i < amb.ambitos.length; i++)
-	{
-		ret = buscarAmbito(amb.ambitos[i], nombre);
-		if(ret !== null)
-			return ret;
-	}
-	return ret;
-}
-
 function calcularTamArr(lcorchetes) {
 	var tamArr = 1;
 	for(var x = 0; x < lcorchetes.hijos.length; x++)
@@ -254,17 +241,12 @@ function calcularTamArr(lcorchetes) {
 	return tamArr;
 }
 
-function buscarCuerpo(sentencia) {
-	for (var i = 0; i < sentencia.hijos.length; i++)
-		if (sentencia.hijos[i].nombre === "LCUERPO")
-			return sentencia.hijos[i];
-}
-
 var htmlTabla = "";
 function generarTabla(){
 	htmlTabla = "";
 	getTabla(tabla[0]);
 }
+
 function getTabla(ambito) {
 	var amb = ambito.nombre.split("#");
 	var ambCompleto = "<ol class='breadcrumb'> <li> global </li>";

@@ -134,19 +134,21 @@ DECVAR          :   TIPO LVARIABLES ASIG {
                         $$ = {
                             nombre : "DECVAR",
                             tipo : $1,
-                            hijos : [$2]
+                            hijos : [$2,$3]
                         };
-                        if($3 !== null)
-                            $$.hijos.push($3);
                     };
-ASIG            :   ':' VALOR { $$ = $1; }
-                |   ':' 'create' '(' id ')' { $$ = {nombre : "NUEVO", valor : $3}; }
-                |   { $$ = null; };
+ASIG            :   ':' VALOR { $$ = $2; }
+                |   ':' 'create' '(' id ')' { $$ = {nombre : "NUEVO", id : $4}; }
+                |   { $$ = {nombre : "NULL", valor : "NULL"}; };
 LVARIABLES      :   LVARIABLES ',' id {
-                        $1.hijos.push($3);
+                        var lid = {nombre : "LID", hijos:[$3]};
+                        $1.hijos.push(lid);
                         $$ = $1;
                     }
-                |   id { $$ = {nombre : "LVARIABLES", hijos:[$1]}; };
+                |   id {
+                      var lid = {nombre : "LID", hijos:[$1]};
+                      $$ = {nombre : "LVARIABLES", hijos:[lid]};
+                    };
 
 DECARR          :   'array' ':' id LCORCHETES 'of' TIPO{
                         $$ = {

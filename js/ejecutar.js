@@ -1,12 +1,4 @@
-var amb3D = ["global"];
 var contAmbActual = 0;
-function buscarPrincipal(raiz) {
-  for (var i = 0; i < raiz.hijos.length; i++) {
-    if(raiz.hijos[i].nombre === "PRINCIPAL")
-      return raiz.hijos[i];
-  }
-  return null;
-}
 
 function ejecutarArbol(cuerpo) {
   console.log("ejecutarArbol");
@@ -20,13 +12,15 @@ function ejecutarArbol(cuerpo) {
     switch(sent.nombre)
     {
       case "ASIGNACION":
-        var val = asignarVariable(sent);
-        console.log(val);
+        asignarVariable(sent);
+        break;
+      case Const.DECVAR:
+        decVariable(sent);
         break;
       case Const.SI:
         var lcuerpo = sent.hijos[1];
         //se agrega el ambito actual
-        amb3D.push(sent.nombre + contAmbActual);
+        ambito.push(sent.nombre + contAmbActual);
         contAmbActual++;
         //se evalua la condicion del if
         val = evaluarValor(sent.hijos[0]);
@@ -37,8 +31,8 @@ function ejecutarArbol(cuerpo) {
           agregar3d(val.lv.join(":\n") + ":");
           ejecutarArbol(lcuerpo);
           if (sent.hijos.length === 3) {//posee un ELSE
-            amb3D.pop();
-            amb3D.push("ELSE" + contAmbActual);
+            ambito.pop();
+            ambito.push("ELSE" + contAmbActual);
             contAmbActual++;
             l = getEtq();
             agregar3d("//salto para no ejecutar el ELSE");
@@ -49,12 +43,12 @@ function ejecutarArbol(cuerpo) {
             ejecutarArbol(lcuerpo);
             agregar3d("//salida de las instrucciones de verdadero");
             agregar3d(l + ":");
-            amb3D.pop();
+            ambito.pop();
           }
           else {
             agregar3d("//etiquetas de falso del if");
             agregar3d(val.lf.join(":\n") + ":");
-            amb3D.pop();
+            ambito.pop();
           }
         } else {
           er = {
@@ -69,7 +63,7 @@ function ejecutarArbol(cuerpo) {
       case Const.MIENTRAS:
         //TODO: verificar sentencias de escape con DISPLAY dentro de ciclos
         //se agrega el ambito actual
-        amb3D.push(sent.nombre + contAmbActual);
+        ambito.push(sent.nombre + contAmbActual);
         contAmbActual++;
         //se escribe la etiqueta de inicio para el ciclo
         l = getEtq();
@@ -95,11 +89,11 @@ function ejecutarArbol(cuerpo) {
           };
           agregarError(er);
         }
-        amb3D.pop();
+        ambito.pop();
         break;
       case Const.HACER:
         //se agrega el ambito actual
-        amb3D.push(sent.nombre + contAmbActual);
+        ambito.push(sent.nombre + contAmbActual);
         contAmbActual++;
         //se escribe la etiqueta de inicio para el ciclo
         l = getEtq();
@@ -125,11 +119,11 @@ function ejecutarArbol(cuerpo) {
           };
           agregarError(er);
         }
-        amb3D.pop();
+        ambito.pop();
         break;
       case Const.REPETIR:
         //se agrega el ambito actual
-        amb3D.push(sent.nombre + contAmbActual);
+        ambito.push(sent.nombre + contAmbActual);
         contAmbActual++;
         //se escribe la etiqueta de inicio para el ciclo
         l = getEtq();
@@ -155,11 +149,11 @@ function ejecutarArbol(cuerpo) {
           };
           agregarError(er);
         }
-        amb3D.pop();
+        ambito.pop();
         break;
       case Const.PARA:
         //se agrega el ambito actual
-        amb3D.push(sent.nombre + contAmbActual);
+        ambito.push(sent.nombre + contAmbActual);
         contAmbActual++;
         //se realiza la asignacion a la variable de control
         agregar3d("//asignacion a la variable de control del for");
@@ -192,12 +186,12 @@ function ejecutarArbol(cuerpo) {
           };
           agregarError(er);
         }
-        amb3D.pop();
+        ambito.pop();
         break;
       case Const.LOOP:
         //TODO: conlocar en DISPLAY la condicion para tener un break <id> relacionado a loop <id>
         //se agrega el ambito actual
-        amb3D.push(sent.nombre + contAmbActual);
+        ambito.push(sent.nombre + contAmbActual);
         contAmbActual++;
         agregar3d("//etiqueta de inicio de loop");
         l = getEtq();
@@ -205,11 +199,11 @@ function ejecutarArbol(cuerpo) {
         agregar3d("//se ejecutar el cuerpo de loop");
         ejecutarArbol(sent.hijos[0]);
         agregar3d("goto " + l + ";");
-        amb3D.pop();
+        ambito.pop();
         break;
       case Const.CONTAR:
         //se agrega el ambito actual
-        amb3D.push(sent.nombre + contAmbActual);
+        ambito.push(sent.nombre + contAmbActual);
         contAmbActual++;
         agregar3d("//se evalua el valor de contar");
         val = evaluarValor(sent.hijos[0]);
@@ -242,16 +236,16 @@ function ejecutarArbol(cuerpo) {
           };
           agregarError(er);
         }
-        amb3D.pop();
+        ambito.pop();
         break;
       case Const.HACERX:
         //se agrega el ambito actual
-        amb3D.push(sent.nombre + contAmbActual);
+        ambito.push(sent.nombre + contAmbActual);
         contAmbActual++;
         val = ejecutarArbol(sent.hijos[1]);
         //TODO: hacer el whilex
         var val2 = ejecutarArbol(sent.hijos[2]);
-        amb3D.pop();
+        ambito.pop();
         break;
     }
   }
@@ -364,85 +358,62 @@ function evaluarValor(valor) {
           };
       break;
     case Const.LID:
-      var resid = {
-        temp : "tx",
-        tempRef :  "ty",
-        tipo : -1,
-        tipoElemento : ""
-      };
-      //buscar la variable
-      if(valor.hijos[0].nombre !== Const.LLAMADO)
-      {//solo contiene una lista de ids
-        var variable = buscarVariable(valor.hijos[0]);
-        if (variable.variable !== null) {
-          var tempRef = getTemp();
-          var tempVal = getTemp();
-          agregar3d("//se obtiene la referencia a la variable [" + valor.hijos[0] + "]");
-          agregar3d(tempRef + " = " + variable.temp + " + " + variable.variable.pos);
-          agregar3d("//se obtiene el valor en la pila de la variable [" + valor.hijos[0] + "]");
-          agregar3d(tempVal + " = stack[" + tempRef + "]");
-          resid.temp = tempVal;
-          resid.tempRef = tempRef;
-          resid.tipo = variable.variable.tipo;
-          resid.tipoElemento = variable.variable.tipoElemento;
+      agregar3d("//se obtienen los temporales necesarios para [" + valor.hijos.join(".") + "]");
+      var resid = resolverLID(valor);
+      resid.temp = getTemp();
+      if(valor.hijos.length === 1)
+      {
+        if(!resid.esGlobal){
+          agregar3d("//se obtiene el valor en la pila de la variable [" + valor.hijos.join(".") + "]");
+          agregar3d(resid.temp + " = stack[" + resid.tempRef + "];");
         } else {
-          er = {
-            tipo: "Error Semantico",
-            descripcion: "La variable [" + valor.hijos[0] + "] no ha sido declarada",
-						fila: 0,
-						columna: 0
-          };
-          agregarError(er);
+          agregar3d("//se obtiene el valor en el heap de la variable global[" + valor.hijos.join(".") + "]");
+          agregar3d(resid.temp + " = heap[" + resid.tempRef + "];");
         }
+      } else {
+        agregar3d("//se obtiene el valor en el heap de la variable [" + valor.hijos.join(".") + "]");
+        agregar3d(resid.temp + " = heap[" + resid.tempRef + "];");
       }
       return resid;
+    case "NULL":
+      return {
+        temp : Const.NULL,
+        tipo : -1
+      };
   }//fin del switch
 }
 
 function asignarVariable(sent) {
-  //TODO: completar la asignacion de variables
   var val = evaluarValor(sent.hijos[1]);
-  return val;
+  agregar3d("//temporales para la asignacion a [" + sent.hijos[0].hijos.join(".") + "]");
+  var resid = resolverLID(sent.hijos[0]);
+  if(sent.hijos[0].hijos.length === 1)
+  {
+    if(!resid.esGlobal){
+      agregar3d("//se asigna el valor correspondiente a la variable [" + sent.hijos[0].hijos.join(".") + "] dentro de la pila");
+      agregar3d("stack[" + resid.tempRef + "] = " + val.temp + ";");
+    } else {
+      agregar3d("//se asigna el valor correspondiente a la variable global [" + sent.hijos[0].hijos.join(".") + "] dentro del heap");
+      agregar3d("heap[" + resid.tempRef + "] = " + val.temp + ";");
+    }
+  } else {
+    agregar3d("//se asigna el valor correspondiente a la variable [" + sent.hijos[0].hijos.join(".") + "] dentro del heap");
+    agregar3d("heap[" + resid.tempRef + "] = " + val.temp + ";");
+  }
 }
 
 function decVariable(sent) {
-  //TODO: completar la declaracion de variables
-  var val;
-  if(sent.hijos > 1)
-  {
-    val = evaluarValor(sent.hijos[1]);
+  var val = evaluarValor(sent.hijos[1]);
+  var lvariables = sent.hijos[0];
+  for (var i = 0; i < lvariables.hijos.length; i++) {
+    var lid = lvariables.hijos[i];
+    var resid = resolverLID(lid);
+    if(!resid.esGlobal){
+      agregar3d("//se asigna el valor correspondiente a la variable [" + lid.hijos.join(".") + "] dentro de la pila");
+      agregar3d("stack[" + resid.tempRef + "] = " + val.temp + ";");
+    } else {
+      agregar3d("//se asigna el valor correspondiente a la variable global [" + lid.hijos.join(".") + "] dentro de la pila");
+      agregar3d("heap[" + resid.tempRef + "] = " + val.temp + ";");
+    }
   }
-  return val;
-}
-
-function buscarVariable(id) {
-  var encontrado = false;
-  var amb;
-  var contAmb = amb3D.length;
-  var tamTotal = 0;
-  var t = "p";
-  while (!encontrado && contAmb !== 0) {
-    //ambito a buscar
-    amb = "global";
-    for (var i = 1; i < contAmb; i++) {
-      amb += "#" + amb3D[i];
-    }
-    var objAmbito = buscarAmbito(tabla[0], amb);
-    amb = "global";
-    for (i = 1; i < contAmb - 1; i++) {
-      amb += "#" + amb3D[i];
-    }
-    var ambitoPadre = buscarAmbito(tabla[0], amb);
-    //se busca dentro de todas las variables
-    for (i = 0; i < objAmbito.variables.length; i++) {
-      var variable = objAmbito.variables[i];
-      if(id === variable.nombre)
-        return { variable : variable, temp : t };
-    }
-    tamTotal += ambitoPadre.tam;
-    t = getTemp();
-    agregar3d(t + " = p - " + tamTotal);
-    contAmb--;
-  }
-  return null;
 }

@@ -12,6 +12,7 @@
   <script type="text/javascript" src="../js/errores.js"></script>
   <script type="text/javascript" src="../js/tablaDeSimbolos.js"></script>
   <script type="text/javascript" src="../js/funcionesAuxiliares.js"></script>
+  <script type="text/javascript" src="../js/funcionesBuscar.js"></script>
   <script type="text/javascript" src="../js/ejecutarGeneral.js"></script>
   <script type="text/javascript" src="../js/ejecutar.js"></script>
   <script type="text/javascript">
@@ -32,7 +33,7 @@
         } catch (e) {
           //$("#taEstructuras").html(String(e));
           console.log(e);
-					//TODO : recoleccion de errores lexicos y sintacticos
+					//TODO: recoleccion de errores lexicos y sintacticos
         }
 
 				try {
@@ -142,30 +143,15 @@
             <div class="row">
               <div class="col-md-12">
                 <textarea style="height: 545px; width: 100%;" id = "taElementos">
-element : Nodo {
-	num valor : 15*4;
-	str cadena : "hola";
-	Nodo izq : NULL;
-	Nodo der :NULL;
-  element : Nodo12 {
-		num valor : 15*4;
-		str cadena : "hola";
-		Nodo izq : NULL;
-		Nodo der :NULL;
-	}
-}
-
-element : Nodo2 {
-	num valor : 15*4;
-	str cadena : "hola";
-	Nodo izq : NULL;
-	Nodo der :NULL;
-	element : Nodo22 {
-		num valor : 15*4;
-		str cadena : "hola";
-		Nodo izq : NULL;
-		Nodo der :NULL;
-	}
+element : Arbol{
+  element : Nodo {
+    num valor : 15*4;
+    str cadena : "hola";
+    Nodo izq : NULL;
+    Nodo der :NULL;
+  }
+  Nodo izq : NULL;
+  str titulo : "Sin titulo";
 }</textarea>
               </div>
             </div>

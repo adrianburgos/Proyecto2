@@ -95,10 +95,10 @@ break;
 case 3:
  this.$ = {nombre : "LCUERPOGEN", hijos:[$$[$0]]}; 
 break;
-case 4: case 6: case 9: case 35: case 36: case 37: case 47: case 55: case 106:
+case 4: case 6: case 35: case 36: case 37: case 47: case 55: case 106:
  this.$ = $$[$0-1]; 
 break;
-case 5: case 7: case 21: case 22: case 23: case 28: case 29: case 30: case 38: case 39: case 40: case 41: case 42: case 43: case 44: case 45: case 46: case 67: case 83: case 85: case 104: case 105:
+case 5: case 7: case 9: case 21: case 22: case 23: case 28: case 29: case 30: case 38: case 39: case 40: case 41: case 42: case 43: case 44: case 45: case 46: case 67: case 83: case 85: case 104: case 105:
  this.$ = $$[$0]; 
 break;
 case 8:
@@ -106,26 +106,28 @@ case 8:
                         this.$ = {
                             nombre : "DECVAR",
                             tipo : $$[$0-2],
-                            hijos : [$$[$0-1]]
+                            hijos : [$$[$0-1], $$[$0]]
                         };
-                        if($$[$0] !== null)
-                            this.$.hijos.push($$[$0]);
                     
 break;
 case 10:
- this.$ = {nombre : "NUEVO", valor : $$[$0-2]}; 
+ this.$ = {nombre : "NUEVO", id : $$[$0-1]}; 
 break;
-case 11: case 24: case 56: case 62:
- this.$ = null; 
+case 11:
+ this.$ = {nombre : "NULL", valor : "NULL"}; 
 break;
-case 12: case 107:
+case 12:
 
-                        $$[$0-2].hijos.push($$[$0]);
+                        var lid = {nombre : "LID", hijos:[$$[$0]]};
+                        $$[$0-2].hijos.push(lid);
                         this.$ = $$[$0-2];
                     
 break;
 case 13:
- this.$ = {nombre : "LVARIABLES", hijos:[$$[$0]]}; 
+
+                      var lid = {nombre : "LID", hijos:[$$[$0]]};
+                      this.$ = {nombre : "LVARIABLES", hijos:[lid]};
+                    
 break;
 case 14:
 
@@ -166,6 +168,9 @@ case 20:
                         if($$[$0-8] !== null)
                             this.$.hijos.push($$[$0-8]);
                     
+break;
+case 24: case 56: case 62:
+ this.$ = null; 
 break;
 case 25:
 
@@ -303,7 +308,8 @@ case 66:
 break;
 case 68:
 
-                        var lvariables = {nombre : "LVARIABLES", hijos:[$$[$0-2]]};
+                        var lid = {nombre : "LID", hijos:[$$[$0-2]]};
+                        var lvariables = {nombre : "LVARIABLES", hijos:[lid]};
                         this.$ = {
                             nombre : "DECVAR",
                             tipo : $$[$0-3],
@@ -403,6 +409,12 @@ case 101: case 102:
 break;
 case 103:
  this.$ = {nombre : "NULL", valor : $$[$0]}; 
+break;
+case 107:
+
+                        $$[$0-2].hijos.push($$[$0]);
+                        this.$ = $$[$0-2];
+                    
 break;
 case 108:
  this.$ = {nombre : "LID", hijos:[$$[$0]]}; 
