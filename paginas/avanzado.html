@@ -17,6 +17,7 @@
   <script type="text/javascript" src="../js/ejecutar.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
+			$("#mensajeError").hide();
       $("#bEjecutar").click(function () {
         try {
           //alert($("#taCodigo").val());
@@ -34,6 +35,7 @@
           //$("#taEstructuras").html(String(e));
           console.log(e);
 					//TODO: recoleccion de errores lexicos y sintacticos
+					$("#mensajeError").show();
         }
 
 				try {
@@ -98,6 +100,15 @@
     </div>
   </nav>
   <div class="container">
+		<div class="row" id="mensajeError">
+			<div class="col-md-12">
+				<div class="alert alert-danger alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<strong>Error</strong>, el documento no tiene la estructura correcta (Ver Opciones <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> Reporte de errores)
+				</div>
+			</div>
+		</div>
     <div class="row">
       <div class="col-sm-7">
         <div class="panel panel-default">
@@ -146,12 +157,12 @@
 element : Arbol{
   element : Nodo {
     num valor : 15*4;
-    str cadena : "hola";
+    str cadena : NULL;
     Nodo izq : NULL;
     Nodo der :NULL;
   }
-  Nodo izq : NULL;
-  str titulo : "Sin titulo";
+  Nodo raiz : NULL;
+  str titulo : NULL;
 }</textarea>
               </div>
             </div>

@@ -169,6 +169,10 @@ DECFUN          :   TIPOFUN L ':' id '(' LPAR ')' '{' LCUERPO '}' {
                             tipo : $1,
                             hijos : [$6, $9]
                         };
+                        for(var i = 0; i < $6.hijos.length; i++)
+                        {
+                          $$.id += "-" + $6.hijos[i].tipo;
+                        }
                         if($2 !== null)
                             $$.hijos.push($2);
                     };

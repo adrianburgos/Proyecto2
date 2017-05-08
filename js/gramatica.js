@@ -165,6 +165,10 @@ case 20:
                             tipo : $$[$0-9],
                             hijos : [$$[$0-4], $$[$0-1]]
                         };
+                        for(var i = 0; i < $$[$0-4].hijos.length; i++)
+                        {
+                          this.$.id += "-" + $$[$0-4].hijos[i].tipo;
+                        }
                         if($$[$0-8] !== null)
                             this.$.hijos.push($$[$0-8]);
                     

@@ -110,7 +110,7 @@ function crearTabla(raiz, pos) {
 					tipo = getTipo(lpar.hijos[j].tipo);
 					tipoElemento = "";
 					if (tipo === Const.tid) {
-						tipoElemento = decvar.tipo;
+						tipoElemento = lpar.hijos[j].tipo;
 					}
 					if (lpar.hijos[j].hijos.length > 0)
 						dim2 = lpar.hijos[j].hijos[0];

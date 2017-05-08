@@ -4,7 +4,6 @@ function ejecutarArbol(cuerpo) {
   console.log("ejecutarArbol");
   console.log(cuerpo);
   for (var i = 0; i < cuerpo.hijos.length; i++) {
-    console.log("hijo[" + i + "]");
     console.log(cuerpo.hijos[i]);
     var sent = cuerpo.hijos[i];
     var l = "";
@@ -157,7 +156,10 @@ function ejecutarArbol(cuerpo) {
         contAmbActual++;
         //se realiza la asignacion a la variable de control
         agregar3d("//asignacion a la variable de control del for");
-        asignarVariable(sent.hijos[0]);
+        if(sent.hijos[0].nombre === Const.DECVAR)
+          decVariable(sent.hijos[0]);
+        else
+          asignarVariable(sent.hijos[0]);
         //se escribe la etiqueta de inicio para el ciclo
         l = getEtq();
         agregar3d("//etiqueta de inicio del for");
@@ -380,6 +382,9 @@ function evaluarValor(valor) {
         temp : Const.NULL,
         tipo : -1
       };
+    case Const.cadena:
+      agregar3d("//se inicia la referecia para la cadena [" + valor.valor + "]");
+      break;
   }//fin del switch
 }
 

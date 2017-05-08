@@ -5,7 +5,7 @@ var Const = {
   tid: 21,
   tvoid: 99,
   terror: -1,
-  NULL : -50178863,
+  NULL : -501788630,
   num: "num",
   numero: "numero",
   str: "str",

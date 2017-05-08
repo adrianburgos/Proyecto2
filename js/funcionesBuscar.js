@@ -30,6 +30,14 @@ function buscarVariable(id) {
   return null;
 }
 
+function buscarVariableEnAmbito(amb, id) {
+  for (var i = 0; i < amb.variables.length; i++) {
+    if(amb.variables[i].nombre === id)
+      return amb.variables[i];
+  }
+  return null;
+}
+
 function buscarPrincipal(raiz) {
   for (var i = 0; i < raiz.hijos.length; i++) {
     if(raiz.hijos[i].nombre === "PRINCIPAL")
