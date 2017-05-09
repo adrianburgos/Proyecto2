@@ -12,12 +12,43 @@ function ejecutarAritmetica(op1, op2, operador) {
           var codigo = t + " = " + op1.temp + " " + operador + " " + op2.temp + ";";
           agregar3d(codigo);
           res.temp = t;
-          res.tipo = 1;
+          res.tipo = Const.tnum;
           break;
-        case 4://numero + cadena
-        case 6://cadena + cadena
-        case 10://cadena + bool
           //TODO: Concatenacion (cadena-cadena cadena-numero cadena-bool)
+        case 4://numero + cadena
+          res = concatenarNumCadena(op1, op2, t);
+          break;
+        case 10://cadena + bool
+          if(op1.tipo === Const.tbool){
+            if(!op1.hasOwnProperty("lv")){
+              op1 = construirCadenaTrueoFalse(op1, t);
+            } else {
+              var er = {
+                tipo: "Error Semantico",
+                descripcion: "Solo se puede operar [true o false] " + operador + " [" + getTipo(op2.tipo) + "]",
+                fila: 0,
+                columna: 0
+              };
+              agregarError(er);
+            }
+          }
+          if(op2.tipo === Const.tbool){
+            if(!op2.hasOwnProperty("lv")){
+              op2 = construirCadenaTrueoFalse(op2, t);
+            } else {
+              var er2 = {
+                tipo: "Error Semantico",
+                descripcion: "Solo se puede operar [" + getTipo(op1.tipo) + "] " + operador + " [true o false]",
+                fila: 0,
+                columna: 0
+              };
+              agregarError(er2);
+            }
+          }
+          res = concatenarCadenas(op1, op2, getTemp());
+          break;
+        case 6://cadena + cadena
+          res = concatenarCadenas(op1, op2, t);
           break;
         default:
           //error estos valores no se pueden operar
@@ -39,7 +70,7 @@ function ejecutarAritmetica(op1, op2, operador) {
           codigo = t + " = " + op1.temp + " " + operador + " " + op2.temp + ";";
           agregar3d(codigo);
           res.temp = t;
-          res.tipo = 1;
+          res.tipo = Const.tnum;
           break;
         // case 4://numero * cadena
         // case 6://cadena * cadena
@@ -66,7 +97,7 @@ function ejecutarAritmetica(op1, op2, operador) {
           codigo = t + " = " + op1.temp + " " + operador + " " + op2.temp + ";";
           agregar3d(codigo);
           res.temp = t;
-          res.tipo = 1;
+          res.tipo = Const.tnum;
           break;
         // case 14://bool /(%)(^) bool
         // case 4://numero /(%)(^) cadena
@@ -100,15 +131,15 @@ function ejecutarRelacional(op1, op2, operador) {
           var lv = getEtq();
           var lf = getEtq();
           var codigo =
-            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n" +
+            "if( " + op1.temp + " " + operador + " " + op2.temp + " ) goto " + lv + ";\n" +
             "goto " + lf + ";";
           agregar3d(codigo);
-          res.tipo = 7;
+          res.tipo = Const.tbool;
           res.lv.push(lv);
           res.lf.push(lf);
           break;
         case 6://cadena == cadena
-          //TODO: comparacion de cadena con cadena
+          //TODO: comparacion (==) entre cadenas
           break;
         // case 8://numero == bool
         // case 4://numero == cadena
@@ -133,10 +164,10 @@ function ejecutarRelacional(op1, op2, operador) {
           lv = getEtq();
           lf = getEtq();
           codigo =
-            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n" +
+            "if( " + op1.temp + " " + operador + " " + op2.temp + " ) goto " + lv + ";\n" +
             "goto " + lf + ";";
           agregar3d(codigo);
-          res.tipo = 7;
+          res.tipo = Const.tbool;
           res.lv.push(lv);
           res.lf.push(lf);
           break;
@@ -165,10 +196,10 @@ function ejecutarRelacional(op1, op2, operador) {
           lv = getEtq();
           lf = getEtq();
           codigo =
-            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n" +
+            "if( " + op1.temp + " " + operador + " " + op2.temp + " ) goto " + lv + ";\n" +
             "goto " + lf + ";";
           agregar3d(codigo);
-          res.tipo = 7;
+          res.tipo = Const.tbool;
           res.lv.push(lv);
           res.lf.push(lf);
           break;
@@ -198,10 +229,10 @@ function ejecutarRelacional(op1, op2, operador) {
           lv = getEtq();
           lf = getEtq();
           codigo =
-            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n" +
+            "if( " + op1.temp + " " + operador + " " + op2.temp + " ) goto " + lv + ";\n" +
             "goto " + lf + ";";
           agregar3d(codigo);
-          res.tipo = 7;
+          res.tipo = Const.tbool;
           res.lv.push(lv);
           res.lf.push(lf);
           break;
@@ -234,10 +265,10 @@ function ejecutarRelacional(op1, op2, operador) {
           lv = getEtq();
           lf = getEtq();
           codigo =
-            "if (" + op1.temp + " " + operador + " " + op2.temp + ") goto " + lv + ";\n" +
+            "if( " + op1.temp + " " + operador + " " + op2.temp + " ) goto " + lv + ";\n" +
             "goto " + lf + ";";
           agregar3d(codigo);
-          res.tipo = 7;
+          res.tipo = Const.tbool;
           res.lv.push(lv);
           res.lf.push(lf);
           break;
@@ -283,7 +314,7 @@ function ejecutarLogica(valor) {
         op2 = codigoBoolean(valor.hijos[1]);
       if(op2.tipo === Const.tbool)
       {
-        res.tipo = 7;
+        res.tipo = Const.tbool;
         res.lv = res.lv.concat(op2.lv);
         res.lf = res.lf.concat(op1.lf);
         res.lf = res.lf.concat(op2.lf);
@@ -314,7 +345,7 @@ function ejecutarLogica(valor) {
         op2 = codigoBoolean(valor.hijos[1]);
       if(op2.tipo === Const.tbool)
       {
-        res.tipo = 7;
+        res.tipo = Const.tbool;
         res.lv = res.lv.concat(op1.lv);
         res.lv = res.lv.concat(op2.lv);
         res.lf = res.lf.concat(op2.lf);
@@ -339,7 +370,7 @@ function ejecutarLogica(valor) {
     case "!":
       res.lv = op1.lf;
       res.lf = op1.lv;
-      res.tipo = 7;
+      res.tipo = Const.tbool;
       break;
     case "|&":
       var txor = getTemp();
@@ -361,12 +392,12 @@ function ejecutarLogica(valor) {
         lv = getEtq();
         var lf = getEtq();
         agregar3d(op2.lv + ":");
-        agregar3d("if (" + txor + " == 1) goto " + lv + ";");
+        agregar3d("if( " + txor + " == 1 ) goto " + lv + ";");
         agregar3d("goto " + lf + ";");
         agregar3d(op2.lf + ":");
-        agregar3d("if (" + txor + " == 0) goto " + lv + ";");
+        agregar3d("if( " + txor + " == 0 ) goto " + lv + ";");
         agregar3d("goto " + lf + ";");
-        res.tipo = 7;
+        res.tipo = Const.tbool;
         res.lv.push(lv);
         res.lf.push(lf);
       }
@@ -394,7 +425,7 @@ function codigoBoolean(valor) {
   else
     codigo = "if ( 1 == 0 ) goto " + lv +"; \ngoto " + lf + ";";
   agregar3d(codigo);
-  return { temp: "tx", tipo : 7, lv : [lv], lf : [lf] };
+  return { temp: "tx", tipo : Const.tbool, lv : [lv], lf : [lf] };
 }
 
 function getTipo(tipo) {
@@ -518,4 +549,124 @@ function resolverLID(valor) {
     //TODO: realizar instrucciones cuando el primer id es un llamado
   }
   return resid;
+}
+
+function concatenarCadenas(op1, op2, t) {
+  var amb = buscarAmbito(tabla[0], ambito.join("#"));
+  var tempSim = getTemp();
+  agregar3d("//se inicia la concatenacion");
+  agregar3d(tempSim + " = p + " + amb.tam + ";");
+  agregar3d("//se manda de parametro la primer cadena");
+  agregar3d(t + " = " + tempSim + " + 1;");
+  agregar3d("stack[" + t + "] = " + op1.temp + ";");
+  t = getTemp();
+  agregar3d("//se manda de parametro la segunda cadena");
+  agregar3d(t + " = " + tempSim + " + 2;");
+  agregar3d("stack[" + t + "] = " + op2.temp + ";");
+  agregar3d("p = p + " + tempSim + ";");
+  agregar3d("$$_concatenar();");
+  t = getTemp();
+  var tempRet = getTemp();
+  agregar3d(t + " = p + 0;");
+  agregar3d(tempRet + " = stack[" + t + "]");
+  agregar3d("p = p - " + tempSim + ";");
+  return{
+    temp : tempRet,
+    tipo : Const.tstr
+  };
+}
+
+function construirCadenaTrueoFalse(op, t) {
+  var lv = getEtq();
+  var lf = getEtq();
+  var lsalida = getEtq();
+  agregar3d(t  + " = h;");
+  agregar3d("h = h + 1;");
+  agregar3d("heap[" + t + "] = s;");
+  agregar3d("//se genera el codigo para convertir un booleano en cadena");
+  agregar3d("if( " + op.temp + " == 1 ) goto " + lv + ";");
+  agregar3d("goto " + lf + ";");
+  agregar3d(lv + ":");
+  agregar3d("//se inicia la referecia para la cadena 'true'");
+  agregar3d("//se agrego al pool el caracter 't'");
+  agregar3d("pool[s] = " + "t".charCodeAt(0) + ";");
+  agregar3d("s = s + 1;");
+  agregar3d("//se agrego al pool el caracter 'r'");
+  agregar3d("pool[s] = " + "r".charCodeAt(0) + ";");
+  agregar3d("s = s + 1;");
+  agregar3d("//se agrego al pool el caracter 'u'");
+  agregar3d("pool[s] = " + "u".charCodeAt(0) + ";");
+  agregar3d("s = s + 1;");
+  agregar3d("//se agrego al pool el caracter 'e'");
+  agregar3d("pool[s] = " + "e".charCodeAt(0) + ";");
+  agregar3d("s = s + 1;");
+  agregar3d("//se agrego al pool el final de la cadena");
+  agregar3d("pool[s] = 0;");
+  agregar3d("s = s + 1;");
+  agregar3d("goto " + lsalida + ";");
+  agregar3d(lf + ":");
+  agregar3d("//se inicia la referecia para la cadena 'true'");
+  agregar3d("//se agrego al pool el caracter 'f'");
+  agregar3d("pool[s] = " + "f".charCodeAt(0) + ";");
+  agregar3d("s = s + 1;");
+  agregar3d("//se agrego al pool el caracter 'a'");
+  agregar3d("pool[s] = " + "a".charCodeAt(0) + ";");
+  agregar3d("s = s + 1;");
+  agregar3d("//se agrego al pool el caracter 'l'");
+  agregar3d("pool[s] = " + "l".charCodeAt(0) + ";");
+  agregar3d("s = s + 1;");
+  agregar3d("//se agrego al pool el caracter 's'");
+  agregar3d("pool[s] = " + "s".charCodeAt(0) + ";");
+  agregar3d("s = s + 1;");
+  agregar3d("//se agrego al pool el caracter 'e'");
+  agregar3d("pool[s] = " + "e".charCodeAt(0) + ";");
+  agregar3d("s = s + 1;");
+  agregar3d("//se agrego al pool el final de la cadena");
+  agregar3d("pool[s] = 0;");
+  agregar3d("s = s + 1;");
+  agregar3d(lsalida + ":");
+  return {
+    temp: t,
+    tipo: Const.tstr
+  };
+}
+
+function concatenarNumCadena(op1, op2, tempSim) {
+  var amb = buscarAmbito(tabla[0], ambito.join("#"));
+  var temp = getTemp();
+  var tempRet = getTemp();
+  var tempVal = getTemp();
+  if(op1.tipo === Const.tnum){
+    agregar3d("//se inicia la convercion del numero en OP1");
+    agregar3d(tempSim + " = p + " + amb.tam + ";");
+    agregar3d("//se manda de parametro el temporal con el valor de OP1");
+    agregar3d(temp + " = " + tempSim + " + 1;");
+    agregar3d("stack[" + temp + "] = " + op1.temp + ";");
+    agregar3d("p = p + " + amb.tam + ";");
+    agregar3d("$$_convertirNumAStr();");
+    agregar3d(tempRet + " = p + 0;");
+    agregar3d(tempVal + " = stack[" + tempRet + "];");
+    agregar3d("p = p - " + amb.tam + ";");
+    op1 = {
+      temp: tempVal,
+      tipo: Const.tstr
+    };
+  }
+  if(op2.tipo === Const.tnum){
+    agregar3d("//se inicia la convercion del numero en OP2");
+    agregar3d(tempSim + " = p + " + amb.tam + ";");
+    agregar3d("//se manda de parametro el temporal con el valor de OP2");
+    agregar3d(temp + " = " + tempSim + " + 1;");
+    agregar3d("stack[" + temp + "] = " + op2.temp + ";");
+    agregar3d("p = p + " + amb.tam + ";");
+    agregar3d("$$_convertirNumAStr();");
+    agregar3d(tempRet + " = p + 0;");
+    agregar3d(tempVal + " = stack[" + tempRet + "];");
+    agregar3d("p = p - " + amb.tam + ";");
+    op2 = {
+      temp: tempVal,
+      tipo: Const.tstr
+    };
+  }
+  return concatenarCadenas(op1, op2, getTemp());
 }

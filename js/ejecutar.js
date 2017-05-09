@@ -345,18 +345,18 @@ function evaluarValor(valor) {
     case "numero":
         return {
           temp : valor.valor,
-          tipo : 1
+          tipo : Const.tnum
         };
     case Const.bool:
         if (valor.valor === "true")
           return {
             temp : "1",
-            tipo : 7
+            tipo : Const.tbool
           };
         else
           return {
             temp : "0",
-            tipo : 7
+            tipo : Const.tbool
           };
       break;
     case Const.LID:
@@ -383,8 +383,23 @@ function evaluarValor(valor) {
         tipo : -1
       };
     case Const.cadena:
-      agregar3d("//se inicia la referecia para la cadena [" + valor.valor + "]");
-      break;
+      agregar3d("//se inicia la referecia para la cadena '" + valor.valor + "'");
+      var temp = getTemp();
+      agregar3d(temp  + " = h;");
+      agregar3d("h = h + 1;");
+      agregar3d("heap[" + temp + "] = s;");
+      for (var i = 0; i < valor.valor.length; i++) {
+        agregar3d("//se agrego al pool el caracter '" + valor.valor[i] + "'");
+        agregar3d("pool[s] = " + valor.valor.charCodeAt(i) + ";");
+        agregar3d("s = s + 1;");
+      }
+      agregar3d("//se agrego al pool el final de la cadena");
+      agregar3d("pool[s] = 0;");
+      agregar3d("s = s + 1;");
+      return{
+        temp: temp,
+        tipo: Const.tstr
+      };
   }//fin del switch
 }
 

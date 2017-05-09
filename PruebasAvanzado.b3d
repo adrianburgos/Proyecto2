@@ -3,7 +3,8 @@ Principal(){
   nodo n;
   array : x [1..6][9..7][21..35] of num;
   for(num i : 0; i<5; i = i + 3){
-    %%str x:"hola";
+    str x:"hola"+ 50.3;
+    str y: 725.91 + " Adios";
     if(4>0 && 8 < 99*8) then {
       a = 3 * 8 ^ 6 +3 -7 / (-3 + 6);
     }else{

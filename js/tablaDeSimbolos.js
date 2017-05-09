@@ -1,6 +1,7 @@
 var tabla = [];
 var ambito = ["global"];
 var contAmb = 0;
+var htmlTabla = "";
 /*Estructura de un ambito
 	{
 		nombre: id,
@@ -241,7 +242,6 @@ function calcularTamArr(lcorchetes) {
 	return tamArr;
 }
 
-var htmlTabla = "";
 function generarTabla(){
 	htmlTabla = "";
 	getTabla(tabla[0]);

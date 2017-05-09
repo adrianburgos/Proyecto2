@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Tabla de simbolos</title>
+	<title>Reporte de errores</title>
 	<link rel="stylesheet" type="text/css" href="../../bootstrap/css/bootstrap.css">
 	<script type="text/javascript" src="../../jquery-3.2.0.min.js"></script>
 	<script type="text/javascript" src="../../bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
-      var htmlTabla = localStorage["tabla"];
-      $("#tablaDeSimbolos").append(htmlTabla);
+      var htmlErrores = localStorage["errores"];
+      $("#tablaDeErrores").append(htmlErrores);
       //alert(htmlTabla);
     });
   </script>
@@ -48,20 +48,17 @@
       <div class="col-sm-12">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Tabla de simbolos</h3>
+            <h3 class="panel-title">Reporte de errores</h3>
           </div>
           <div class="panel-body">
             <div class="row">
               <div class="col-md-12">
-                <table class="table table-hover table-condensed" id="tablaDeSimbolos">
+                <table class="table table-hover table-condensed" id="tablaDeErrores">
                   <tr>
-                    <th>Rol</th>
-                    <th>Nombre</th>
-                    <th>Ambito</th>
-                    <th>Posicion</th>
-                    <th>Tipo</th>
-                    <th>Tamaño</th>
-                    <th>Dimensiones</th>
+                    <th>Tipo de Error</th>
+                    <th>Descripcion</th>
+                    <th>Fila</th>
+                    <th>Columa</th>
                   </tr>
                 </table>
               </div>
