@@ -20,12 +20,12 @@ function generarErrores(){
 }
 
 function getErrores() {
-	htmlErrores += "<tr>";
 	for (var i = 0; i < errores.length; i++) {
+		htmlErrores += "<tr>";
 		htmlErrores += "<td> " + errores[i].tipo +" </td>" +
 		"<td>" + errores[i].descripcion + "</td>" +
 		"<td>" + errores[i].fila + "</td>" +
 		"<td>" + errores[i].columna + "</td>";
+		htmlErrores += "</tr>\n";
 	}
-	htmlErrores += "</tr>\n";
 }

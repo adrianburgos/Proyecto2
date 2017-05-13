@@ -3,7 +3,7 @@ function ejecutarArbolGeneral(raiz) {
     var hijo = raiz.hijos[i];
     switch (hijo.nombre) {
       case Const.PRINCIPAL:
-        agregar3d("//==============================================================================================================================================================================================================");
+        agregar3d("//==================================");
         ambito.push(Const.PRINCIPAL);
         agregar3d("void Principal(){");
         ejecutarArbol(hijo.hijos[0]);
@@ -16,8 +16,8 @@ function ejecutarArbolGeneral(raiz) {
         var temp = getTemp();
         var amb = buscarAmbito(tabla[0], ambito.join("#"));
         agregar3d("void init#" + ambito.join("#") + "(){");
-        agregar3d(temp + " = h;");
-        agregar3d("h = h + " + amb.tam + ";");
+        agregar3d(temp + " = h ;");
+        agregar3d("h = h + " + amb.tam + " ;");
         for (var j = 0; j < LCUERPOELE.hijos.length; j++) {
           var decvar = LCUERPOELE.hijos[j];
           if(decvar.nombre === Const.DECVAR){
@@ -28,14 +28,14 @@ function ejecutarArbolGeneral(raiz) {
               var variable = buscarVariableEnAmbito(amb, id);
               var tempVar = getTemp();
               agregar3d("//declaracion de la variable [" + id + "] dentro de init#" + ambito.join("#"));
-              agregar3d(tempVar + " = " + temp + " + " + variable.pos + ";");
-              agregar3d("heap[" + tempVar + "] = " + val.temp + ";");
+              agregar3d(tempVar + " = " + temp + " + " + variable.pos + " ;");
+              agregar3d("heap [ " + tempVar + " ] = " + val.temp + " ;");
             }
           }
         }
         var tempRet = getTemp();
-        agregar3d(tempRet + " = p + 0");
-        agregar3d("stack[" + tempRet + "] = " + temp);
+        agregar3d(tempRet + " = p + 0 ;");
+        agregar3d("stack [ " + tempRet + " ] = " + temp + " ;");
         agregar3d("}");
         for (var k = 0; k < LCUERPOELE.hijos.length; k++) {
           if(LCUERPOELE.hijos[k].nombre === Const.ELEMENT){
@@ -48,7 +48,7 @@ function ejecutarArbolGeneral(raiz) {
         decVariable(hijo);
         break;
       case Const.FUNCION:
-        agregar3d("//==============================================================================================================================================================================================================");
+        agregar3d("//==================================");
         ambito.push(hijo.id);
         agregar3d("void " + hijo.id + "(){");
         var cuerpo = buscarCuerpo(hijo);

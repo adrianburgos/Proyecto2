@@ -3,13 +3,13 @@ function ejecutarAritmetica(op1, op2, operador) {
   var t = getTemp();
   switch(operador)
   {
-    case "+":
+    case "+" :
       switch(op1.tipo + op2.tipo)
       {
         case 2://numero + numero
         case 8://numero + bool
         case 14://bool + bool
-          var codigo = t + " = " + op1.temp + " " + operador + " " + op2.temp + ";";
+          var codigo = t + " = " + op1.temp + " " + operador + " " + op2.temp + " ;";
           agregar3d(codigo);
           res.temp = t;
           res.tipo = Const.tnum;
@@ -25,7 +25,7 @@ function ejecutarAritmetica(op1, op2, operador) {
             } else {
               var er = {
                 tipo: "Error Semantico",
-                descripcion: "Solo se puede operar [true o false] " + operador + " [" + getTipo(op2.tipo) + "]",
+                descripcion: "Solo se puede operar [true o false] " + operador + " [" + getTipo(op2.tipo) + " ]",
                 fila: 0,
                 columna: 0
               };
@@ -38,7 +38,7 @@ function ejecutarAritmetica(op1, op2, operador) {
             } else {
               var er2 = {
                 tipo: "Error Semantico",
-                descripcion: "Solo se puede operar [" + getTipo(op1.tipo) + "] " + operador + " [true o false]",
+                descripcion: "Solo se puede operar [" + getTipo(op1.tipo) + " ] " + operador + " [true o false]",
                 fila: 0,
                 columna: 0
               };
@@ -54,20 +54,20 @@ function ejecutarAritmetica(op1, op2, operador) {
           //error estos valores no se pueden operar
           var er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + getTipo(op2.tipo) + "]",
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + " ] " + operador + " [" + getTipo(op2.tipo) + " ]",
             fila: 0,
             columna: 0
           };
           agregarError(er);
       }
       break;
-    case "*":
+    case "*" :
       switch(op1.tipo + op2.tipo)
       {
         case 2://numero * numero
         case 8://numero * bool
         case 14://bool * bool
-          codigo = t + " = " + op1.temp + " " + operador + " " + op2.temp + ";";
+          codigo = t + " = " + op1.temp + " " + operador + " " + op2.temp + " ;";
           agregar3d(codigo);
           res.temp = t;
           res.tipo = Const.tnum;
@@ -79,7 +79,7 @@ function ejecutarAritmetica(op1, op2, operador) {
           //error estos valores no se pueden operar
           var er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + getTipo(op2.tipo) + "]",
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + " ] " + operador + " [" + getTipo(op2.tipo) + " ]",
 						fila: 0,
 						columna: 0
           };
@@ -87,14 +87,14 @@ function ejecutarAritmetica(op1, op2, operador) {
           break;
       }
       break;
-    case "/":
-    case "%":
-    case "^":
+    case "/" :
+    case "%" :
+    case "^" :
       switch(op1.tipo + op2.tipo)
       {
         case 2://numero /(%)(^) numero
         case 8://numero /(%)(^) bool
-          codigo = t + " = " + op1.temp + " " + operador + " " + op2.temp + ";";
+          codigo = t + " = " + op1.temp + " " + operador + " " + op2.temp + " ;";
           agregar3d(codigo);
           res.temp = t;
           res.tipo = Const.tnum;
@@ -107,7 +107,7 @@ function ejecutarAritmetica(op1, op2, operador) {
           //error estos valores no se pueden operar
           er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + getTipo(op2.tipo) + "]",
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + " ] " + operador + " [" + getTipo(op2.tipo) + " ]",
 						fila: 0,
 						columna: 0
           };
@@ -123,7 +123,7 @@ function ejecutarRelacional(op1, op2, operador) {
   var res = {temp : "tx", tipo : -1, lv: [], lf: [] };
   switch(operador)
   {
-    case "==":
+    case "==" :
       switch(op1.tipo + op2.tipo)
       {
         case 2://numero == numero
@@ -131,8 +131,8 @@ function ejecutarRelacional(op1, op2, operador) {
           var lv = getEtq();
           var lf = getEtq();
           var codigo =
-            "if( " + op1.temp + " " + operador + " " + op2.temp + " ) goto " + lv + ";\n" +
-            "goto " + lf + ";";
+            "if( " + op1.temp + " " + operador + " " + op2.temp + " )goto " + lv + " ;\n" +
+            "goto " + lf + " ;";
           agregar3d(codigo);
           res.tipo = Const.tbool;
           res.lv.push(lv);
@@ -148,7 +148,7 @@ function ejecutarRelacional(op1, op2, operador) {
           //error estos valores no se pueden operar
           var er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + getTipo(op2.tipo) + "]",
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + " ] " + operador + " [" + getTipo(op2.tipo) + " ]",
 						fila: 0,
 						columna: 0
           };
@@ -156,7 +156,7 @@ function ejecutarRelacional(op1, op2, operador) {
           break;
       }
       break;
-    case "!=":
+    case "!=" :
       switch(op1.tipo + op2.tipo)
       {
         case 2://numero != numero
@@ -164,8 +164,8 @@ function ejecutarRelacional(op1, op2, operador) {
           lv = getEtq();
           lf = getEtq();
           codigo =
-            "if( " + op1.temp + " " + operador + " " + op2.temp + " ) goto " + lv + ";\n" +
-            "goto " + lf + ";";
+            "if( " + op1.temp + " " + operador + " " + op2.temp + " )goto " + lv + " ;\n" +
+            "goto " + lf + " ;";
           agregar3d(codigo);
           res.tipo = Const.tbool;
           res.lv.push(lv);
@@ -181,7 +181,7 @@ function ejecutarRelacional(op1, op2, operador) {
           //error estos valores no se pueden operar
           er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + getTipo(op2.tipo) + "]",
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + " ] " + operador + " [" + getTipo(op2.tipo) + " ]",
 						fila: 0,
 						columna: 0
           };
@@ -189,15 +189,15 @@ function ejecutarRelacional(op1, op2, operador) {
           break;
       }
       break;
-    case ">":
+    case ">" :
       switch(op1.tipo + op2.tipo)
       {
         case 2://numero > numero
           lv = getEtq();
           lf = getEtq();
           codigo =
-            "if( " + op1.temp + " " + operador + " " + op2.temp + " ) goto " + lv + ";\n" +
-            "goto " + lf + ";";
+            "if( " + op1.temp + " " + operador + " " + op2.temp + " )goto " + lv + " ;\n" +
+            "goto " + lf + " ;";
           agregar3d(codigo);
           res.tipo = Const.tbool;
           res.lv.push(lv);
@@ -214,7 +214,7 @@ function ejecutarRelacional(op1, op2, operador) {
           //error estos valores no se pueden operar
           er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + getTipo(op2.tipo) + "]",
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + " ] " + operador + " [" + getTipo(op2.tipo) + " ]",
 						fila: 0,
 						columna: 0
           };
@@ -222,15 +222,15 @@ function ejecutarRelacional(op1, op2, operador) {
           break;
       }
       break;
-    case "<":
+    case "<" :
       switch(op1.tipo + op2.tipo)
       {
         case 2://numero < numero
           lv = getEtq();
           lf = getEtq();
           codigo =
-            "if( " + op1.temp + " " + operador + " " + op2.temp + " ) goto " + lv + ";\n" +
-            "goto " + lf + ";";
+            "if( " + op1.temp + " " + operador + " " + op2.temp + " )goto " + lv + " ;\n" +
+            "goto " + lf + " ;";
           agregar3d(codigo);
           res.tipo = Const.tbool;
           res.lv.push(lv);
@@ -247,7 +247,7 @@ function ejecutarRelacional(op1, op2, operador) {
           //error estos valores no se pueden operar
           er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + getTipo(op2.tipo) + "]",
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + " ] " + operador + " [" + getTipo(op2.tipo) + " ]",
 						fila: 0,
 						columna: 0
           };
@@ -257,16 +257,16 @@ function ejecutarRelacional(op1, op2, operador) {
           break;
       }
       break;
-    case ">=":
-    case "<=":
+    case ">=" :
+    case "<=" :
       switch(op1.tipo + op2.tipo)
       {
         case 2://numero >= (<=) numero
           lv = getEtq();
           lf = getEtq();
           codigo =
-            "if( " + op1.temp + " " + operador + " " + op2.temp + " ) goto " + lv + ";\n" +
-            "goto " + lf + ";";
+            "if( " + op1.temp + " " + operador + " " + op2.temp + " )goto " + lv + " ;\n" +
+            "goto " + lf + " ;";
           agregar3d(codigo);
           res.tipo = Const.tbool;
           res.lv.push(lv);
@@ -281,7 +281,7 @@ function ejecutarRelacional(op1, op2, operador) {
           //error estos valores no se pueden operar
           er = {
             tipo: "Error Semantico",
-            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + getTipo(op2.tipo) + "]",
+            descripcion: "No se pudo operar [" + getTipo(op1.tipo) + " ] " + operador + " [" + getTipo(op2.tipo) + " ]",
 						fila: 0,
 						columna: 0
           };
@@ -305,10 +305,10 @@ function ejecutarLogica(valor) {
     op1 = codigoBoolean(valor.hijos[0]);
   switch(operador)
   {
-    case "&&":
-    case "&?":
+    case "&&" :
+    case "&?" :
       if(op1.tipo === Const.tbool)
-        agregar3d(op1.lv.join(":\n") + ":");
+        agregar3d(op1.lv.join(" :\n") + " :");
       var op2 = evaluarValor(valor.hijos[1]);
       if(valor.hijos[1].nombre === Const.bool)
         op2 = codigoBoolean(valor.hijos[1]);
@@ -329,17 +329,17 @@ function ejecutarLogica(valor) {
       {//error estos valores no se pueden operar
         er = {
           tipo: "Error Semantico",
-          descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + getTipo(op2.tipo) + "]",
+          descripcion: "No se pudo operar [" + getTipo(op1.tipo) + " ] " + operador + " [" + getTipo(op2.tipo) + " ]",
           fila: 0,
           columna: 0
         };
         agregarError(er);
       }
       break;
-    case "||":
-    case "|?":
+    case "||" :
+    case "|?" :
       if(op1.tipo === Const.tbool)
-        agregar3d(op1.lf.join(":\n") + ":");
+        agregar3d(op1.lf.join(" :\n") + " :");
       op2 = evaluarValor(valor.hijos[1]);
       if(valor.hijos[1].nombre === Const.bool)
         op2 = codigoBoolean(valor.hijos[1]);
@@ -360,29 +360,29 @@ function ejecutarLogica(valor) {
       {//error estos valores no se pueden operar
         er = {
           tipo: "Error Semantico",
-          descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + getTipo(op2.tipo) + "]",
+          descripcion: "No se pudo operar [" + getTipo(op1.tipo) + " ] " + operador + " [" + getTipo(op2.tipo) + " ]",
           fila: 0,
           columna: 0
         };
         agregarError(er);
       }
       break;
-    case "!":
+    case "!" :
       res.lv = op1.lf;
       res.lf = op1.lv;
       res.tipo = Const.tbool;
       break;
-    case "|&":
+    case "|&" :
       var txor = getTemp();
       if(op1.tipo === Const.tbool)
       {
         var lcond = getEtq();
-        agregar3d(op1.lv.join(":\n") + ":");
-        agregar3d(txor + " = 1;");
-        agregar3d("goto " + lcond + ";");
-        agregar3d(op1.lf.join(":\n") + ":");
-        agregar3d(txor + " = 0;");
-        agregar3d(lcond + ":");
+        agregar3d(op1.lv.join(" :\n") + " :");
+        agregar3d(txor + " = 1 ;");
+        agregar3d("goto " + lcond + " ;");
+        agregar3d(op1.lf.join(" :\n") + " :");
+        agregar3d(txor + " = 0 ;");
+        agregar3d(lcond + " :");
       }
       op2 = evaluarValor(valor.hijos[1]);
       if(valor.hijos[1].nombre === Const.bool)
@@ -391,12 +391,12 @@ function ejecutarLogica(valor) {
       {
         lv = getEtq();
         var lf = getEtq();
-        agregar3d(op2.lv + ":");
-        agregar3d("if( " + txor + " == 1 ) goto " + lv + ";");
-        agregar3d("goto " + lf + ";");
-        agregar3d(op2.lf + ":");
-        agregar3d("if( " + txor + " == 0 ) goto " + lv + ";");
-        agregar3d("goto " + lf + ";");
+        agregar3d(op2.lv + " :");
+        agregar3d("if( " + txor + " == 1 )goto " + lv + " ;");
+        agregar3d("goto " + lf + " ;");
+        agregar3d(op2.lf + " :");
+        agregar3d("if( " + txor + " == 0 )goto " + lv + " ;");
+        agregar3d("goto " + lf + " ;");
         res.tipo = Const.tbool;
         res.lv.push(lv);
         res.lf.push(lf);
@@ -405,7 +405,7 @@ function ejecutarLogica(valor) {
       {//error estos valores no se pueden operar
         er = {
           tipo: "Error Semantico",
-          descripcion: "No se pudo operar [" + getTipo(op1.tipo) + "] " + operador + " [" + getTipo(op2.tipo) + "]",
+          descripcion: "No se pudo operar [" + getTipo(op1.tipo) + " ] " + operador + " [" + getTipo(op2.tipo) + " ]",
           fila: 0,
           columna: 0
         };
@@ -421,9 +421,9 @@ function codigoBoolean(valor) {
   var lf = getEtq();
   var codigo = "";
   if (valor.valor === "true")
-    codigo = "if ( 1 == 1 ) goto " + lv +"; \ngoto " + lf + ";";
+    codigo = "if( 1 == 1 )goto " + lv +" ; \ngoto " + lf + " ;";
   else
-    codigo = "if ( 1 == 0 ) goto " + lv +"; \ngoto " + lf + ";";
+    codigo = "if( 1 == 0 )goto " + lv +" ; \ngoto " + lf + " ;";
   agregar3d(codigo);
   return { temp: "tx", tipo : Const.tbool, lv : [lv], lf : [lf] };
 }
@@ -440,10 +440,10 @@ function getTipo(tipo) {
   }
   switch(tipo)
   {
-    case "num": return Const.tnum;
-    case "str": return Const.tstr;
+    case "num" : return Const.tnum;
+    case "str" : return Const.tstr;
     case Const.bool: return Const.tbool;
-    case "void": return Const.tvoid;
+    case "void" : return Const.tvoid;
     default: return Const.tid;
   }
   return "";
@@ -466,11 +466,11 @@ function resolverLID(valor) {
       var tempVal = "";
       if(variable.variable.ambito !== "global"){
         agregar3d("//se obtiene la referencia a la variable [" + valor.hijos[0] + "]");
-        agregar3d(tempRef + " = " + variable.temp + " + " + variable.variable.pos + ";");
+        agregar3d(tempRef + " = " + variable.temp + " + " + variable.variable.pos + " ;");
       } else {
         resid.esGlobal = true;
         agregar3d("//se obtiene la referencia a la variable global [" + valor.hijos[0] + "]");
-        agregar3d(tempRef + " = " + variable.variable.pos + ";");
+        agregar3d(tempRef + " = " + variable.variable.pos + " ;");
       }
       resid.tempRef = tempRef;
       resid.tipo = variable.variable.tipo;
@@ -479,11 +479,11 @@ function resolverLID(valor) {
         tempVal = getTemp();
         if(variable.variable.ambito !== "global"){
           agregar3d("//se obtiene el valor en la pila de la variable [" + valor.hijos[0] + "]");
-          agregar3d(tempVal + " = stack[" + tempRef + "];");
+          agregar3d(tempVal + " = stack [ " + tempRef + " ] ;");
         } else {
           resid.esGlobal = true;
           agregar3d("//se obtiene el valor en el heap de la variable global [" + valor.hijos[0] + "]");
-          agregar3d(tempVal + " = heap[" + tempRef + "];");
+          agregar3d(tempVal + " = heap [ " + tempRef + " ] ;");
         }
       }
       var cont = 1;
@@ -506,11 +506,11 @@ function resolverLID(valor) {
           if (atr !== null) {
             if(cont >= 2){
               tempVal = getTemp();
-              agregar3d(tempVal + " = heap[" + temp3 + "];");
+              agregar3d(tempVal + " = heap [ " + temp3 + " ] ;");
             }
             var temp3 = getTemp();
             agregar3d("//se obtiene la posicion de [" + valor.hijos[cont] + "] dentro del Element [" + resid.tipoElemento + "]");
-            agregar3d(temp3 + " = " + tempVal + " + " + atr.pos + ";");
+            agregar3d(temp3 + " = " + tempVal + " + " + atr.pos + " ;");
             tempRef = temp3;
             resid.tempRef = tempRef;
             resid.tipo = atr.tipo;
@@ -519,7 +519,7 @@ function resolverLID(valor) {
           } else {
             er = {
               tipo: "Error Semantico",
-              descripcion: "El atributo [" + valor.hijos[cont] + "] no existe dentro del Element [" + resid.tipoElemento + "]",
+              descripcion: "El atributo [" + valor.hijos[cont] + "] no existe dentro del Element [" + resid.tipoElemento + " ]",
               fila: 0,
               columna: 0
             };
@@ -528,7 +528,7 @@ function resolverLID(valor) {
         } else {
           er = {
             tipo: "Error Semantico",
-            descripcion: "El ELEMENT [" + resid.tipoElemento + "] no ha sido declarado",
+            descripcion: "El ELEMENT [" + resid.tipoElemento + " ] no ha sido declarado",
             fila: 0,
             columna: 0
           };
@@ -539,7 +539,7 @@ function resolverLID(valor) {
     } else {
       er = {
         tipo: "Error Semantico",
-        descripcion: "La variable [" + valor.hijos[0] + "] no ha sido declarada",
+        descripcion: "La variable [" + valor.hijos[0] + " ] no ha sido declarada",
         fila: 0,
         columna: 0
       };
@@ -555,21 +555,21 @@ function concatenarCadenas(op1, op2, t) {
   var amb = buscarAmbito(tabla[0], ambito.join("#"));
   var tempSim = getTemp();
   agregar3d("//se inicia la concatenacion");
-  agregar3d(tempSim + " = p + " + amb.tam + ";");
+  agregar3d(tempSim + " = p + " + amb.tam + " ;");
   agregar3d("//se manda de parametro la primer cadena");
-  agregar3d(t + " = " + tempSim + " + 1;");
-  agregar3d("stack[" + t + "] = " + op1.temp + ";");
+  agregar3d(t + " = " + tempSim + " + 1 ;");
+  agregar3d("stack [ " + t + " ] = " + op1.temp + " ;");
   t = getTemp();
   agregar3d("//se manda de parametro la segunda cadena");
-  agregar3d(t + " = " + tempSim + " + 2;");
-  agregar3d("stack[" + t + "] = " + op2.temp + ";");
-  agregar3d("p = p + " + tempSim + ";");
-  agregar3d("$$_concatenar();");
+  agregar3d(t + " = " + tempSim + " + 2 ;");
+  agregar3d("stack [ " + t + " ] = " + op2.temp + " ;");
+  agregar3d("p = p + " + amb.tam + " ;");
+  agregar3d("$$_concatenar() ;");
   t = getTemp();
   var tempRet = getTemp();
-  agregar3d(t + " = p + 0;");
-  agregar3d(tempRet + " = stack[" + t + "]");
-  agregar3d("p = p - " + tempSim + ";");
+  agregar3d(t + " = p + 0 ;");
+  agregar3d(tempRet + " = stack [ " + t + " ]");
+  agregar3d("p = p - " + amb.tam + " ;");
   return{
     temp : tempRet,
     tipo : Const.tstr
@@ -580,51 +580,51 @@ function construirCadenaTrueoFalse(op, t) {
   var lv = getEtq();
   var lf = getEtq();
   var lsalida = getEtq();
-  agregar3d(t  + " = h;");
-  agregar3d("h = h + 1;");
-  agregar3d("heap[" + t + "] = s;");
+  agregar3d(t  + " = h ;");
+  agregar3d("h = h + 1 ;");
+  agregar3d("heap [ " + t + " ] = s ;");
   agregar3d("//se genera el codigo para convertir un booleano en cadena");
-  agregar3d("if( " + op.temp + " == 1 ) goto " + lv + ";");
-  agregar3d("goto " + lf + ";");
-  agregar3d(lv + ":");
+  agregar3d("if( " + op.temp + " == 1 )goto " + lv + " ;");
+  agregar3d("goto " + lf + " ;");
+  agregar3d(lv + " :");
   agregar3d("//se inicia la referecia para la cadena 'true'");
   agregar3d("//se agrego al pool el caracter 't'");
-  agregar3d("pool[s] = " + "t".charCodeAt(0) + ";");
-  agregar3d("s = s + 1;");
+  agregar3d("pool [ s ] = " + "t".charCodeAt(0) + " ;");
+  agregar3d("s = s + 1 ;");
   agregar3d("//se agrego al pool el caracter 'r'");
-  agregar3d("pool[s] = " + "r".charCodeAt(0) + ";");
-  agregar3d("s = s + 1;");
+  agregar3d("pool [ s ] = " + "r".charCodeAt(0) + " ;");
+  agregar3d("s = s + 1 ;");
   agregar3d("//se agrego al pool el caracter 'u'");
-  agregar3d("pool[s] = " + "u".charCodeAt(0) + ";");
-  agregar3d("s = s + 1;");
+  agregar3d("pool [ s ] = " + "u".charCodeAt(0) + " ;");
+  agregar3d("s = s + 1 ;");
   agregar3d("//se agrego al pool el caracter 'e'");
-  agregar3d("pool[s] = " + "e".charCodeAt(0) + ";");
-  agregar3d("s = s + 1;");
+  agregar3d("pool [ s ] = " + "e".charCodeAt(0) + " ;");
+  agregar3d("s = s + 1 ;");
   agregar3d("//se agrego al pool el final de la cadena");
-  agregar3d("pool[s] = 0;");
-  agregar3d("s = s + 1;");
-  agregar3d("goto " + lsalida + ";");
-  agregar3d(lf + ":");
+  agregar3d("pool [ s ] = 0 ;");
+  agregar3d("s = s + 1 ;");
+  agregar3d("goto " + lsalida + " ;");
+  agregar3d(lf + " :");
   agregar3d("//se inicia la referecia para la cadena 'true'");
   agregar3d("//se agrego al pool el caracter 'f'");
-  agregar3d("pool[s] = " + "f".charCodeAt(0) + ";");
-  agregar3d("s = s + 1;");
+  agregar3d("pool [ s ] = " + "f".charCodeAt(0) + " ;");
+  agregar3d("s = s + 1 ;");
   agregar3d("//se agrego al pool el caracter 'a'");
-  agregar3d("pool[s] = " + "a".charCodeAt(0) + ";");
-  agregar3d("s = s + 1;");
+  agregar3d("pool [ s ] = " + "a".charCodeAt(0) + " ;");
+  agregar3d("s = s + 1 ;");
   agregar3d("//se agrego al pool el caracter 'l'");
-  agregar3d("pool[s] = " + "l".charCodeAt(0) + ";");
-  agregar3d("s = s + 1;");
+  agregar3d("pool [ s ] = " + "l".charCodeAt(0) + " ;");
+  agregar3d("s = s + 1 ;");
   agregar3d("//se agrego al pool el caracter 's'");
-  agregar3d("pool[s] = " + "s".charCodeAt(0) + ";");
-  agregar3d("s = s + 1;");
+  agregar3d("pool [ s ] = " + "s".charCodeAt(0) + " ;");
+  agregar3d("s = s + 1 ;");
   agregar3d("//se agrego al pool el caracter 'e'");
-  agregar3d("pool[s] = " + "e".charCodeAt(0) + ";");
-  agregar3d("s = s + 1;");
+  agregar3d("pool [ s ] = " + "e".charCodeAt(0) + " ;");
+  agregar3d("s = s + 1 ;");
   agregar3d("//se agrego al pool el final de la cadena");
-  agregar3d("pool[s] = 0;");
-  agregar3d("s = s + 1;");
-  agregar3d(lsalida + ":");
+  agregar3d("pool [ s ] = 0 ;");
+  agregar3d("s = s + 1 ;");
+  agregar3d(lsalida + " :");
   return {
     temp: t,
     tipo: Const.tstr
@@ -638,15 +638,15 @@ function concatenarNumCadena(op1, op2, tempSim) {
   var tempVal = getTemp();
   if(op1.tipo === Const.tnum){
     agregar3d("//se inicia la convercion del numero en OP1");
-    agregar3d(tempSim + " = p + " + amb.tam + ";");
+    agregar3d(tempSim + " = p + " + amb.tam + " ;");
     agregar3d("//se manda de parametro el temporal con el valor de OP1");
-    agregar3d(temp + " = " + tempSim + " + 1;");
-    agregar3d("stack[" + temp + "] = " + op1.temp + ";");
-    agregar3d("p = p + " + amb.tam + ";");
-    agregar3d("$$_convertirNumAStr();");
-    agregar3d(tempRet + " = p + 0;");
-    agregar3d(tempVal + " = stack[" + tempRet + "];");
-    agregar3d("p = p - " + amb.tam + ";");
+    agregar3d(temp + " = " + tempSim + " + 1 ;");
+    agregar3d("stack [ " + temp + " ] = " + op1.temp + " ;");
+    agregar3d("p = p + " + amb.tam + " ;");
+    agregar3d("$$_convertirNumAStr() ;");
+    agregar3d(tempRet + " = p + 0 ;");
+    agregar3d(tempVal + " = stack [ " + tempRet + " ] ;");
+    agregar3d("p = p - " + amb.tam + " ;");
     op1 = {
       temp: tempVal,
       tipo: Const.tstr
@@ -654,19 +654,34 @@ function concatenarNumCadena(op1, op2, tempSim) {
   }
   if(op2.tipo === Const.tnum){
     agregar3d("//se inicia la convercion del numero en OP2");
-    agregar3d(tempSim + " = p + " + amb.tam + ";");
+    agregar3d(tempSim + " = p + " + amb.tam + " ;");
     agregar3d("//se manda de parametro el temporal con el valor de OP2");
-    agregar3d(temp + " = " + tempSim + " + 1;");
-    agregar3d("stack[" + temp + "] = " + op2.temp + ";");
-    agregar3d("p = p + " + amb.tam + ";");
-    agregar3d("$$_convertirNumAStr();");
-    agregar3d(tempRet + " = p + 0;");
-    agregar3d(tempVal + " = stack[" + tempRet + "];");
-    agregar3d("p = p - " + amb.tam + ";");
+    agregar3d(temp + " = " + tempSim + " + 1 ;");
+    agregar3d("stack [ " + temp + " ] = " + op2.temp + " ;");
+    agregar3d("p = p + " + amb.tam + " ;");
+    agregar3d("$$_convertirNumAStr() ;");
+    agregar3d(tempRet + " = p + 0 ;");
+    agregar3d(tempVal + " = stack [ " + tempRet + " ] ;");
+    agregar3d("p = p - " + amb.tam + " ;");
     op2 = {
       temp: tempVal,
       tipo: Const.tstr
     };
   }
   return concatenarCadenas(op1, op2, getTemp());
+}
+
+function recolectarNombres(lid) {
+  var variable = buscarVariable(lid.hijos[0]);
+  var amb = buscarAmbito(tabla[0], "global#" + variable.variable.tipoElemento);
+  var nombreRet = amb.nombre;
+  for (var i = 1; i < lid.hijos.length; i++) {
+    variable = buscarVariableEnAmbito(amb, lid.hijos[i]);
+    amb = buscarAmbito(tabla[0], variable.ambito + "#" + variable.tipoElemento);
+    if(amb === null)
+      amb = buscarAmbito(tabla[0], "global#" + variable.tipoElemento);
+    nombreRet = amb.nombre;
+  }
+  //alert(nombreRet);
+  return nombreRet;
 }

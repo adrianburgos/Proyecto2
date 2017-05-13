@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Debugger</title>
+	<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.css">
+	<script type="text/javascript" src="../jquery-3.2.0.min.js"></script>
+	<script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
+  <script type="text/javascript" src="../js/debugger/manejoCodigo.js"></script>
+  <script type="text/javascript" src="../js/debugger/manejoVariables.js"></script>
+  <script type="text/javascript" src="../js/debugger/debugg.js"></script>
+  <script type="text/javascript" src="../js/Const.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      codigo3d = localStorage["codigo3d"];
+      //$("#taCodigo3d").val(codigo3d);
+      obtenerEstructura3d();
+      console.log(ejecutable);
+			recorrerEjecutable("Principal(){");
+			$('#barra').css('width',  (100 - velocidad / 55)+'%').attr('aria-valuenow', (100 - velocidad / 55));
+
+			$("#bAumentar").click(function() {
+				velocidad = velocidad / 2;
+				if (velocidad < 50) {
+					velocidad = 50;
+				}
+				$('#barra').css('width',  (100 - velocidad / 55)+'%').attr('aria-valuenow', (100 - velocidad / 55));
+			});
+			$("#bDisminuir").click(function() {
+				velocidad = velocidad * 2;
+				if (velocidad > 5000) {
+					velocidad = 5000;
+				}
+				$('#barra').css('width',  (100 - velocidad / 55)+'%').attr('aria-valuenow', (100 - velocidad / 55));
+			});
+
+			$("#bDetener").click(function(e) {
+			  e.preventDefault();
+			  estaDetenido = true;
+			});
+
+			$("#bEjecutar").click(function(e) {
+			  e.preventDefault();
+			  estaDetenido = false;
+			});
+
+			$("#bSiguiente").click(function () {
+				siguiente = true;
+			});
+    });
+  </script>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">Basic 3D</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+							<li><a href="../paginas/reportes/tablaDeSimbolos.html" target="_blank"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Tabla de simbolos</a></li>
+              <li><a href="../paginas/reportes/tablaDeErrores.html" target="_blank"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Reporte de errores</a></li>
+							<li><a href="#" target="_blank"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> Mostrar codigo de 3 direcciones</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+  <div class="container">
+		<div class="row">
+			<div id="col-mid-12">
+				<div class="progress">
+					<div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%" id="barra">
+					</div>
+				</div>
+			</div>
+		</div>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Debugger Basic 3D</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="btn-group btn-group-justified" role="toolbar" aria-label="First group">
+									<div class="btn-group" role="group">
+										<button id="bEjecutar" class="btn btn-success btn-lg">
+											<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+										</button>
+									</div>
+									<div class="btn-group" role="group">
+											<button id="bDisminuir" class="btn btn-primary btn-lg">
+												<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+											</button>
+									</div>
+									<div class="btn-group" role="group">
+											<button id="bAumentar" class="btn btn-primary btn-lg">
+												<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+											</button>
+									</div>
+									<div class="btn-group" role="group">
+											<button id="bSiguiente" class="btn btn-info btn-lg">
+												<span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
+											</button>
+									</div>
+									<div class="btn-group" role="group">
+											<button id="bDetener" class="btn btn-info btn-lg">
+												<span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+											</button>
+									</div>
+									<div class="btn-group" role="group">
+											<button id="bTerminar" class="btn btn-danger btn-lg">
+												<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+											</button>
+									</div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+								<table class="table" id="tablaCodigo">
+				        </table>
+                <!-- <textarea style="height: 503px; width: 100%;" id = "taCodigo3d"></textarea> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <table class="table table-hover" id="tablaStack">
+          <tr class="active">
+            <th><h5>Stack</h5></th>
+            <th><h2>P = 0</h2></th>
+					</tr>
+        </table>
+      </div>
+      <div class="col-sm-2">
+        <table class="table table-hover" id="tablaHeap">
+          <tr class="active">
+            <th><h5>Heap</h5></th>
+            <th><h2>H = 0</h2></th>
+          </tr>
+        </table>
+      </div>
+      <div class="col-sm-4">
+        <table class="table table-hover" id="tablaPool">
+          <tr class="active">
+            <th><h5>Pool</h5></th>
+            <th><h2>S = 0</h2></th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

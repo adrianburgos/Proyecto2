@@ -133,7 +133,6 @@ DECVAR          :   TIPO LVARIABLES ASIG {
                         };
                     };
 ASIG            :   ':' VALOR { $$ = $2; }
-                |   ':' 'create' '(' id ')' { $$ = {nombre : "NUEVO", id : $4}; }
                 |   { $$ = {nombre : "NULL", valor : "NULL"}; };
 LVARIABLES      :   LVARIABLES ',' id {
                         var lid = {nombre : "LID", hijos:[$3]};
@@ -248,7 +247,8 @@ ASIGNACION      :   LID '=' VALOR {
                             nombre : "ASIGNACION",
                             hijos : [$1, $3]
                         };
-                    };
+                    }
+                |   LID '=' ;
 
 SI              :   'if' '(' VALOR ')' 'then' '{' LCUERPO '}' ELSE {
                         $$ = {
@@ -392,6 +392,7 @@ E               :   E '+' E { $$ = {nombre :$2, hijos:[$1, $3]}; }
                 |   'true' { $$ = {nombre : "bool", valor : $1}; }
                 |   'false' { $$ = {nombre : "bool", valor : $1}; }
                 |   'NULL' { $$ = {nombre : "NULL", valor : $1}; }
+                |   'create' '(' id ')' { $$ = {nombre : "NUEVO", id : $3}; }
                 |   LID { $$ = $1; }
                 |   LLAMADO { $$ = $1; }
                 |   '(' VALOR ')' { $$ = $2; };

@@ -24,7 +24,7 @@ function buscarVariable(id) {
     }
     tamTotal += ambitoPadre.tam;
     t = getTemp();
-    agregar3d(t + " = p - " + tamTotal);
+    agregar3d(t + " = p - " + tamTotal + " ;");
     contAmb--;
   }
   return null;

@@ -14,6 +14,11 @@ var Const = {
   void: "void",
   verdadero: "true",
   falso: "false",
+  finMedoto: "finMetodo",
+  etiqueta: "etiqueta",
+  _if: "if",
+  _goto: "goto",
+  _void: "void",
   SI: "SI",
   SELECCION: "SELECCION",
   LCASOS: "LCASOS",
@@ -34,6 +39,12 @@ var Const = {
   PRINCIPAL: "PRINCIPAL",
   ELEMENT: "ELEMENT",
   DECVAR: "DECVAR",
+  NUEVO: "NUEVO",
   ARRAY: "ARRAY",
-  FUNCION: "FUNCION"
+  FUNCION: "FUNCION",
+  ASIGNACION: "ASIGNACION",
+  ASIGNACIONST: "ASIGNACIONST",
+  ASIGNACIONTS: "ASIGNACIONTS",
+  ASIGNACIONTOT: "ASIGNACIONTOT",
+  ASIGNACIONTT: "ASIGNACIONTT"
 };

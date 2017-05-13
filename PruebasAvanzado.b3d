@@ -1,6 +1,6 @@
 Principal(){
   num a : 40 * 8;
-  nodo n;
+  Nodo n;
   array : x [1..6][9..7][21..35] of num;
   for(num i : 0; i<5; i = i + 3){
     str x:"hola"+ 50.3;
@@ -29,17 +29,19 @@ str : funcion(num par1, num par3){
 ------------------------------------------------------------------------------
 Principal(){
   num a : 40 * 8;
-  for(num i : 0; 3<5; i = 1 + 3){
-    str x:"hola";
-    if(4>0 && 8 < 99*8) then {
-      bool flag3 : true;
-    }else{
-      bool flag : true;
-      if(4>0 && 8 < 99*8) then {
-        bool flag2 : true;
-        a = 3 * 8 ^ a +3 -7 / (-3 + 6);
-    }
-    }
+  for(num i : 0; i<5; i = 1 + 3){
+    a = a + i;
+  }
+}
+------------------------------------------------------------------------------
+Principal(){
+  num a : 40 * 8;
+  num x : a / 4;
+  str cad : "cadena inicial";
+  if(x < a) then{
+    cad = "verdadero";
+  } else {
+    cad = "falso";
   }
 }
 ------------------------------------------------------------------------------
@@ -78,10 +80,10 @@ Principal(){
 }
 ------------------------------------------------------------------------------
 Principal(){
-  num a : 40 * 8;
+  num a : 0;
   do {
-      a = 3 * 8 ^ 6 +3 -7 / (-3 + 6);
-  } while(3 > 4)
+      a =  a + 2;
+  } while( 8 >= a*2 && true)
 }
 ------------------------------------------------------------------------------
 Principal(){
@@ -146,5 +148,16 @@ element : Arbol{
     Nodo der :NULL;
   }
   Nodo izq : NULL;
+  str titulo : "Sin titulo";
+}
+
+element : Arbol{
+  element : Nodo {
+    num valor : 15*4;
+    str cadena : "'Cadena de Nodo dentro de arbol!'";
+    Nodo izq : NULL;
+    Nodo der :NULL;
+  }
+  Nodo raiz : NULL;
   str titulo : "Sin titulo";
 }
