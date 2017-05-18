@@ -1,7 +1,27 @@
+var coloresAmbitos = ["#9cce94"];
+var posAmbito = [0];
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#9c';
+    for (var i = 2; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
 function buscarEtiqueta(etq) {
   for (var i = 0; i < ejecutable.length; i++) {
     if (ejecutable[i].accion === Const.etiqueta && ejecutable[i].d1 === etq) {
       return i;
+    }
+  }
+}
+
+function buscarFuncion(nombre) {
+  for (var pos = 0; pos < ejecutable.length; pos++) {
+    if (ejecutable[pos].accion === Const._void && ejecutable[pos].d1 === nombre) {
+      return pos;
     }
   }
 }
@@ -55,6 +75,18 @@ function setTemporal(temp, valor) {
       tam = stack.length;
       for (var j = 0; j < valor - tam; j++)
         stack.push(-501788630);
+      if(p < valor){
+        coloresAmbitos.push(getRandomColor());
+        posAmbito.push(valor - 1);
+      }
+      if (p > valor) {
+        coloresAmbitos.pop();
+        var cant = stack.length - p;
+        for (var ii = 0; ii < cant ; ii++) {
+          stack.pop();
+        }
+        posAmbito.pop();
+      }
       p = valor;
       esta = true;
       break;
@@ -110,6 +142,7 @@ function actualizarTablas() {
   actualizarStack();
   actualizarHeap();
   actualizarPool();
+  $("#taConsola").val(consola);
 }
 
 function actualizarStack() {
@@ -118,9 +151,12 @@ function actualizarStack() {
   "<th><h5>Stack</h5></th>" +
   "<th><h2>P = " + p +"</h2></th>" +
   "</tr>";
+  var posamb = 0;
   for (var i = 0; i < stack.length; i++) {
-    html += "<tr>" +
-      "<td>" + i + "</td>" +
+    if(posamb < posAmbito.length && i > posAmbito[posamb + 1])
+      posamb++;
+    html += "<tr bgcolor = " + coloresAmbitos[posamb] + ">";
+    html += "<td>" + i + "</td>" +
       "<td>" + stack[i] + "</td>" +
       "</tr>";
   }

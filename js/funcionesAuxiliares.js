@@ -14,7 +14,6 @@ function ejecutarAritmetica(op1, op2, operador) {
           res.temp = t;
           res.tipo = Const.tnum;
           break;
-          //TODO: Concatenacion (cadena-cadena cadena-numero cadena-bool)
         case 4://numero + cadena
           res = concatenarNumCadena(op1, op2, t);
           break;
@@ -684,4 +683,246 @@ function recolectarNombres(lid) {
   }
   //alert(nombreRet);
   return nombreRet;
+}
+
+function metodoGetBool(valor) {
+  var val = evaluarValor(valor.hijos[0]);
+  var temp = "tx";
+  var amb = buscarAmbito(tabla[0], ambito.join("#"));
+  if (val.tipo === Const.tstr) {
+    var t1 = getTemp();
+    var t2 = getTemp();
+    var t3 = getTemp();
+    temp = getTemp();
+    agregar3d("//se agrega la cadena como parametro de getBool");
+    agregar3dTOT(t1, "p", amb.tam, "+");
+    agregar3dTOT(t2, t1, "1", "+");
+    agregar3dST("stack", t2, val.temp);
+    agregar3dTOT("p", "p", amb.tam, "+");
+    agregar3d("$$_getBool() ;");
+    agregar3dTOT(t3, "p", "0", "+");
+    agregar3dTS(temp, "stack", t3);
+    agregar3dTOT("p", "p", amb.tam, "-");
+  } else {
+    var er = {
+      tipo: "Error Semantico",
+      descripcion: "La funcion getBool(str) no acepta un parametro de tipo [" + getTipo(val.tipo) + "]",
+      fila: 0,
+      columna: 0
+    };
+    agregarError(er);
+  }
+  return{
+    temp: temp,
+    tipo: Const.tbool
+  };
+}
+
+function metodoGetStrLength(valor) {
+  var val = evaluarValor(valor.hijos[0]);
+  var temp = "tx";
+  var amb = buscarAmbito(tabla[0], ambito.join("#"));
+  if (val.tipo === Const.tstr) {
+    var t1 = getTemp();
+    var t2 = getTemp();
+    var t3 = getTemp();
+    temp = getTemp();
+    agregar3d("//se agrega la cadena como parametro de getStrLength");
+    agregar3dTOT(t1, "p", amb.tam, "+");
+    agregar3dTOT(t2, t1, "1", "+");
+    agregar3dST("stack", t2, val.temp);
+    agregar3dTOT("p", "p", amb.tam, "+");
+    agregar3d("$$_getStrLength() ;");
+    agregar3dTOT(t3, "p", "0", "+");
+    agregar3dTS(temp, "stack", t3);
+    agregar3dTOT("p", "p", amb.tam, "-");
+  } else {
+    var er = {
+      tipo: "Error Semantico",
+      descripcion: "La funcion getLength(str) no acepta un parametro de tipo [" + getTipo(val.tipo) + "]",
+      fila: 0,
+      columna: 0
+    };
+    agregarError(er);
+  }
+  return{
+    temp: temp,
+    tipo: Const.tbool
+  };
+}
+
+function metodoOutStr(valor) {
+  var val = evaluarValor(valor.hijos[0]);
+  var temp = "tx";
+  var amb = buscarAmbito(tabla[0], ambito.join("#"));
+  if (val.tipo === Const.tstr) {
+    var t1 = getTemp();
+    var t2 = getTemp();
+    var t3 = getTemp();
+    agregar3d("//se agrega la cadena como parametro de outStr");
+    agregar3dTOT(t1, "p", amb.tam, "+");
+    agregar3dTOT(t2, t1, "1", "+");
+    agregar3dST("stack", t2, val.temp);
+    agregar3dTOT("p", "p", amb.tam, "+");
+    agregar3d("$$_outStr() ;");
+    agregar3dTOT("p", "p", amb.tam, "-");
+  } else {
+    var er = {
+      tipo: "Error Semantico",
+      descripcion: "La funcion outStr(str) no acepta un parametro de tipo [" + getTipo(val.tipo) + "]",
+      fila: 0,
+      columna: 0
+    };
+    agregarError(er);
+  }
+}
+
+function metodoOutNum(valor) {
+  var val1 = evaluarValor(valor.hijos[0]);
+  var val2 = evaluarValor(valor.hijos[1]);
+  var temp = "tx";
+  var amb = buscarAmbito(tabla[0], ambito.join("#"));
+  if (val1.tipo === Const.tnum) {
+    if (val2.tipo === Const.tbool) {
+      var t1 = getTemp();
+      var t2 = getTemp();
+      var t3 = getTemp();
+      var t4 = getTemp();
+      var t5 = getTemp();
+      agregar3d("//se agrega la cadena como parametro de outNum");
+      agregar3dTOT(t1, "p", amb.tam, "+");
+      agregar3dTOT(t2, t1, "1", "+");
+      agregar3dST("stack", t2, val1.temp);
+      agregar3dTOT(t3, "p", amb.tam, "+");
+      agregar3dTOT(t4, t3, "2", "+");
+      agregar3dST("stack", t4, val2.temp);
+      agregar3dTOT("p", "p", amb.tam, "+");
+      agregar3d("$$_outNum() ;");
+      agregar3dTOT("p", "p", amb.tam, "-");
+    } else {
+      var er1 = {
+        tipo: "Error Semantico",
+        descripcion: "La funcion outNum(num (1), bool (2)) no acepta en (2) un parametro de tipo [" + getTipo(val1.tipo) + "]",
+        fila: 0,
+        columna: 0
+      };
+      agregarError(er1);
+    }
+  } else {
+    var er2 = {
+      tipo: "Error Semantico",
+      descripcion: "La funcion outNum(num (1), bool (2)) no acepta en (1) un parametro de tipo [" + getTipo(val1.tipo) + "]",
+      fila: 0,
+      columna: 0
+    };
+    agregarError(er2);
+  }
+}
+
+function metodoInNum(valor) {
+  var val1 = evaluarValor(valor.hijos[0]);
+  var val2 = evaluarValor(valor.hijos[1]);
+  var temp = "tx";
+  var amb = buscarAmbito(tabla[0], ambito.join("#"));
+  if (val1.tipo === Const.tstr) {
+    if (val2.tipo === Const.tnum) {
+      var t1 = getTemp();
+      var t2 = getTemp();
+      var t3 = getTemp();
+      var t4 = getTemp();
+      var t5 = getTemp();
+      temp = getTemp();
+      agregar3d("//se agrega la cadena como parametro de inNum");
+      agregar3dTOT(t1, "p", amb.tam, "+");
+      agregar3dTOT(t2, t1, "1", "+");
+      agregar3dST("stack", t2, val1.temp);
+      agregar3dTOT(t3, "p", amb.tam, "+");
+      agregar3dTOT(t4, t3, "2", "+");
+      agregar3dST("stack", t4, val2.temp);
+      agregar3dTOT("p", "p", amb.tam, "+");
+      agregar3d("$$_inNum() ;");
+      agregar3dTOT(t5, "p", "0", "+");
+      agregar3dTS(temp, "stack", t5);
+      agregar3dTOT("p", "p", amb.tam, "-");
+    } else {
+      var er1 = {
+        tipo: "Error Semantico",
+        descripcion: "La funcion inNum(str (1), num (2)) no acepta en (2) un parametro de tipo [" + getTipo(val1.tipo) + "]",
+        fila: 0,
+        columna: 0
+      };
+      agregarError(er1);
+    }
+  } else {
+    var er2 = {
+      tipo: "Error Semantico",
+      descripcion: "La funcion inNum(str (1), num (2)) no acepta en (1) un parametro de tipo [" + getTipo(val1.tipo) + "]",
+      fila: 0,
+      columna: 0
+    };
+    agregarError(er2);
+  }
+  return{
+    temp: temp,
+    tipo: Const.tbool
+  };
+}
+
+function metodoInStr(sent) {
+  var val1 = resolverLID(sent.hijos[0]);
+  var val2 = evaluarValor(sent.hijos[1]);
+  var temp = "tx";
+  var amb = buscarAmbito(tabla[0], ambito.join("#"));
+  if (val1.tipo === Const.tstr) {
+    if (val2.tipo === Const.tstr) {
+      var t1 = getTemp();
+      var t2 = getTemp();
+      var t3 = getTemp();
+      temp = getTemp();
+      agregar3d("//se agrega el id como parametro de inStr");
+      agregar3dTOT(t1, "p", amb.tam, "+");
+      agregar3dTOT(t2, t1, "1", "+");
+      agregar3dST("stack", t2, val2.temp);
+      agregar3dTOT("p", "p", amb.tam, "+");
+      agregar3d("$$_inStr() ;");
+      agregar3dTOT(t3, "p", "0", "+");
+      agregar3dTS(temp, "stack", t3);
+      agregar3dTOT("p", "p", amb.tam, "-");
+      if(sent.hijos[0].hijos.length === 1)
+      {
+        if(!val1.esGlobal){
+          agregar3d("//se asigna el valor correspondiente a la variable [" + sent.hijos[0].hijos.join(".") + "] dentro de la pila");
+          agregar3d("stack [ " + val1.tempRef + " ] = " + temp + " ;");
+        } else {
+          agregar3d("//se asigna el valor correspondiente a la variable global [" + sent.hijos[0].hijos.join(".") + "] dentro del heap");
+          agregar3d("heap [ " + val1.tempRef + " ] = " + temp + " ;");
+        }
+      } else {
+        agregar3d("//se asigna el valor correspondiente a la variable [" + sent.hijos[0].hijos.join(".") + "] dentro del heap");
+        agregar3d("heap [ " + val1.tempRef + " ] = " + temp + " ;");
+      }
+    } else {
+      var er1 = {
+        tipo: "Error Semantico",
+        descripcion: "La funcion inStr(str (1), str (2)) no acepta en (2) un parametro de tipo [" + getTipo(val1.tipo) + "]",
+        fila: 0,
+        columna: 0
+      };
+      agregarError(er1);
+    }
+  } else {
+    var er2 = {
+      tipo: "Error Semantico",
+      descripcion: "La funcion inStr(str (1), str (2)) no acepta en (1) un parametro de tipo [" + getTipo(val1.tipo) + "]",
+      fila: 0,
+      columna: 0
+    };
+    agregarError(er2);
+  }
+}
+
+function aumentarDisplay(tam) {
+  for (var i = 0; i < display.length; i++) {
+    display[i].tam += tam;
+  }
 }

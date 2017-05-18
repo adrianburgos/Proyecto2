@@ -1,3 +1,194 @@
+function inStr() {
+  var t1 = getTemp();
+  var t2 = getTemp();
+  var t3 = getTemp();
+  var t4 = getTemp();
+  agregar3d("void $$_inStr(){");
+  agregar3dTOT(t1, "p", "1", "+");
+  agregar3dTS(t2, "stack", t1);
+  agregar3d("prompt ( " + t2 + " , " + t2 + " , " + Const.inStr +" )");
+  agregar3d("}");
+}
+
+function inNum() {
+  var t1 = getTemp();
+  var t2 = getTemp();
+  var t3 = getTemp();
+  var t4 = getTemp();
+  agregar3d("void $$_inNum(){");
+  agregar3dTOT(t1, "p", "1", "+");
+  agregar3dTS(t2, "stack", t1);
+  agregar3dTOT(t3, "p", "2", "+");
+  agregar3dTS(t4, "stack", t3);
+  agregar3d("prompt ( " + t2 + " , " + t4 + " , " + Const.inNum +" )");
+  agregar3d("}");
+}
+
+
+function outNum() {
+  var t1 = getTemp();
+  var t2 = getTemp();
+  var t3 = getTemp();
+  var t4 = getTemp();
+  var l1 = getEtq();
+  var l2 = getEtq();
+  var l3 = getEtq();
+  agregar3d("void $$_outNum(){");
+  agregar3dTOT(t1, "p", "1", "+");
+  agregar3dTS(t2, "stack", t1);
+  agregar3dTOT(t3, "p", "2", "+");
+  agregar3dTS(t4, "stack", t3);
+  agregar3d("if( " + t4 + " != 0 )goto " + l1 + " ;");
+  agregar3d("goto " + l2 + " ;");
+  agregar3d(l1 + " :");
+  agregar3d("printf ( %d , " + t2 + " ) ;");
+  agregar3d("goto " + l3 + " ;");
+  agregar3d(l2 + " :");
+  agregar3d("printf ( %f , " + t2 + " ) ;");
+  agregar3d(l3 + " :");
+  agregar3d("printf ( %c , 13 ) ;");
+  agregar3d("}");
+}
+
+function outStr() {
+  var t1 = getTemp();
+  var t2 = getTemp();
+  var t3 = getTemp();
+  var t4 = getTemp();
+  var l1 = getEtq();
+  var l2 = getEtq();
+  var l3 = getEtq();
+  agregar3d("void $$_outStr(){");
+  agregar3d(t1 + " = p + 1 ;");
+  agregar3d(t2 + " = stack [ " + t1 + " ] ;");
+  agregar3d(t3 + " = heap [ " + t2 + " ] ;");
+  agregar3d(t4 + " = pool [ " + t3 + " ] ;");
+  agregar3d(l1 + " :");
+  agregar3d("if( " + t4 + " != 0 )goto " + l2 + " ;");
+  agregar3d("goto " + l3 + " ;");
+  agregar3d(l2 + " :");
+  agregar3d("printf ( %c , " + t4 + " ) ;");
+  agregar3d(t3 + " = " + t3 + " + 1 ;");
+  agregar3d(t4 + " = pool [ " + t3 + " ] ;");
+  agregar3d("goto " + l1 + " ;");
+  agregar3d(l3 + " :");
+  agregar3d("printf ( %c , 13 ) ;");
+  agregar3d("}");
+}
+
+function getStrLength() {
+  var t1 = getTemp();
+  var t2 = getTemp();
+  var t3 = getTemp();
+  var t4 = getTemp();
+  var t5 = getTemp();
+  var t6 = getTemp();
+  var l1 = getEtq();
+  var l2 = getEtq();
+  var l3 = getEtq();
+  agregar3d("void $$_getStrLength(){");
+  agregar3d(t1 + " = p + 1 ;");
+  agregar3d(t2 + " = stack [ " + t1 + " ] ;");
+  agregar3d(t3 + " = heap [ " + t2 + " ] ;");
+  agregar3d(t4 + " = 0 ;");
+  agregar3d(l1 + " :");
+  agregar3d(t5 + " = pool [ " + t3 + " ] ;");
+  agregar3d("if( " + t5 + " != 0 )goto " + l2 + " ;");
+  agregar3d("goto " + l3 + " ;");
+  agregar3d(l2 + " :");
+  agregar3d(t4 + " = " + t4 + " + 1 ;");
+  agregar3d(t3 + " = " + t3 + " + 1 ;");
+  agregar3d("goto " + l1 + " ;");
+  agregar3d(l3 + " :");
+  agregar3d(t6 + " = p + 0 ;");
+  agregar3d("stack [ " + t6 + " ] = " + t4 + " ;");
+  agregar3d("}");
+}
+
+function getBool() {
+  var t1 = getTemp();
+  var t2 = getTemp();
+  var t3 = getTemp();
+  var t4 = getTemp();
+  var t5 = getTemp();
+  var t6 = getTemp();
+  var l1 = getEtq();
+  var l2 = getEtq();
+  var l3 = getEtq();
+  var l4 = getEtq();
+  var l5 = getEtq();
+  var l6 = getEtq();
+  var l7 = getEtq();
+  var l8 = getEtq();
+  var l9 = getEtq();
+  var l10 = getEtq();
+  var l11 = getEtq();
+  var l12 = getEtq();
+  var l13 = getEtq();
+  var l14 = getEtq();
+  var l15 = getEtq();
+  var l16 = getEtq();
+  var l17 = getEtq();
+  var l18 = getEtq();
+  var lsalida = getEtq();
+  agregar3d("void $$_getBool(){");
+  agregar3d(t1 + " = p + 1 ;");
+  agregar3d(t2 + " = stack [ " + t1 + " ] ;");
+  agregar3d(t3 + " = heap [ " + t2 + " ] ;");
+  agregar3d(t4 + " = pool [ " + t3 + " ] ;");
+  agregar3d("if( " + t4 + " != 0 )goto " + l1 + " ;");
+  agregar3d("goto " + l2 + " ;");
+  agregar3d(l1 + " :");
+  agregar3d("if( " + t4 + " == " + "t".charCodeAt(0) + " )goto " + l3 + " ;");
+  agregar3d("goto " + l4 + " ;");
+  agregar3d(l3 + " :");
+  agregar3d(t3 + " = " + t3 + " + 1 ;");
+  agregar3d(t4 + " = pool [ " + t3 + " ] ;");
+  agregar3d("if( " + t4 + " != 0 )goto " + l5 + " ;");
+  agregar3d("goto " + l6 + " ;");
+  agregar3d(l5 + " :");
+  agregar3d("if( " + t4 + " == " + "r".charCodeAt(0) + " )goto " + l7 + " ;");
+  agregar3d("goto " + l8 + " ;");
+  agregar3d(l7 + " :");
+  agregar3d(t3 + " = " + t3 + " + 1 ;");
+  agregar3d(t4 + " = pool [ " + t3 + " ] ;");
+  agregar3d("if( " + t4 + " != 0 )goto " + l9 + " ;");
+  agregar3d("goto " + l10 + " ;");
+  agregar3d(l9 + " :");
+  agregar3d("if( " + t4 + " == " + "u".charCodeAt(0) + " )goto " + l11 + " ;");
+  agregar3d("goto " + l12 + " ;");
+  agregar3d(l11 + " :");
+  agregar3d(t3 + " = " + t3 + " + 1 ;");
+  agregar3d(t4 + " = pool [ " + t3 + " ] ;");
+  agregar3d("if( " + t4 + " != 0 )goto " + l13 + " ;");
+  agregar3d("goto " + l14 + " ;");
+  agregar3d(l13 + " :");
+  agregar3d("if( " + t4 + " == " + "e".charCodeAt(0) + " )goto " + l15 + " ;");
+  agregar3d("goto " + l16 + " ;");
+  agregar3d(l15 + " :");
+  agregar3d(t3 + " = " + t3 + " + 1 ;");
+  agregar3d(t4 + " = pool [ " + t3 + " ] ;");
+  agregar3d("if( " + t4 + " == 0 )goto " + l17 + " ;");
+  agregar3d("goto " + l18 + " ;");
+  agregar3d(l17 + " :");
+  agregar3d(t5 + " = p + 0 ;");
+  agregar3d("stack [ " + t5 + " ] = 1 ;");
+  agregar3d("goto " + lsalida + " ;");
+  agregar3d(l2 + " :");
+  agregar3d(l4 + " :");
+  agregar3d(l6 + " :");
+  agregar3d(l8 + " :");
+  agregar3d(l10 + " :");
+  agregar3d(l12 + " :");
+  agregar3d(l14 + " :");
+  agregar3d(l16 + " :");
+  agregar3d(l18 + " :");
+  agregar3d(t6 + " = p + 0 ;");
+  agregar3d("stack [ " + t6 + " ] = 0 ;");
+  agregar3d(lsalida+ " :");
+  agregar3d("}");
+}
+
 function concatenar() {
   var temp1 = getTemp();
   var temp2 = getTemp();
@@ -107,6 +298,7 @@ function convertirNumAStr() {
   agregar3d("s = s + 1 ;");
   agregar3d(t1 + " = " + t1 + " - " + t4 + " ;");
   agregar3d("goto " + lciclo1 + " ;");
+  agregar3d(l4 + " :");
   agregar3d("if( " + t1 + " > 0 )goto " + l5 + " ;");
   agregar3d("goto " + l6 + " ;");
   agregar3d(l5 + " :");
@@ -135,6 +327,12 @@ function convertirNumAStr() {
 }
 
 function crearMetodosEstandar() {
-  //convertirNumAStr();
-  //concatenar();
+  inStr();
+  inNum();
+  outNum();
+  outStr();
+  getStrLength();
+  getBool();
+  convertirNumAStr();
+  concatenar();
 }

@@ -1,3 +1,4 @@
+var posLLamados = [];
 var ejecutable = [];
 var temporales = [];
 var stack = [];
@@ -54,12 +55,16 @@ function obtenerEstructura3d() {
         inst = { detener: true, accion: Const._goto, fila: i, d1: separado[1], d2: "", d3: "", op: "" };
       } else if (sent.search(Const._void) >= 0) {
         inst = { detener: false, accion: Const._void, fila: i, d1: separado[1], d2: "", d3: "", op: "" };
-      } else if (sent.search('L') >= 0) {
+      } else if (sent.search('L') === 0) {
         inst = { detener: true, accion: Const.etiqueta, fila: i, d1: separado[0], d2: "", d3: "", op: "" };
+      } else if (sent.search('printf') === 0) {
+        inst = { detener: true, accion: Const.printf, fila: i, d1: separado[2], d2: separado[4], d3: "", op: "" };
+      } else if (sent.search('prompt') === 0) {
+        inst = { detener: true, accion: Const.prompt, fila: i, d1: separado[2], d2: separado[4], d3: separado[6], op: "" };
       } else if (sent.search('}') >= 0) {
         inst = { detener: true, accion: Const.finMetodo, fila: i, d1: "", d2: "", d3: "", op: "" };
-      } else if (sent.search("();") >= 0) {
-        inst = { detener: true, accion: Const.LLAMADO, fila: i, d1: "", d2: "", d3: "", op: "" };
+      } else if (sent.search("() ;") >= 0) {
+        inst = { detener: true, accion: Const.LLAMADO, fila: i, d1: separado[0], d2: "", d3: "", op: "" };
       }
       ejecutable.push(inst);
     } else {
@@ -69,14 +74,8 @@ function obtenerEstructura3d() {
   return ejecutable;
 }
 
-function recorrerEjecutable(nombre) {
-  var pos = -1;
-  for (var posPrin = 0; posPrin < ejecutable.length; posPrin++) {
-    if (ejecutable[posPrin].accion === Const._void && ejecutable[posPrin].d1 === nombre) {
-      pos = posPrin;
-      break;
-    }
-  }
+function recorrerEjecutable() {
+  var pos = buscarFuncion("Principal(){");
   if(pos !== -1)
   {
     var p = {pos: pos};
@@ -97,8 +96,14 @@ function recorrerEjecutable(nombre) {
 }
 
 function ejecutarSentencia(p) {
-  if (p.pos <  ejecutable.length && ejecutable[p.pos].accion !== Const.finMetodo) {
-    ejecutar3d(ejecutable[p.pos], p);
+  if (p.pos <  ejecutable.length) {
+    if (ejecutable[p.pos].accion !== Const.finMetodo) {
+      ejecutar3d(ejecutable[p.pos], p);
+    } else if (posLLamados.length > 0) {
+      //hay que regresar al metodo que realizo el llamado
+      p.pos = posLLamados.pop() + 1;
+      mostrarCodigo3d(p.pos);
+    }
   }
 }
 
@@ -182,9 +187,56 @@ function ejecutar3d(sent, pos) {
       }
       break;
     case Const.LLAMADO:
+      posLLamados.push(pos.pos);
+      pos.pos = buscarFuncion(sent.d1 + "{");
+      break;
+    case Const.EXIT:
+
+      break;
+    case Const.printf:
+      val1 = getTemporal(sent.d2);
+      if(sent.d1 === "%c")
+        consola += String.fromCharCode(val1);
+      else if (sent.d1 === "%d")
+        consola += Math.round(val1);
+      else
+        consola += val1;
+      break;
+    case Const.prompt:
+      val1 = getTemporal(sent.d1);
+      val2 = getTemporal(sent.d2);
+      var msg = obtenerMensaje(val1);
+      if(sent.d3 === Const.inNum){
+        var x = prompt(msg, "");
+        if(!$.isNumeric(x))
+           x = val2;
+        stack[p] = Number(x);
+      } else if (sent.d3 === Const.inStr) {
+        var y = prompt(msg, "");
+        stack[p] = h;
+        heap[h] = s;
+        h = h + 1;
+        for (var i = 0; i < y.length; i++) {
+          pool[s] = y.charCodeAt(i);
+          s = s + 1;
+        }
+        pool[s] = 0;
+        s = s + 1;
+      }
       break;
   }
   pos.pos++;
   actualizarTablas();
   mostrarCodigo3d(pos.pos);
+}
+
+
+function obtenerMensaje(temp) {
+  var msg = "";
+  var heapVal = heap[temp];
+  while (pool[heapVal] !== 0) {
+    msg += String.fromCharCode(pool[heapVal]);
+    heapVal++;
+  }
+  return msg;
 }

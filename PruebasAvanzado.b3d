@@ -29,7 +29,7 @@ str : funcion(num par1, num par3){
 ------------------------------------------------------------------------------
 Principal(){
   num a : 40 * 8;
-  for(num i : 0; i<5; i = 1 + 3){
+  for(num i : 0; i<5; i = i + 1){
     a = a + i;
   }
 }
@@ -112,6 +112,16 @@ Principal(){
   loop a {
       a = 3 * 8 ^ 6 +3 -7 / (-3 + 6);
   }
+}
+------------------------------------------------------------------------------
+str a;
+Principal(){
+%%Arbol ar : create(Arbol);
+%%ar.raiz = create(Nodo);
+str b;
+num c : 2332423;
+inStr(a,"inStr para una varible global 'a'" + " no se" + c);
+inStr(b,"inStr para una varible local 'b'");
 }
 ----------------------------------ELEMENTOS-----------------------------------
 element : Nodo {

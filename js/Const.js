@@ -19,6 +19,19 @@ var Const = {
   _if: "if",
   _goto: "goto",
   _void: "void",
+
+  getBool: 'getBool',
+  getNum: 'getNum',
+  outStr: 'outStr',
+  outNum: 'outNum',
+  inStr: 'inStr',
+  inNum: 'inNum',
+  show: 'show',
+  getRandom: 'getRandom',
+  getLength: 'getLength',
+  printf: 'printf',
+  prompt: 'prompt',
+
   SI: "SI",
   SELECCION: "SELECCION",
   LCASOS: "LCASOS",
@@ -46,5 +59,6 @@ var Const = {
   ASIGNACIONST: "ASIGNACIONST",
   ASIGNACIONTS: "ASIGNACIONTS",
   ASIGNACIONTOT: "ASIGNACIONTOT",
-  ASIGNACIONTT: "ASIGNACIONTT"
+  ASIGNACIONTT: "ASIGNACIONTT",
+  EXIT: "EXIT"
 };

@@ -72,6 +72,8 @@
 "whilex"                                                return 'whilex'
 "Principal"                                             return 'principal'
 
+"getBool"                                               return 'getBool'
+"getNum"                                                return 'getNum'
 "outStr"                                                return 'outStr'
 "outNum"                                                return 'outNum'
 "inStr"                                                 return 'inStr'
@@ -236,6 +238,8 @@ CUERPO          :   ASIGNACION ';' { $$ = $1; }
                 |   CONTAR { $$ = $1; }
                 |   HACERX { $$ = $1; }
                 |   LLAMADO ';' { $$ = $1; }
+                |   ESTANDARVALOR  ';' { $$ = $1; }
+                |   ESTANDARVOID  ';' { $$ = $1; }
                 |   'continue' ';' { $$ = { nombre : "CONTINUE"}; }
                 |   'break' ';' { $$ = { nombre : "BREAK", hijos : []}; }
                 |   'break' id ';' { $$ = { nombre : "BREAK", hijos : [$2]}; }
@@ -363,6 +367,13 @@ LVALOR          :   LVALOR ',' VALOR {
                 |   VALOR { $$ = { nombre : "LVALOR", hijos : [$1] }; }
                 |   { $$ = { nombre : "LVALOR", hijos : []}; };
 
+ESTANDARVALOR   :   'getBool' '(' VALOR ')' { $$ = { nombre : "getBool", hijos : [$3] }; }
+                |   'getLength' '(' VALOR ')' { $$ = { nombre : "getLength", hijos : [$3] }; }
+                |   'inNum' '(' VALOR ',' VALOR ')' { $$ = { nombre : "inNum", hijos : [$3, $5] }; };
+ESTANDARVOID    :   'outStr' '(' VALOR ')' { $$ = { nombre : "outStr", hijos : [$3] }; }
+                |   'outNum' '(' VALOR ',' VALOR ')' { $$ = { nombre : "outNum", hijos : [$3, $5] }; }
+                |   'inStr' '(' LID ',' VALOR ')' { $$ = { nombre : "inStr", hijos : [$3, $5] }; };
+
 VALOR           :   VALOR '||' VALOR { $$ = {nombre :$2, hijos:[$1, $3]}; }
                 |   VALOR '|&' VALOR { $$ = {nombre :$2, hijos:[$1, $3]}; }
                 |   VALOR '&&' VALOR { $$ = {nombre :$2, hijos:[$1, $3]}; }
@@ -393,6 +404,7 @@ E               :   E '+' E { $$ = {nombre :$2, hijos:[$1, $3]}; }
                 |   'false' { $$ = {nombre : "bool", valor : $1}; }
                 |   'NULL' { $$ = {nombre : "NULL", valor : $1}; }
                 |   'create' '(' id ')' { $$ = {nombre : "NUEVO", id : $3}; }
+                |   ESTANDARVALOR { $$ = $1; }
                 |   LID { $$ = $1; }
                 |   LLAMADO { $$ = $1; }
                 |   '(' VALOR ')' { $$ = $2; };

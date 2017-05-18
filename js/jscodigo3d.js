@@ -21,3 +21,27 @@ function getEtq() {
 function agregar3d(codigo) {
 	codigo3d += codigo + "\n";
 }
+
+function agregar3dTOT(d1, d2, d3, op) {
+	agregar3d(d1 + " = " + d2 + " " + op + " " + d3 + " ;");
+}
+
+function agregar3dTT(d1 , d2) {
+	agregar3d(d1 + " = " + d2 + " ;");
+}
+
+function agregar3dST(d1, d2, d3) {
+	agregar3d(d1 + " [ " + d2 + " ] = " + d3 + " ;");
+}
+
+function agregar3dTS(d1, d2, d3) {
+	agregar3d(d1 + " = " + d2 + " [ " + d3 + " ] ;");
+}
+
+function agregar3dEtq(etq) {
+	agregar3d(etq + " :");
+}
+
+function agregar3dGoto(etq) {
+	agregar3d("goto " + etq + " ;");
+}

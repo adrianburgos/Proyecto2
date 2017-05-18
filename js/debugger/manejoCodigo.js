@@ -1,3 +1,4 @@
+var consola = "";
 function mostrarCodigo3d(pos) {
   var sent = ejecutable[pos];
   var ini = 0;
@@ -19,4 +20,12 @@ function mostrarCodigo3d(pos) {
   }
   html += "</table>";
   $("#tablaCodigo").html(html);
+}
+
+function mostrarConsola() {
+  $("#taConsola").val = consola;
+}
+
+function agregarConsola(texto) {
+  consola += texto + "\n";
 }

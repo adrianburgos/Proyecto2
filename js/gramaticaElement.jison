@@ -138,7 +138,6 @@ DECVAR          :   TIPO LVARIABLES ASIG {
                         };
                     };
 ASIG            :   ':' VALOR { $$ = $2; }
-                |   ':' 'create' '(' id ')' { $$ = {nombre : "NUEVO", id : $4}; }
                 |   { $$ = {nombre : "NULL", valor : "NULL"}; };
 LVARIABLES      :   LVARIABLES ',' id {
                         var lid = {nombre : "LID", hijos:[$3]};
@@ -196,6 +195,10 @@ TIPO            :   'num' { $$ = $1; }
 
                     };
 
+ESTANDARVALOR   :   'getBool' '(' VALOR ')' { $$ = { nombre : "getBool", hijos : [$3] }; }
+                |   'getLength' '(' VALOR ')' { $$ = { nombre : "getLength", hijos : [$3] }; }
+                |   'inNum' '(' VALOR ',' VALOR ')' { $$ = { nombre : "inNum", hijos : [$3, $5] }; };
+
 VALOR           :   VALOR '||' VALOR { $$ = {nombre :$2, hijos:[$1, $3]}; }
                 |   VALOR '|&' VALOR { $$ = {nombre :$2, hijos:[$1, $3]}; }
                 |   VALOR '&&' VALOR { $$ = {nombre :$2, hijos:[$1, $3]}; }
@@ -225,7 +228,10 @@ E               :   E '+' E { $$ = {nombre :$2, hijos:[$1, $3]}; }
                 |   'true' { $$ = {nombre : "bool", valor : $1}; }
                 |   'false' { $$ = {nombre : "bool", valor : $1}; }
                 |   'NULL' { $$ = {nombre : "NULL", valor : $1}; }
+                |   'create' '(' id ')' { $$ = {nombre : "NUEVO", id : $3}; }
+                |   ESTANDARVALOR { $$ = $1; }
                 |   LID { $$ = $1; }
+                |   LLAMADO { $$ = $1; }
                 |   '(' VALOR ')' { $$ = $2; };
 
 LID             :   LID '.' id {
