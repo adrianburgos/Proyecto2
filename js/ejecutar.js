@@ -56,6 +56,7 @@ function ejecutarArbol(cuerpo) {
           }
           agregar3d("//regreso de ambito para el if");
           agregar3d("p = p - " + ambActual.tam + " ;");
+          disminuirDisplay(ambActual.tam);
         } else {
           er = {
             tipo: "Error Semantico",
@@ -71,10 +72,11 @@ function ejecutarArbol(cuerpo) {
         //TODO: verificar sentencias de escape con DISPLAY dentro de ciclos
         ambActual = buscarAmbito(tabla[0], ambito.join("#"));
         aumentarDisplay(ambActual.tam);
-        objDisplay = {
+        var objDisplay = {
           // detener: false,
           // continuar: false,
           // retornar: false,
+          nombre: "",
           id: "",
           lsalida: getEtq(),
           lsig: getEtq(),
@@ -97,13 +99,13 @@ function ejecutarArbol(cuerpo) {
           agregar3d(val.lv.join(" :\n") + " :");
           lcuerpo = sent.hijos[1];
           ejecutarArbol(lcuerpo);
-          agregar3d("//etiqueta de siguiente");
+          agregar3d("//etiqueta de siguiente del while");
           agregar3dEtq(objDisplay.lsig);
           agregar3d("//salto a etiqueta de inicio del while");
           agregar3d("goto " + l + " ;");
           agregar3d("//etiquetas de falso del while");
           agregar3d(val.lf.join(" :\n") + " :");
-          agregar3d("//etiqueta de salida");
+          agregar3d("//etiqueta de salida del while");
           agregar3dEtq(objDisplay.lsalida);
         } else {
           er = {
@@ -116,6 +118,7 @@ function ejecutarArbol(cuerpo) {
         }
         ambito.pop();
         display.pop();
+        disminuirDisplay(ambActual.tam);
         agregar3d("//regreso de ambito para el while");
         agregar3d("p = p - " + ambActual.tam + " ;");
         break;
@@ -126,6 +129,7 @@ function ejecutarArbol(cuerpo) {
           // detener: false,
           // continuar: false,
           // retornar: false,
+          nombre: "",
           id: "",
           lsalida: getEtq(),
           lsig: getEtq(),
@@ -148,13 +152,13 @@ function ejecutarArbol(cuerpo) {
         {
           agregar3d("//etiquetas de verdadero del do-while");
           agregar3d(val.lv.join(" :\n") + " :");
-          agregar3d("//etiqueta de siguiente");
+          agregar3d("//etiqueta de siguiente del do-while");
           agregar3dEtq(objDisplay.lsig);
           agregar3d("//salto a etiqueta de inicio del do-while");
           agregar3dGoto(l);
           agregar3d("//etiquetas de falso del do-while");
           agregar3d(val.lf.join(" :\n") + " :");
-          agregar3d("//etiqueta de salida");
+          agregar3d("//etiqueta de salida del do-while");
           agregar3dEtq(objDisplay.lsalida);
         } else {
           er = {
@@ -167,6 +171,7 @@ function ejecutarArbol(cuerpo) {
         }
         ambito.pop();
         display.pop();
+        disminuirDisplay(ambActual.tam);
         agregar3d("//regreso de ambito para el do-while");
         agregar3d("p = p - " + ambActual.tam + " ;");
         break;
@@ -177,6 +182,7 @@ function ejecutarArbol(cuerpo) {
           // detener: false,
           // continuar: false,
           // retornar: false,
+          nombre: "",
           id: "",
           lsalida: getEtq(),
           lsig: getEtq(),
@@ -199,13 +205,13 @@ function ejecutarArbol(cuerpo) {
         {
           agregar3d("//etiquetas de falso del repeat-until");
           agregar3d(val.lf.join(" :\n") + " :");
-          agregar3d("//etiqueta de siguiente");
+          agregar3d("//etiqueta de siguiente del repeat-until");
           agregar3dEtq(objDisplay.lsig);
           agregar3d("//salto a etiqueta de inicio del repeat-until");
           agregar3d("goto " + l + " ;");
           agregar3d("//etiquetas de verdadero del repeat-until");
           agregar3d(val.lv.join(" :\n") + " :");
-          agregar3d("//etiqueta de salida");
+          agregar3d("//etiqueta de salida del repeat-until");
           agregar3dEtq(objDisplay.lsalida);
         } else {
           er = {
@@ -218,6 +224,7 @@ function ejecutarArbol(cuerpo) {
         }
         ambito.pop();
         display.pop();
+        disminuirDisplay(ambActual.tam);
         agregar3d("//regreso de ambito para el repeat-until");
         agregar3d("p = p - " + ambActual.tam + " ;");
         break;
@@ -228,6 +235,7 @@ function ejecutarArbol(cuerpo) {
           // detener: false,
           // continuar: false,
           // retornar: false,
+          nombre: "",
           id: "",
           lsalida: getEtq(),
           lsig: getEtq(),
@@ -258,7 +266,7 @@ function ejecutarArbol(cuerpo) {
           agregar3d("//se ejecuta el cuerpo del for");
           lcuerpo = sent.hijos[3];
           ejecutarArbol(lcuerpo);
-          agregar3d("//etiqueta de siguiente");
+          agregar3d("//etiqueta de siguiente del for");
           agregar3dEtq(objDisplay.lsig);
           agregar3d("//aumento del for");
           asignarVariable(sent.hijos[2]);
@@ -266,7 +274,7 @@ function ejecutarArbol(cuerpo) {
           agregar3d("goto " + l + " ;");
           agregar3d("//etiquetas de falso del for");
           agregar3d(val.lf.join(" :\n") + " :");
-          agregar3d("//etiqueta de salida");
+          agregar3d("//etiqueta de salida del for");
           agregar3dEtq(objDisplay.lsalida);
         } else {
           er = {
@@ -279,6 +287,7 @@ function ejecutarArbol(cuerpo) {
         }
         ambito.pop();
         display.pop();
+        disminuirDisplay(ambActual.tam);
         agregar3d("//regreso de ambito para el for");
         agregar3d("p = p - " + ambActual.tam + " ;");
         break;
@@ -290,6 +299,7 @@ function ejecutarArbol(cuerpo) {
           // detener: false,
           // continuar: false,
           // retornar: false,
+          nombre: "",
           id: sent.id,
           lsalida: getEtq(),
           lsig: getEtq(),
@@ -301,18 +311,19 @@ function ejecutarArbol(cuerpo) {
         //se agrega el ambito actual
         ambito.push(sent.nombre + contAmbActual);
         contAmbActual++;
-        agregar3d("//etiqueta de inicio de loop");
+        agregar3d("//etiqueta de inicio de loop-id");
         l = getEtq();
         agregar3d(l + " :");
-        agregar3d("//se ejecutar el cuerpo de loop");
+        agregar3d("//se ejecutar el cuerpo de loop-id");
         ejecutarArbol(sent.hijos[0]);
-        agregar3d("//etiqueta de siguiente");
+        agregar3d("//etiqueta de siguiente del loop-id");
         agregar3dEtq(objDisplay.lsig);
         agregar3d("goto " + l + " ;");
-        agregar3d("//etiqueta de salida");
+        agregar3d("//etiqueta de salida del loop-id");
         agregar3dEtq(objDisplay.lsalida);
         ambito.pop();
         display.pop();
+        disminuirDisplay(ambActual.tam);
         agregar3d("//regreso de ambito para el loop-id");
         agregar3d("p = p - " + ambActual.tam + " ;");
         break;
@@ -323,6 +334,7 @@ function ejecutarArbol(cuerpo) {
           // detener: false,
           // continuar: false,
           // retornar: false,
+          nombre: "",
           id: sent.id,
           lsalida: getEtq(),
           lsig: getEtq(),
@@ -371,6 +383,7 @@ function ejecutarArbol(cuerpo) {
         }
         ambito.pop();
         display.pop();
+        disminuirDisplay(ambActual.tam);
         agregar3d("//regreso de ambito para el count");
         agregar3d("p = p - " + ambActual.tam + " ;");
         break;
@@ -381,6 +394,7 @@ function ejecutarArbol(cuerpo) {
           // detener: false,
           // continuar: false,
           // retornar: false,
+          nombre: "",
           id: sent.id,
           lsalida: getEtq(),
           lsig: getEtq(),
@@ -397,6 +411,7 @@ function ejecutarArbol(cuerpo) {
         var val2 = ejecutarArbol(sent.hijos[2]);
         ambito.pop();
         display.pop();
+        disminuirDisplay(ambActual.tam);
         agregar3d("//regreso de ambito para el do-whilex");
         agregar3d("p = p - " + ambActual.tam + " ;");
         break;
@@ -439,6 +454,48 @@ function ejecutarArbol(cuerpo) {
       case Const.inStr:
         metodoInStr(sent);
         break;
+      case Const.LLAMADO:
+        hacerLlamado(sent);
+        break;
+      case Const.RETURN:
+        var existe = false;
+        var pos = display.length - 1;
+        while (!existe && pos >= 0) {
+          if(display[pos].nombre !== "")
+            existe = true;
+          pos--;
+        }
+        if(existe){
+          pos++;
+          agregar3d("//regreso de ambito por return");
+          agregar3dTOT("p", "p", display[pos].tam, "-");
+        }
+        var t1 = getTemp();
+        if(sent.hijos.length === 0)
+        {//el return no tiene hijos
+          agregar3dTOT(t1, "p", "0", "+");
+          agregar3dST("stack", t1, Const.NULL);
+        } else {
+          var valRet = evaluarValor(sent.hijos[0]);
+          if(valRet.tipo === display[pos].tipo && valRet.tipoElemento === display[pos].tipoElemento){
+            agregar3dTOT(t1, "p", "0", "+");
+            agregar3dST("stack", t1, valRet.temp);
+          } else {
+            agregar3dTOT(t1, "p", "0", "+");
+            agregar3dST("stack", t1, Const.NULL);
+            var er2 = {
+              tipo: "Error Semantico",
+              descripcion: "La funcion [" + display[pos].nombre + "] no ha sido declarada de tipo [" + getTipo(valRet.tipo) + " (" + valRet.tipoElemento + ") ]",
+  						fila: 0,
+  						columna: 0
+            };
+            agregarError(er2);
+          }
+        }
+        agregar3d("//goto return id [" + sent.hijos[0] + "]");
+        agregar3dGoto(display[pos].lsalida);
+        display[pos].retorno = true;
+        break;
     }
   }
 }
@@ -460,7 +517,7 @@ function evaluarValor(valor) {
       op2 = "";
       var codigo = "";
       var t = getTemp();
-      var res = {temp : "tx", tipo : -1};
+      var res = {temp : "tx", tipo : -1, tipoElemento: ""};
       if(valor.hijos.length === 1)
       {
         switch(op1.tipo)
@@ -535,18 +592,21 @@ function evaluarValor(valor) {
     case "numero" :
         return {
           temp : valor.valor,
-          tipo : Const.tnum
+          tipo : Const.tnum,
+          tipoElemento: ""
         };
     case Const.bool:
         if (valor.valor === "true")
           return {
             temp : "1",
-            tipo : Const.tbool
+            tipo : Const.tbool,
+            tipoElemento: ""
           };
         else
           return {
             temp : "0",
-            tipo : Const.tbool
+            tipo : Const.tbool,
+            tipoElemento: ""
           };
       break;
     case Const.LID:
@@ -570,7 +630,8 @@ function evaluarValor(valor) {
     case "NULL" :
       return {
         temp : Const.NULL,
-        tipo : -1
+        tipo : Const.tid,
+        tipoElemento : "NULL"
       };
     case Const.cadena:
       agregar3d("//se inicia la referecia para la cadena '" + valor.valor + "'");
@@ -588,12 +649,14 @@ function evaluarValor(valor) {
       agregar3d("s = s + 1 ;");
       return{
         temp: temp,
-        tipo: Const.tstr
+        tipo: Const.tstr,
+        tipoElemento: ""
       };
     case Const.NUEVO:
       return {
         temp: "tx",
-        tipo: Const.tid
+        tipo: Const.tid,
+        tipoElemento: ""
       };
     case Const.getBool:
       return metodoGetBool(valor);
@@ -601,6 +664,8 @@ function evaluarValor(valor) {
       return metodoGetStrLength(valor);
     case Const.inNum:
       return metodoInNum(valor);
+    case Const.LLAMADO:
+      return hacerLlamado(valor);
   }//fin del switch
 }
 
@@ -659,12 +724,22 @@ function decVariable(sent) {
   for (var i = 0; i < lvariables.hijos.length; i++) {
     var lid = lvariables.hijos[i];
     var resid = resolverLID(lid);
-    if(!resid.esGlobal){
-      agregar3d("//se asigna el valor correspondiente a la variable [" + lid.hijos.join(".") + "] dentro de la pila");
-      agregar3d("stack [ " + resid.tempRef + " ] = " + val.temp + " ;");
+    if(resid.tipo === val.tipo){
+      if(!resid.esGlobal){
+        agregar3d("//se asigna el valor correspondiente a la variable [" + lid.hijos.join(".") + "] dentro de la pila");
+        agregar3d("stack [ " + resid.tempRef + " ] = " + val.temp + " ;");
+      } else {
+        agregar3d("//se asigna el valor correspondiente a la variable global [" + lid.hijos.join(".") + "] dentro de la pila");
+        agregar3d("heap [ " + resid.tempRef + " ] = " + val.temp + " ;");
+      }
     } else {
-      agregar3d("//se asigna el valor correspondiente a la variable global [" + lid.hijos.join(".") + "] dentro de la pila");
-      agregar3d("heap [ " + resid.tempRef + " ] = " + val.temp + " ;");
+      var er = {
+        tipo: "Error Semantico",
+        descripcion: "No se pudo asignar [" + getTipo(resid.tipo) + "] = [" + getTipo(val.tipo) +"]",
+        fila: 0,
+        columna: 0
+      };
+      agregarError(er);
     }
   }
 }

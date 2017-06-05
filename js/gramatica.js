@@ -360,9 +360,9 @@ case 75:
                         this.$ = $$[$0];
                     
 break;
-case 76:
+case 76: case 117:
 
-                        $$[$0-2].hijos.push($$[$0-1]);
+                        $$[$0-2].hijos.push($$[$0]);
                         this.$ = $$[$0-2];
                     
 break;
@@ -431,12 +431,6 @@ case 111:
 break;
 case 112:
  this.$ = {nombre : "NUEVO", id : $$[$0-1]}; 
-break;
-case 117:
-
-                        $$[$0-2].hijos.push($$[$0]);
-                        this.$ = $$[$0-2];
-                    
 break;
 case 118:
  this.$ = {nombre : "LID", hijos:[$$[$0]]}; 

@@ -19,13 +19,19 @@
   <script type="text/javascript">
     $(document).ready(function () {
 			$("#bDebugg").prop('disabled', true);
+			$("#bOptimizar").prop('disabled', true);
 			$("#bDebugg").click(function() {
 				localStorage["codigo3d"] = codigo3d;
 				window.open("debugg.html","_blank");
 			});
+			$("#bOptimizar").click(function() {
+				localStorage["codigo3d"] = codigo3d;
+				window.open("optimizacion.html","_blank");
+			});
 			$("#mensajeError").hide();
       $("#bEjecutar").click(function () {
         try {
+					errores = [];
           //alert($("#taCodigo").val());
           var raiz = gramatica.parse($("#taCodigo").val());
 					//analizar elementos
@@ -41,9 +47,28 @@
           //$("#taEstructuras").html(String(e));
           console.log(e);
 					//TODO: recoleccion de errores lexicos y sintacticos
+					var er = {
+            tipo: "Error sintactico",
+            descripcion: e.message.replace("\n", "<br/>"),
+						fila: e.hash.loc.first_line,
+						columna: e.hash.loc.first_column
+          };
+          agregarError(er);
+					generarErrores();
+					localStorage["errores"] = htmlErrores;
+					if(errores.length >= 1){
+						$("#mensajeError").show();
+						$("#bDebugg").prop('disabled', true);
+						$("#bOptimizar").prop('disabled', true);
+					} else {
+						$("#mensajeError").hide();
+						$("#bDebugg").prop('disabled', false);
+						$("#bOptimizar").prop('disabled', false);
+						localStorage["codigo3d"] = codigo3d;
+					}
 					$("#mensajeError").show();
         }
-
+				if(errores.length < 1)
 				try {
 					reiniciar3d();
 					errores = [];
@@ -58,12 +83,6 @@
 					console.log(tabla);
 					amb3D = ["global"];
 					contAmbActual = 0;
-					//var principal = buscarPrincipal(raiz);
-					// if(principal !== null){
-					// 	amb3D.push("PRINCIPAL");
-					//   ejecutarArbol(principal.hijos[0]);
-					// } else
-					//   alert("No existe un metodo principal");
 					crearMetodosEstandar();
 					ejecutarArbolGeneral(raiz);
 					console.log(codigo3d);
@@ -72,9 +91,11 @@
 					if(errores.length >= 1){
 						$("#mensajeError").show();
 						$("#bDebugg").prop('disabled', true);
+						$("#bOptimizar").prop('disabled', true);
 					} else {
 						$("#mensajeError").hide();
 						$("#bDebugg").prop('disabled', false);
+						$("#bOptimizar").prop('disabled', false);
 						localStorage["codigo3d"] = codigo3d;
 					}
 				} catch (e) {
@@ -83,9 +104,11 @@
 					if(errores.length >= 1){
 						$("#mensajeError").show();
 						$("#bDebugg").prop('disabled', true);
+						$("#bOptimizar").prop('disabled', true);
 					} else {
 						$("#mensajeError").hide();
 						$("#bDebugg").prop('disabled', false);
+						$("#bOptimizar").prop('disabled', false);
 						localStorage["codigo3d"] = codigo3d;
 					}
 					console.log(e);
@@ -154,6 +177,11 @@
 											</button>
 									</div>
 									<div class="btn-group" role="group">
+											<button id="bOptimizar" class="btn btn-info btn-lg">
+												<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+											</button>
+									</div>
+									<div class="btn-group" role="group">
 										<button id="bGuardar" class="btn btn-primary btn-block btn-lg">
 											<span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>
 										</button>
@@ -198,23 +226,18 @@ Principal(){
             <div class="row">
               <div class="col-md-12">
                 <textarea style="height: 545px; width: 100%;" id = "taElementos">
-element : Arbol{
-	element : Nodo {
-		num valor : inNum("ingrese Nodo.valor", 50);
-		str cadena : "a" + "bc";
-		Nodo izq : NULL;
-		Nodo der :NULL;
-	}
-	Nodo raiz: NULL;
-	str titulo : "Sin titulo";
+element : Contacto {
+element : Contacto {
+	str nombre : "";
+	num telefono : 0; %% cuatro enteros, y cuatro decimales
+	Contacto siguiente : NULL;
+	Contacto anterior : NULL;
 }
-
-element : Nodo {
-		num valor : 15*4;
-		str cadena : "a" + "bc";
-		Nodo izq : NULL;
-		Nodo der :NULL;
-	}</textarea>
+	str nombre : "";
+	num telefono : 0; %% cuatro enteros, y cuatro decimales
+	Contacto siguiente : NULL;
+	Contacto anterior : NULL;
+}</textarea>
               </div>
             </div>
           </div>

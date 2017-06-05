@@ -1,4 +1,64 @@
 Principal(){
+  num a : 8;
+ do {
+  num c : 0;
+  for(num i : 0; i < getLength("hola"); i = i + 1) {
+    num b :inNum("Ingrese valor",50);
+    c = b;
+    if(c == i)then{
+      break;
+    } else {
+      if(b == 20) then{
+        break;
+      }else{
+        if(b == 25)then{
+        continue;
+        } else {
+          continue;
+          c = 100;
+        }
+      }
+    }
+    c = 200;
+  }
+    a=a+1;
+    if(a==11)then{
+      break;
+    }
+  } while(a<15)
+}
+
+------------------------------------------------------------------------------
+Principal(){
+  num a : 8;
+do {
+    for(num i :0; i<a;i = i+1){
+    num b :inNum("Ingrese valor",50);
+          outStr(i+'');
+          if(i==5)then{
+               break;
+          }else{
+               if(i==4)then{
+                   continue;
+                    i=10;
+               }
+
+          }
+    }
+    num b :inNum("Ingrese valor",50);
+    if(b == 20) then{
+      break;
+    }else{
+      if(b == 25)then{
+      continue;
+      }
+    }
+    a=a+1;
+  } while(a<10)
+}
+------------------------------------------------------------------------------
+
+Principal(){
   num a : 40 * 8;
   Nodo n;
   array : x [1..6][9..7][21..35] of num;
@@ -26,6 +86,25 @@ str : funcion(num par1, num par3){
   }
 }
 
+----------------------FUNCION CON RETRONO Y ASIGNACION DEL RETORNO------------
+Principal(){
+  num a : 40 * 8;
+  loop a {
+      a = 3 * 8 ^ 6 +3 -7 / (-3 + 6);
+      break a;
+  }
+  Nodo n : create(Nodo);
+  outStr(n.cadena);
+ a = fun1(a, n);
+  outStr(n.cadena);
+}
+
+num: fun1(num x, Nodo nod1){
+  x = x / 10;
+  nod1.valor = 73;
+  nod1.cadena = "cadena dentro de fun1";
+return x;
+}
 ------------------------------------------------------------------------------
 Principal(){
   num a : 40 * 8;
@@ -111,8 +190,19 @@ Principal(){
   num a : 40 * 8;
   loop a {
       a = 3 * 8 ^ 6 +3 -7 / (-3 + 6);
+      break a;
   }
+  Nodo n : create(Nodo);
+  fun1(a, n);
+  outStr(n.cadena);
 }
+
+void : fun1(num x, Nodo nod1){
+  x = x / 10;
+  nod1.valor = 73;
+  nod1.cadena = "cadena dentro de fun1";
+}
+
 ------------------------------------------------------------------------------
 str a;
 Principal(){

@@ -244,7 +244,8 @@ CUERPO          :   ASIGNACION ';' { $$ = $1; }
                 |   'break' ';' { $$ = { nombre : "BREAK", hijos : []}; }
                 |   'break' id ';' { $$ = { nombre : "BREAK", hijos : [$2]}; }
                 |   'return' VALOR ';' { $$ = { nombre : "RETURN", hijos : [$2]}; }
-                |   'return' ';' { $$ = { nombre : "RETURN", hijos : []}; };
+                |   'return' ';' { $$ = { nombre : "RETURN", hijos : []}; }
+                |   error ';';
 
 ASIGNACION      :   LID '=' VALOR {
                         $$ = {
@@ -361,7 +362,7 @@ LLAMADO         :   id '(' LVALOR ')' {
                     };
 
 LVALOR          :   LVALOR ',' VALOR {
-                        $1.hijos.push($2);
+                        $1.hijos.push($3);
                         $$ = $1;
                     }
                 |   VALOR { $$ = { nombre : "LVALOR", hijos : [$1] }; }

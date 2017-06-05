@@ -72,6 +72,8 @@
 "whilex"                                                return 'whilex'
 "Principal"                                             return 'principal'
 
+"getBool"                                               return 'getBool'
+"getNum"                                                return 'getNum'
 "outStr"                                                return 'outStr'
 "outNum"                                                return 'outNum'
 "inStr"                                                 return 'inStr'
@@ -114,92 +116,41 @@
 
 INICIO          :   LCUERPOGEN EOF {return $1;};
 
-LCUERPOGEN      :   LCUERPOGEN CUERPOGEN { 
+LCUERPOGEN      :   LCUERPOGEN CUERPOGEN {
                         $1.hijos.push($2);
                         $$ = $1;
                     }
                 |   CUERPOGEN { $$ = {nombre : "LCUERPOGEN", hijos:[$1]}; };
 
-CUERPOGEN       :   DECVAR ';'{ $$ = $1; }
-                |   DECFUN { $$ = $1; }
-                |   DECARR ';'{ $$ = $1; }
-                |   PRINCIPAL { $$ = $1; };
+CUERPOGEN       :   PRINCIPAL { $$ = $1; };
 
 DECVAR          :   TIPO LVARIABLES ASIG {
                         $$ = {
                             nombre : "DECVAR",
                             tipo : $1,
-                            hijos : [$2]
-                        };
-                        if($3 !== null)
-                            $$.hijos.push($3);
-                    };
-ASIG            :   ':' VALOR { $$ = $1; } 
-                |   ':' 'create' '(' id ')' { $$ = {nombre : "NUEVO", valor : $3}; }
-                |   { $$ = null; };
-LVARIABLES      :   LVARIABLES ',' id { 
-                        $1.hijos.push($3);
-                        $$ = $1;
-                    }
-                |   id { $$ = {nombre : "LVARIABLES", hijos:[$1]}; };
-
-DECARR          :   'array' ':' id LCORCHETES 'of' TIPO{
-                        $$ = {
-                            nombre : "ARRAY",
-                            tipo : $6,
-                            valor : $3,
-                            hijos : [$4]
+                            hijos : [$2, $3]
                         };
                     };
-LCORCHETES      :   LCORCHETES '[' RANGO ']' {
-                        $1.hijos.push($3);
+ASIG            :   ':' VALOR { $$ = $2; }
+                |   { $$ = {nombre : "NULL", valor : "NULL"}; };
+LVARIABLES      :   LVARIABLES ',' id {
+                        var lid = {nombre : "LID", hijos:[$3]};
+                        $1.hijos.push(lid);
                         $$ = $1;
                     }
-                |   '[' RANGO ']' { $$ = {nombre : "LCORCHETES", hijos : [$2]}; };
-RANGO           :   numero { $$ = {nombre : "RANGO", hijos : [0, $1]}; }
-                |   numero '..' numero { $$ = {nombre : "RANGO", hijos : [$1, $3]}; }
-                |   { $$ = {nombre : "RANGO", hijos : []}; };
-
-DECFUN          :   TIPOFUN L ':' id '(' LPAR ')' '{' LCUERPO '}' {
-                        $$ = {
-                            nombre : "FUNCION",
-                            id : $4,
-                            tipo : $1,
-                            hijos : [$6, $9]
-                        };
-                        if($2 !== null)
-                            $$.hijos.push($2);
+                |   id {
+                      var lid = {nombre : "LID", hijos:[$1]};
+                      $$ = {nombre : "LVARIABLES", hijos:[lid]};
                     };
-TIPOFUN         :   'void' { $$ = $1; }
-                |   TIPO { $$ = $1; };
-L               :   LCORCHETES { $$ = $1; }
-                |   { $$ = null; };
-LPAR            :   LPAR ',' TIPO id L {
-                        var id = { nombre : "ID", tipo : $3, valor : $4, hijos : [] };
-                        if($5 !== null)
-                            id.hijos.push($5);
-                        $1.hijos.push(id);
-                        $$ = $1;
-                    }
-                |   TIPO id L {
-                        var id = { nombre : "ID", tipo : $1, valor : $2, hijos : [] };
-                        if($3 !== null)
-                            id.hijos.push($3);
-                        $$ = {
-                            nombre : "LPAR",
-                            hijos : [id]
-                        };
-                    }
-                |   { $$ = {nombre : "LPAR", hijos : []}; };
 
 TIPO            :   'num' { $$ = $1; }
                 |   'str' { $$ = $1; }
-                |   'bool' { $$ = $1; }
-                |   LID { $$ = $1; };
+                |   'bool' { $$ = $1; };
 
-PRINCIPAL       :   'principal' '(' ')' '{' LCUERPO '}' { $$ = {nombre : "PRINCIPAL", hijos : [$5]}; };
+PRINCIPAL       :   'principal' '(' ')' '{' LCUERPO '}' { $$ = {nombre : "PRINCIPAL", hijos : [$5]}; }
+                |   'principal' '(' ')' '{' '}' { $$ = {nombre : "PRINCIPAL", hijos : [{nombre : "LCUERPO", hijos:[]}]}; };
 
-LCUERPO         :   LCUERPO CUERPO { 
+LCUERPO         :   LCUERPO CUERPO {
                         $1.hijos.push($2);
                         $$ = $1;
                     }
@@ -207,7 +158,6 @@ LCUERPO         :   LCUERPO CUERPO {
 
 CUERPO          :   ASIGNACION ';' { $$ = $1; }
                 |   DECVAR ';'{ $$ = $1; }
-                |   DECARR ';'{ $$ = $1; }
                 |   SI { $$ = $1; }
                 |   SELECCION { $$ = $1; }
                 |   MIENTRAS { $$ = $1; }
@@ -218,6 +168,8 @@ CUERPO          :   ASIGNACION ';' { $$ = $1; }
                 |   CONTAR { $$ = $1; }
                 |   HACERX { $$ = $1; }
                 |   LLAMADO ';' { $$ = $1; }
+                |   ESTANDARVALOR  ';' { $$ = $1; }
+                |   ESTANDARVOID  ';' { $$ = $1; }
                 |   'continue' ';' { $$ = { nombre : "CONTINUE"}; }
                 |   'break' ';' { $$ = { nombre : "BREAK", hijos : []}; }
                 |   'break' id ';' { $$ = { nombre : "BREAK", hijos : [$2]}; }
@@ -229,11 +181,12 @@ ASIGNACION      :   LID '=' VALOR {
                             nombre : "ASIGNACION",
                             hijos : [$1, $3]
                         };
-                    };
+                    }
+                |   LID '=' ;
 
 SI              :   'if' '(' VALOR ')' '{' LCUERPO '}' ELSE {
                         $$ = {
-                            nombre : "IF",
+                            nombre : "SI",
                             hijos : [$3, $6]
                         };
                         if($8 !== null)
@@ -293,7 +246,8 @@ PARA            :   'for' '(' ASIGPARA ';' VALOR ';' ASIGNACION ')' '{' LCUERPO 
                     };
 ASIGPARA        :   ASIGNACION { $$ = $1; }
                 |   num id ':' VALOR {
-                        var lvariables = {nombre : "LVARIABLES", hijos:[$2]};
+                        var lid = {nombre : "LID", hijos:[$2]};
+                        var lvariables = {nombre : "LVARIABLES", hijos:[lid]};
                         $$ = {
                             nombre : "DECVAR",
                             tipo : $1,
@@ -315,10 +269,10 @@ CONTAR          :   'count' '(' VALOR ')' '{' LCUERPO '}' {
                         };
                     };
 
-HACERX          :   'do' '{' LCUERPO '}' 'whilex' '(' VALOR ')' {
+HACERX          :   'do' '{' LCUERPO '}' 'whilex' '(' VALOR ',' VALOR ')' {
                         $$ = {
                             nombre : "HACERX",
-                            hijos : [$3, $6]
+                            hijos : [$3, $7, $9]
                         };
                     };
 
@@ -327,14 +281,28 @@ LLAMADO         :   id '(' LVALOR ')' {
                             nombre : "LLAMADO",
                             hijos : [$1, $3]
                         };
+                    }
+                |   id '(' LVALOR ')' '.' LID{
+                        $6.hijos.unshift({
+                            nombre : "LLAMADO",
+                            hijos : [$1, $3]
+                        });
+                        $$ = $6;
                     };
 
 LVALOR          :   LVALOR ',' VALOR {
-                        $1.hijos.push($2);
-                        $$ = $1;    
+                        $1.hijos.push($3);
+                        $$ = $1;
                     }
                 |   VALOR { $$ = { nombre : "LVALOR", hijos : [$1] }; }
                 |   { $$ = { nombre : "LVALOR", hijos : []}; };
+
+ESTANDARVALOR   :   'getBool' '(' VALOR ')' { $$ = { nombre : "getBool", hijos : [$3] }; }
+                |   'getLength' '(' VALOR ')' { $$ = { nombre : "getLength", hijos : [$3] }; }
+                |   'inNum' '(' VALOR ',' VALOR ')' { $$ = { nombre : "inNum", hijos : [$3, $5] }; };
+ESTANDARVOID    :   'outStr' '(' VALOR ')' { $$ = { nombre : "outStr", hijos : [$3] }; }
+                |   'outNum' '(' VALOR ',' VALOR ')' { $$ = { nombre : "outNum", hijos : [$3, $5] }; }
+                |   'inStr' '(' LID ',' VALOR ')' { $$ = { nombre : "inStr", hijos : [$3, $5] }; };
 
 VALOR           :   VALOR '||' VALOR { $$ = {nombre :$2, hijos:[$1, $3]}; }
                 |   VALOR '|&' VALOR { $$ = {nombre :$2, hijos:[$1, $3]}; }
@@ -365,11 +333,12 @@ E               :   E '+' E { $$ = {nombre :$2, hijos:[$1, $3]}; }
                 |   'true' { $$ = {nombre : "bool", valor : $1}; }
                 |   'false' { $$ = {nombre : "bool", valor : $1}; }
                 |   'NULL' { $$ = {nombre : "NULL", valor : $1}; }
+                |   ESTANDARVALOR { $$ = $1; }
                 |   LID { $$ = $1; }
                 |   LLAMADO { $$ = $1; }
                 |   '(' VALOR ')' { $$ = $2; };
 
-LID             :   LID '.' id { 
+LID             :   LID '.' id {
                         $1.hijos.push($3);
                         $$ = $1;
                     }

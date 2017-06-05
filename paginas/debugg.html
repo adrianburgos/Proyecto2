@@ -11,10 +11,10 @@
   <script type="text/javascript" src="../js/Const.js"></script>
   <script type="text/javascript">
     $(document).ready(function(){
-      codigo3d = localStorage["codigo3d"];
+      var codigo3d = localStorage["codigo3d"];
 			consola = "";
       //$("#taCodigo3d").val(codigo3d);
-      obtenerEstructura3d();
+      obtenerEstructura3d(codigo3d);
       console.log(ejecutable);
 			recorrerEjecutable();
 			$('#barra').css('width',  (100 - velocidad / 55)+'%').attr('aria-valuenow', (100 - velocidad / 55));

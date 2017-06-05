@@ -1,5 +1,5 @@
 function ejecutarAritmetica(op1, op2, operador) {
-  var res = {temp : "tx", tipo : -1};
+  var res = {temp : "tx", tipo : -1, tipoElemento:""};
   var t = getTemp();
   switch(operador)
   {
@@ -127,6 +127,7 @@ function ejecutarRelacional(op1, op2, operador) {
       {
         case 2://numero == numero
         case 14://bool == bool
+        case 42://id  == id
           var lv = getEtq();
           var lf = getEtq();
           var codigo =
@@ -160,6 +161,7 @@ function ejecutarRelacional(op1, op2, operador) {
       {
         case 2://numero != numero
         case 14://bool != bool
+        case 42:
           lv = getEtq();
           lf = getEtq();
           codigo =
@@ -456,13 +458,15 @@ function resolverLID(valor) {
     tipoElemento : "",
     esGlobal : false
   };
+  var tempRef = "";
+  var tempVal = "";
   //buscar la variable
   if(valor.hijos[0].nombre !== Const.LLAMADO)
   {//solo contiene una lista de ids
     var variable = buscarVariable(valor.hijos[0]);
     if (variable !== null) {
-      var tempRef = getTemp();
-      var tempVal = "";
+      tempRef = getTemp();
+      tempVal = "";
       if(variable.variable.ambito !== "global"){
         agregar3d("//se obtiene la referencia a la variable [" + valor.hijos[0] + "]");
         agregar3d(tempRef + " = " + variable.temp + " + " + variable.variable.pos + " ;");
@@ -485,56 +489,6 @@ function resolverLID(valor) {
           agregar3d(tempVal + " = heap [ " + tempRef + " ] ;");
         }
       }
-      var cont = 1;
-      var nombreEle = "global";
-      if(valor.hijos.length > 1 && resid.tipo !== Const.tid) {
-        er = {
-          tipo: "Error Semantico",
-          descripcion: "La variable [" + valor.hijos[0] + "] no es un element",
-          fila: 0,
-          columna: 0
-        };
-        agregarError(er);
-      } else
-      while (cont < valor.hijos.length && resid.tipo === Const.tid) {
-        nombreEle += "#" + resid.tipoElemento;
-        var ele = buscarAmbito(tabla[0], nombreEle);
-        if(ele !== null)
-        {
-          var atr = buscarAtributo(ele, valor.hijos[cont]);
-          if (atr !== null) {
-            if(cont >= 2){
-              tempVal = getTemp();
-              agregar3d(tempVal + " = heap [ " + temp3 + " ] ;");
-            }
-            var temp3 = getTemp();
-            agregar3d("//se obtiene la posicion de [" + valor.hijos[cont] + "] dentro del Element [" + resid.tipoElemento + "]");
-            agregar3d(temp3 + " = " + tempVal + " + " + atr.pos + " ;");
-            tempRef = temp3;
-            resid.tempRef = tempRef;
-            resid.tipo = atr.tipo;
-            resid.tipoElemento = atr.tipoElemento;
-            resid.esGlobal = false;
-          } else {
-            er = {
-              tipo: "Error Semantico",
-              descripcion: "El atributo [" + valor.hijos[cont] + "] no existe dentro del Element [" + resid.tipoElemento + " ]",
-              fila: 0,
-              columna: 0
-            };
-            agregarError(er);
-          }
-        } else {
-          er = {
-            tipo: "Error Semantico",
-            descripcion: "El ELEMENT [" + resid.tipoElemento + " ] no ha sido declarado",
-            fila: 0,
-            columna: 0
-          };
-          agregarError(er);
-        }
-        cont++;
-      }
     } else {
       er = {
         tipo: "Error Semantico",
@@ -546,6 +500,56 @@ function resolverLID(valor) {
     }
   } else {
     //TODO: realizar instrucciones cuando el primer id es un llamado
+    resid = hacerLlamado(valor.hijos[0]);
+    console.log(resid);
+  }
+  var cont = 1;
+  var nombreEle = "global";
+  if(valor.hijos.length > 1 && resid.tipo !== Const.tid) {
+    er = {
+      tipo: "Error Semantico",
+      descripcion: "La variable [" + valor.hijos[0] + "] no es un element",
+      fila: 0,
+      columna: 0
+    };
+    agregarError(er);
+  } else {
+    while (cont < valor.hijos.length && resid.tipo === Const.tid) {
+      nombreEle += "#" + resid.tipoElemento;
+      var ele = buscarAmbito(tabla[0], nombreEle);
+      if(ele !== null)
+      {
+        var atr = buscarAtributo(ele, valor.hijos[cont]);
+        if (atr !== null) {
+          tempRef = getTemp();
+          agregar3d("//se obtiene la posicion de [" + valor.hijos[cont] + "] dentro del Element [" + resid.tipoElemento + "]");
+          agregar3d(tempRef + " = " + tempVal + " + " + atr.pos + " ;");
+          tempVal = getTemp();
+          agregar3d(tempVal + " = heap [ " + tempRef + " ] ;");
+          resid.tempRef = tempRef;
+          resid.tipo = atr.tipo;
+          resid.tipoElemento = atr.tipoElemento;
+          resid.esGlobal = false;
+        } else {
+          er = {
+            tipo: "Error Semantico",
+            descripcion: "El atributo [" + valor.hijos[cont] + "] no existe dentro del Element [" + resid.tipoElemento + " ]",
+            fila: 0,
+            columna: 0
+          };
+          agregarError(er);
+        }
+      } else {
+        er = {
+          tipo: "Error Semantico",
+          descripcion: "El ELEMENT [" + resid.tipoElemento + " ] no ha sido declarado",
+          fila: 0,
+          columna: 0
+        };
+        agregarError(er);
+      }
+      cont++;
+    }
   }
   return resid;
 }
@@ -681,7 +685,6 @@ function recolectarNombres(lid) {
       amb = buscarAmbito(tabla[0], "global#" + variable.tipoElemento);
     nombreRet = amb.nombre;
   }
-  //alert(nombreRet);
   return nombreRet;
 }
 
@@ -747,7 +750,7 @@ function metodoGetStrLength(valor) {
   }
   return{
     temp: temp,
-    tipo: Const.tbool
+    tipo: Const.tnum
   };
 }
 
@@ -864,7 +867,7 @@ function metodoInNum(valor) {
   }
   return{
     temp: temp,
-    tipo: Const.tbool
+    tipo: Const.tnum
   };
 }
 
@@ -925,4 +928,78 @@ function aumentarDisplay(tam) {
   for (var i = 0; i < display.length; i++) {
     display[i].tam += tam;
   }
+}
+
+function disminuirDisplay(tam) {
+  for (var i = 0; i < display.length; i++) {
+    display[i].tam -= tam;
+  }
+}
+
+function hacerLlamado(sent) {
+  var resid = {
+    temp : "tx",
+    tempRef :  "ty",
+    tipo : -1,
+    tipoElemento : "",
+    esGlobal : false
+  };
+  var amb = ambito.join("#");
+  var co = contAmbActual;
+  ambActual = buscarAmbito(tabla[0], ambito.join("#"));
+  var tempSim = getTemp();
+  var parametros = sent.hijos[0];
+  agregar3dTOT(tempSim, "p", ambActual.tam, "+");
+  for (var i = 0; i < sent.hijos[1].hijos.length; i++) {
+    var par = sent.hijos[1].hijos[i];
+    var val = evaluarValor(par);
+    var t1 = getTemp();
+    if(val.tipo === Const.tid)
+    {//se mando una variable de tipo element como parametro
+      parametros += "-" + val.tipoElemento;
+      agregar3dTOT(t1, tempSim, i+1, "+");
+    } else {
+      parametros += "-" + getTipo(val.tipo);
+      agregar3dTOT(t1, tempSim, i+1, "+");
+    }
+    agregar3dST("stack", t1, val.temp);
+  }
+  var funcion = buscarFuncionTS(parametros);
+  if(funcion !== null){
+    agregar3d("//cambio de ambito para la funcion [" + sent.hijos[0] + "]");
+    agregar3d("p = p + " + ambActual.tam + " ;");
+    //se agrega el ambito actual
+    ambito = ["global"];
+    ambito.push(parametros);
+    contAmbActual = 0;
+    agregar3d(parametros + "() ;");
+    var t2 = getTemp();
+    var t3 = getTemp();
+    agregar3dTOT(t2, "p", "0", "+");
+    agregar3dTS(t3, "stack", t2);
+    resid = {
+      temp : t3,
+      tempRef :  t2,
+      tipo : funcion.tipo,
+      tipoElemento : funcion.tipoElemento,
+      esGlobal : false
+    };
+    agregar3d("//regreso de ambito para la funcion [" + sent.hijos[0] + "]");
+    agregar3d("p = p - " + ambActual.tam + " ;");
+    var sp = amb.split("#");
+    ambito = ["global"];
+    for (var j = 1; j < sp.length; j++) {
+      ambito.push(sp[j]);
+    }
+    contAmbActual = co;
+  } else {
+    var er = {
+      tipo: "Error Semantico",
+      descripcion: "La funcion [" + parametros + "] no ha sido declarada",
+      fila: 0,
+      columna: 0
+    };
+    agregarError(er);
+  }
+  return resid;
 }

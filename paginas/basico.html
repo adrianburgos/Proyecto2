@@ -8,45 +8,47 @@
   <script src="../blockly/blockly_compressed.js"></script>
   <script src="../blockly/blocks_compressed.js"></script>
   <script src="../blockly/javascript_compressed.js"></script>
-  <script src="../blockly/msg/js/es.js"></script>
+  <script src="../blockly/msg/js/en.js"></script>
   <script type="text/javascript" src="../js/gramaticaBasica.js"></script>
-  <script type="text/javascript" src="../js/jscodigo3d.js"></script>
+	<script type="text/javascript" src="../js/jscodigo3d.js"></script>
+	<script type="text/javascript" src="../js/Const.js"></script>
   <script type="text/javascript" src="../js/errores.js"></script>
+  <script type="text/javascript" src="../js/tablaDeSimbolos.js"></script>
+  <script type="text/javascript" src="../js/funcionesAuxiliares.js"></script>
+  <script type="text/javascript" src="../js/metodosEstandar.js"></script>
+  <script type="text/javascript" src="../js/funcionesBuscar.js"></script>
+  <script type="text/javascript" src="../js/ejecutarGeneral.js"></script>
   <script type="text/javascript" src="../js/ejecutar.js"></script>
 </head>
 <body>
-  <nav class="navbar navbar-inverse">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="../index.html">Basic 3D</a>
-      </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="basico.html">Nivel basico</a></li>
-          <li><a href="#">Nivel intermedio</a></li>
-          <li><a href="avanzado.html">Nivel avanzado</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones <span class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="../paginas/reportes/tablaDeSimbolos.html" target="_blank"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Tabla de simbolos</a></li>
-              <li><a href="#" target="_blank"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Reporte de errores</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li role="separator" class="divider"></li>
-              <li class="dropdown-header">Nav header</li>
-              <li><a href="#">Separated link</a></li>
-              <li><a href="#">One more separated link</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div><!--/.nav-collapse -->
-    </div>
-  </nav>
+	<nav class="navbar navbar-inverse">
+	    <div class="container">
+	      <div class="navbar-header">
+	        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+	          <span class="sr-only">Toggle navigation</span>
+	          <span class="icon-bar"></span>
+	          <span class="icon-bar"></span>
+	          <span class="icon-bar"></span>
+	        </button>
+	        <a class="navbar-brand" href="../index.html">Basic 3D</a>
+	      </div>
+	      <div class="navbar-collapse collapse">
+	        <ul class="nav navbar-nav">
+	          <li class="active"><a href="basico.html">Nivel basico</a></li>
+	          <li><a href="#">Nivel intermedio</a></li>
+	          <li><a href="avanzado.html">Nivel avanzado</a></li>
+	          <li class="dropdown">
+	            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones <span class="caret"></span></a>
+	            <ul class="dropdown-menu">
+								<li><a href="../paginas/reportes/tablaDeSimbolos.html" target="_blank"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Tabla de simbolos</a></li>
+	              <li><a href="../paginas/reportes/tablaDeErrores.html" target="_blank"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Reporte de errores</a></li>
+	              <li><a href="debugg.html" target="_blank"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Debugger</a></li>
+	            </ul>
+	          </li>
+	        </ul>
+	      </div><!--/.nav-collapse -->
+	    </div>
+	  </nav>
   <div class="container">
     <div class="row">
       <div>
@@ -69,51 +71,471 @@
             <block type="logic_boolean"></block>
             <block type="logic_null"></block>
             <block type="text"></block>
-            <block type="text_join"></block>
+            <block type="concat"></block>
           </category>
-          <category name="Variables" custom="VARIABLE" colour = "330"></category>
+          <category name="Variables" colour = "330">
+          	<block type="declaracion"></block>
+          	<block type="asignacion"></block>
+          	<block type="variable"></block>
+          </category>
           <category name="Control" colour = "210">
             <block type="controls_if"></block>
           </category>
           <category name="Ciclos" colour="120">
-            <block type="controls_repeat_ext">
-              <value name="TIMES">
-                <block type="math_number">
-                  <field name="NUM">10</field>
-                </block>
-              </value>
-            </block>
-            <block type="controls_whileUntil"></block>
-            <block type="controls_for">
-              <value name="FROM">
-                <block type="math_number">
-                  <field name="NUM">1</field>
-                </block>
-              </value>
-              <value name="TO">
-                <block type="math_number">
-                  <field name="NUM">10</field>
-                </block>
-              </value>
-              <value name="BY">
-                <block type="math_number">
-                  <field name="NUM">1</field>
-                </block>
-              </value>
-            </block>
-            <block type="controls_flow_statements"></block>
+						<block type="mientras"></block>
+						<block type="hacer"></block>
+						<block type="repetir"></block>
+            <block type="para"></block>
+            <block type="loopid"></block>
+            <block type="contar"></block>
+          </category>
+          <category name="Branching" colour="120">
+						<block type="detener"></block>
+						<block type="detenerid"></block>
+						<block type="retornar"></block>
+            <block type="retornarval"></block>
+            <block type="continuar"></block>
+          </category>
+          <category name="Core" colour="60">
+						<block type="outstr"></block>
+						<block type="outnum"></block>
+						<block type="innum"></block>
+						<block type="instr"></block>
+						<block type="getlength"></block>
           </category>
         </xml>
         <script>
           var workspace = Blockly.inject('blocklyDiv',
               {toolbox: document.getElementById('toolbox')});
+							Blockly.Blocks['declaracion'] = {
+							  init: function() {
+							    this.appendDummyInput()
+							        .appendField("Declarar variable");
+							    this.appendValueInput("valor")
+							        .setCheck(["Number", "String", "Boolean"])
+							        .appendField(new Blockly.FieldDropdown([["num","num"], ["str","str"], ["bool","bool"]]), "tipo")
+							        .appendField(new Blockly.FieldTextInput("nombre"), "nombre");
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(330);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['declaracion'] = function(block) {
+							  var dropdown_tipo = block.getFieldValue('tipo');
+							  var text_nombre = block.getFieldValue('nombre');
+							  var value_valor = Blockly.JavaScript.valueToCode(block, 'valor', Blockly.JavaScript.ORDER_ATOMIC);
+								var code = "";
+								if(value_valor === "")
+									code = dropdown_tipo + " " + text_nombre + ";\n";
+								else
+									code = dropdown_tipo + " " + text_nombre + " : " + value_valor + ";\n";
+							  return code;
+							};
+							Blockly.Blocks['asignacion'] = {
+							  init: function() {
+							    this.appendDummyInput()
+							        .appendField("Asignacion a");
+							    this.appendValueInput("valor")
+							        .setCheck(null)
+							        .appendField(new Blockly.FieldTextInput("nombre"), "nombre");
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(330);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['asignacion'] = function(block) {
+							  var text_nombre = block.getFieldValue('nombre');
+							  var value_valor = Blockly.JavaScript.valueToCode(block, 'valor', Blockly.JavaScript.ORDER_ATOMIC);
+								if(value_valor === "")
+									value_valor = "NULL";
+							  var code = text_nombre + " = " + value_valor + ";\n";
+							  return code;
+							};
+							Blockly.Blocks['variable'] = {
+							  init: function() {
+							    this.appendDummyInput()
+							        .appendField("Obtener variable");
+							    this.appendDummyInput()
+							        .appendField(new Blockly.FieldTextInput("nombre"), "nombre");
+							    this.setOutput(true, null);
+							    this.setColour(330);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['variable'] = function(block) {
+							  var text_nombre = block.getFieldValue('nombre');
+							  var code = text_nombre;
+							  return [code, Blockly.JavaScript.ORDER_NONE];
+							};
+							Blockly.Blocks['mientras'] = {
+							  init: function() {
+							    this.appendValueInput("condicion")
+							        .setCheck("Boolean")
+							        .appendField("while");
+							    this.appendStatementInput("cuerpo")
+							        .setCheck(null);
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(120);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['mientras'] = function(block) {
+							  var value_condicion = Blockly.JavaScript.valueToCode(block, 'condicion', Blockly.JavaScript.ORDER_ATOMIC);
+							  var statements_cuerpo = Blockly.JavaScript.statementToCode(block, 'cuerpo');
+							  var code = "while( " + value_condicion + " ){\n " + statements_cuerpo + "}\n";
+							  return code;
+							};
+							Blockly.Blocks['hacer'] = {
+							  init: function() {
+							    this.appendStatementInput("cuerpo")
+							        .setCheck(null)
+							        .appendField("do");
+							    this.appendValueInput("condicion")
+							        .setCheck("Boolean")
+							        .appendField("while");
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(120);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['hacer'] = function(block) {
+							  var statements_cuerpo = Blockly.JavaScript.statementToCode(block, 'cuerpo');
+							  var value_condicion = Blockly.JavaScript.valueToCode(block, 'condicion', Blockly.JavaScript.ORDER_ATOMIC);
+							  // TODO: Assemble JavaScript into code variable.
+							  var code = "do{\n " + statements_cuerpo + "}while( " + value_condicion + " )\n";
+							  return code;
+							};
+							Blockly.Blocks['repetir'] = {
+							  init: function() {
+							    this.appendStatementInput("cuerpo")
+							        .setCheck(null)
+							        .appendField("repeat");
+							    this.appendValueInput("condicion")
+							        .setCheck("Boolean")
+							        .appendField("until");
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(120);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['repetir'] = function(block) {
+							  var statements_cuerpo = Blockly.JavaScript.statementToCode(block, 'cuerpo');
+							  var value_condicion = Blockly.JavaScript.valueToCode(block, 'condicion', Blockly.JavaScript.ORDER_ATOMIC);
+							  // TODO: Assemble JavaScript into code variable.
+							  var code = "repeat{\n " + statements_cuerpo + "}until( " + value_condicion + " )\n";
+							  return code;
+							};
+							Blockly.Blocks['para'] = {
+							  init: function() {
+							    this.appendValueInput("asignacion")
+							        .setCheck("Number")
+							        .appendField("For(")
+							        .appendField(new Blockly.FieldTextInput("nombre"), "nombre")
+							        .appendField("=");
+							    this.appendValueInput("condicion")
+							        .setCheck("Boolean")
+							        .appendField(";");
+							    this.appendValueInput("aumento")
+							        .setCheck("Number")
+							        .appendField("; ");
+							    this.appendDummyInput()
+							        .appendField(")");
+							    this.appendStatementInput("cuerpo")
+							        .setCheck(null);
+							    this.setInputsInline(true);
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(120);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['para'] = function(block) {
+							  var text_nombre = block.getFieldValue('nombre');
+							  var value_asignacion = Blockly.JavaScript.valueToCode(block, 'asignacion', Blockly.JavaScript.ORDER_ATOMIC);
+							  var value_condicion = Blockly.JavaScript.valueToCode(block, 'condicion', Blockly.JavaScript.ORDER_ATOMIC);
+							  var value_aumento = Blockly.JavaScript.valueToCode(block, 'aumento', Blockly.JavaScript.ORDER_ATOMIC);
+							  var statements_cuerpo = Blockly.JavaScript.statementToCode(block, 'cuerpo');
+							  var code = "for(" + text_nombre + " = " + value_asignacion + "; " + value_condicion + "; " + text_nombre + " = " + text_nombre + " + " + value_aumento + "){\n" + statements_cuerpo + "}\n";
+							  return code;
+							};
+							Blockly.Blocks['loopid'] = {
+							  init: function() {
+							    this.appendDummyInput()
+							        .appendField("loop id")
+							        .appendField(new Blockly.FieldTextInput("nombre"), "nombre");
+							    this.appendStatementInput("cuerpo")
+							        .setCheck(null);
+							    this.setInputsInline(true);
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(120);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['loopid'] = function(block) {
+							  var text_nombre = block.getFieldValue('nombre');
+							  var statements_cuerpo = Blockly.JavaScript.statementToCode(block, 'cuerpo');
+							  // TODO: Assemble JavaScript into code variable.
+							  var code = "loop " + text_nombre + " {\n " + statements_cuerpo + "}\n";
+							  return code;
+							};
+							Blockly.Blocks['contar'] = {
+							  init: function() {
+							    this.appendValueInput("cantidad")
+							        .setCheck("Number")
+							        .appendField("count");
+							    this.appendStatementInput("cuerpo")
+							        .setCheck(null);
+							    this.setInputsInline(true);
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(120);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['contar'] = function(block) {
+							  var value_cantidad = Blockly.JavaScript.valueToCode(block, 'cantidad', Blockly.JavaScript.ORDER_ATOMIC);
+							  var statements_cuerpo = Blockly.JavaScript.statementToCode(block, 'cuerpo');
+							  var code = "count( " + value_cantidad + " ){\n " + statements_cuerpo + "}\n";
+							  return code;
+							};
+							Blockly.Blocks['continuar'] = {
+							  init: function() {
+							    this.appendDummyInput()
+							        .appendField("continue");
+							    this.setInputsInline(false);
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(120);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['continuar'] = function(block) {
+							  var code = "continue;\n";
+								return code;
+							};
+							Blockly.Blocks['detener'] = {
+							  init: function() {
+							    this.appendDummyInput()
+							        .appendField("break");
+							    this.setInputsInline(false);
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(120);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['detener'] = function(block) {
+							  var code = "break;\n";
+								return code;
+							};
+							Blockly.Blocks['retornar'] = {
+							  init: function() {
+							    this.appendDummyInput()
+							        .appendField("return");
+							    this.setInputsInline(false);
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(120);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['retornar'] = function(block) {
+							  var code = "return;\n";
+								return code;
+							};
+							Blockly.Blocks['detenerid'] = {
+							  init: function() {
+							    this.appendDummyInput()
+							        .appendField("break")
+							        .appendField(new Blockly.FieldTextInput("nombre"), "nombre");
+							    this.setInputsInline(false);
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(120);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['detenerid'] = function(block) {
+							  var text_nombre = block.getFieldValue('nombre');
+							  var code = "break " + text_nombre + ";\n";
+								return code;
+							};
+							Blockly.Blocks['retornarval'] = {
+							  init: function() {
+							    this.appendValueInput("valor")
+							        .setCheck(null)
+							        .appendField("return");
+							    this.setInputsInline(true);
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(120);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['retornarval'] = function(block) {
+							  var value_valor = Blockly.JavaScript.valueToCode(block, 'valor', Blockly.JavaScript.ORDER_ATOMIC);
+							  // TODO: Assemble JavaScript into code variable.
+							  var code = "return " + value_valor + ";\n";
+								return code;
+							};
+							Blockly.Blocks['concat'] = {
+							  init: function() {
+							    this.appendDummyInput()
+							        .appendField("Concatenar");
+							    this.appendValueInput("val1")
+							        .setCheck(null)
+							        .setAlign(Blockly.ALIGN_RIGHT)
+							        .appendField("valor 1");
+							    this.appendValueInput("val2")
+							        .setCheck(null)
+							        .setAlign(Blockly.ALIGN_RIGHT)
+							        .appendField("valor 2");
+							    this.setOutput(true, "String");
+							    this.setColour(230);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['concat'] = function(block) {
+							  var value_val1 = Blockly.JavaScript.valueToCode(block, 'val1', Blockly.JavaScript.ORDER_ATOMIC);
+							  var value_val2 = Blockly.JavaScript.valueToCode(block, 'val2', Blockly.JavaScript.ORDER_ATOMIC);
+							  // TODO: Assemble JavaScript into code variable.
+							  var code = value_val1 + " + " + value_val2;
+							  // TODO: Change ORDER_NONE to the correct strength.
+							  return [code, Blockly.JavaScript.ORDER_NONE];
+							};
+							Blockly.Blocks['getlength'] = {
+							  init: function() {
+							    this.appendValueInput("valor")
+							        .setCheck("String")
+							        .appendField("getStrLength");
+							    this.setOutput(true, "Number");
+							    this.setColour(60);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['getlength'] = function(block) {
+							  var valor = Blockly.JavaScript.valueToCode(block, 'valor', Blockly.JavaScript.ORDER_ATOMIC);
+							  var code = "getLength(" + valor + ")";
+							  return [code, Blockly.JavaScript.ORDER_NONE];
+							};
+							Blockly.Blocks['innum'] = {
+							  init: function() {
+							    this.appendValueInput("cadena")
+							        .setCheck("String")
+							        .appendField("inNum")
+							        .appendField("Str");
+							    this.appendValueInput("numero")
+							        .setCheck("Number")
+							        .setAlign(Blockly.ALIGN_RIGHT)
+							        .appendField("Num");
+							    this.setOutput(true, "Number");
+							    this.setColour(60);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['innum'] = function(block) {
+							  var value_cadena = Blockly.JavaScript.valueToCode(block, 'cadena', Blockly.JavaScript.ORDER_ATOMIC);
+							  var value_numero = Blockly.JavaScript.valueToCode(block, 'numero', Blockly.JavaScript.ORDER_ATOMIC);
+							  // TODO: Assemble JavaScript into code variable.
+							  var code = "inNum(" + value_cadena + " , " + value_numero + ")";
+							  // TODO: Change ORDER_NONE to the correct strength.
+							  return [code, Blockly.JavaScript.ORDER_NONE];
+							};
+							Blockly.Blocks['instr'] = {
+							  init: function() {
+							    this.appendDummyInput()
+							        .appendField("inStr")
+							        .appendField("id")
+							        .appendField(new Blockly.FieldTextInput("nombre"), "nombre");
+							    this.appendValueInput("cadena")
+							        .setCheck("String")
+							        .setAlign(Blockly.ALIGN_RIGHT)
+							        .appendField("str");
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(60);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['instr'] = function(block) {
+							  var text_nombre = block.getFieldValue('nombre');
+							  var value_cadena = Blockly.JavaScript.valueToCode(block, 'cadena', Blockly.JavaScript.ORDER_ATOMIC);
+							  // TODO: Assemble JavaScript into code variable.
+							  var code = "inStr(" + text_nombre + " , " + value_cadena + ");";
+							  return code;
+							};
+							Blockly.Blocks['outnum'] = {
+							  init: function() {
+							    this.appendValueInput("num")
+							        .setCheck("Number")
+							        .appendField("outNum");
+							    this.appendValueInput("bool")
+							        .setCheck("Boolean");
+							    this.setInputsInline(false);
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(60);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['outnum'] = function(block) {
+							  var value_num = Blockly.JavaScript.valueToCode(block, 'num', Blockly.JavaScript.ORDER_ATOMIC);
+							  var value_bool = Blockly.JavaScript.valueToCode(block, 'bool', Blockly.JavaScript.ORDER_ATOMIC);
+							  // TODO: Assemble JavaScript into code variable.
+							  var code = "outNum("+  value_num + " , " + value_bool + ");";
+							  return code;
+							};
+							Blockly.Blocks['outstr'] = {
+							  init: function() {
+							    this.appendValueInput("str")
+							        .setCheck("String")
+							        .appendField("outStr");
+							    this.setInputsInline(false);
+							    this.setPreviousStatement(true, null);
+							    this.setNextStatement(true, null);
+							    this.setColour(60);
+							    this.setTooltip('');
+							    this.setHelpUrl('');
+							  }
+							};
+							Blockly.JavaScript['outstr'] = function(block) {
+							  var value_str = Blockly.JavaScript.valueToCode(block, 'str', Blockly.JavaScript.ORDER_ATOMIC);
+							  // TODO: Assemble JavaScript into code variable.
+							  var code = "outStr(" + value_str + ");";
+							  return code;
+							};
         </script>
       </div>
       <div class="col-md-4">
         <div class="row">
           <textarea style="height: 600px; width: 100%;" id = "taSalida"></textarea>
-          <button onclick="runJS()">Run Code</button>
           <script type="text/javascript">
+					// $(document).ready( function() {
             setInterval('runJS()', 1);
             function runJS() {
               Blockly.JavaScript.addReservedWords('code');
@@ -122,23 +544,44 @@
               try {
                 var raiz = gramaticaBasica.parse(code);
                 reiniciar3d();
-                //crear la tabla de simbolos
-                //buscar el nodo del metodo Principal
-                var principal = buscarPrincipal(raiz);
-                console.log(principal);
-                if(principal !== null)
-                  ejecutarArbol(principal);
-                else
-                  alert("No existe un metodo principal");
                 console.log(raiz);
                 console.log(codigo3d);
               } catch (e) {
                 //$("#taEstructuras").html(String(e));
                 console.log(e);
               }
-              $('#taSalida').text(code);
+							try {
+								reiniciar3d();
+								errores = [];
+			          //crear la tabla de simbolos
+								tabla = [];
+								ambito = ["global"];
+								contAmb = 0;
+								tabla.push(crearAmbito("global", -1, "global"));
+			          tabla[0].tam = crearTabla(raiz, 0);
+								generarTabla();
+								localStorage["tabla"] = htmlTabla;
+								amb3D = ["global"];
+								contAmbActual = 0;
+								crearMetodosEstandar();
+								ejecutarArbolGeneral(raiz);
+								console.log(codigo3d);
+								generarErrores();
+								localStorage["errores"] = htmlErrores;
+								if(errores.length >= 1){
+									$("#mensajeError").show();
+									$("#bDebugg").prop('disabled', true);
+								} else {
+									$("#mensajeError").hide();
+									$("#bDebugg").prop('disabled', false);
+									localStorage["codigo3d"] = codigo3d;
+								}
+							} catch (e) {
+								console.log(e);
+							}
+							$('#taSalida').text(codigo3d);
             }
-
+					// });
           </script>
         </div>
       </div>

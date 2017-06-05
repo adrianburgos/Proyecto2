@@ -72,3 +72,13 @@ function buscarAtributo(element, nombre) {
   }
   return null;
 }
+
+function buscarFuncionTS(nombre) {
+  nombre = "global#" + nombre;
+  for (var i = 0; i < tabla[0].ambitos.length; i++) {
+    var actual = tabla[0].ambitos[i];
+    if(actual.nombre === nombre)
+      return actual;
+  }
+  return null;
+}

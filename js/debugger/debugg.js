@@ -22,10 +22,10 @@ function reiniciarRecorrido() {
   h = 0;
 }
 
-function obtenerEstructura3d() {
+function obtenerEstructura3d(codigo) {
   reiniciarRecorrido();
   var inst;
-  codigoSeparado = codigo3d.split("\n");
+  codigoSeparado = codigo.split("\n");
   for (var i = 0; i < codigoSeparado.length - 1; i++) {
     var separado = codigoSeparado[i].split(" ");
     var sent = codigoSeparado[i];
@@ -61,6 +61,8 @@ function obtenerEstructura3d() {
         inst = { detener: true, accion: Const.printf, fila: i, d1: separado[2], d2: separado[4], d3: "", op: "" };
       } else if (sent.search('prompt') === 0) {
         inst = { detener: true, accion: Const.prompt, fila: i, d1: separado[2], d2: separado[4], d3: separado[6], op: "" };
+      } else if (sent.search('exit') === 0) {
+        inst = { detener: true, accion: Const.EXIT, fila: i, d1: separado[2], d2:"", d3: "", op: "" };
       } else if (sent.search('}') >= 0) {
         inst = { detener: true, accion: Const.finMetodo, fila: i, d1: "", d2: "", d3: "", op: "" };
       } else if (sent.search("() ;") >= 0) {
@@ -191,7 +193,10 @@ function ejecutar3d(sent, pos) {
       pos.pos = buscarFuncion(sent.d1 + "{");
       break;
     case Const.EXIT:
-
+    if(sent.d1 === "243")
+      alert("MissingReturnStatement");
+      posLLamados = [];
+      pos.pos = ejecutable.length - 2;
       break;
     case Const.printf:
       val1 = getTemporal(sent.d2);
